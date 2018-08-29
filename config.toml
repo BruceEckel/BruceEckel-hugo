@@ -1,0 +1,50 @@
+baseURL = "http://bruceeckel.github.io/"
+languageCode = "en-us"
+title = "Computing Thoughts"
+theme = "hugo-nuo"
+publishDir = "docs"
+enableRobotsTXT = true
+pygmentsuseclasses = true
+PygmentsCodeFences = true
+
+[[menu.main]]
+  name = "Home"
+  weight = 10
+  identifier = "home"
+  url = "/"
+
+[[menu.main]]
+  name = "About"
+  weight = 20
+  identifier = "about"
+  url = "http://www.mindviewinc.com/About/Bruce.php"
+
+[[menu.main]]
+  name = "Mindview"
+  weight = 20
+  identifier = "mindview"
+  url = "http://www.mindviewinc.com"
+
+[[menu.main]]
+  name = "Atomic Scala"
+  weight = 20
+  identifier = "atomicscala"
+  url = "http://www.atomicscala.com/"
+
+[[menu.main]]
+  name = "Winter Tech Forum"
+  weight = 20
+  identifier = "wintertechforum"
+  url = "http://www.wintertechforum.com/"
+
+# Add your own params here
+[params]
+  author = "Bruce Eckel"
+  avatar = "/img/BruceEckelPicture.png"
+  seotitle = "Hugo Blog (SEO Version)"
+  subtitle = "Bruce Eckel's Programming Blog"
+  description = "A blog about all the things related to programming by Bruce Eckel, author of Thinking in Java, Thinking in C++, Atomic Scala and very soon Atomic Kotlin."
+  paginate = 10
+  email = "mindviewinc@gmail.com"
+  github = "bruceeckel"
+  twitter = "bruceeckel"
