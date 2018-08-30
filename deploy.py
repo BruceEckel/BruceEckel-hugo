@@ -1,0 +1,50 @@
+from pathlib import Path
+import sys
+import os
+import shutil
+
+exclude = [
+    ".git",
+    ".gitkeep",
+    "CNAME",
+    "README.md",
+]
+
+root_name = Path().cwd().stem.split("-")[0]
+target = Path.cwd().parent / f"{root_name}.github.io"
+print(f"deploying to {target}")
+
+def unknown(item):
+    print(f"UNKNOWN ITEM: {item}")
+    sys.exit(1)
+
+for item in target.iterdir():
+    if item.name in exclude:
+        continue
+    print(f"removing {item.name}")
+    if item.is_file():
+        item.unlink()
+    elif item.is_dir():
+        shutil.rmtree(item)
+    else:
+        unknown(item)
+
+for src in (Path.cwd() / "docs").iterdir():
+    print(f"copying {src.name}")
+    if src.is_file():
+        shutil.copy(src, target)
+    elif src.is_dir():
+        shutil.copytree(src, target / src.name)
+    else:
+        unknown(src)
+
+# print(Path.cwd() / "404")
+# print(target/ "404")
+# shutil.copytree(Path.cwd() / "404", target / "404")
+# shutil.copy((Path.cwd() / "404.html"), target)
+# shutil.copytree(Path.cwd() / "htmlbook", target / "htmlbook")
+
+# CNAME = Path.cwd() / "CNAME"
+# if CNAME.exists():
+#     print("copying CNAME")
+#     shutil.copy(CNAME, target)
