@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>On Java 8 And The Concurrent Python Developer Retreat</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="For many years I&amp;rsquo;ve been getting requests for some kind of sequel to Thinking in Java, 4th Edition. Over two years ago, I finally decided to &amp;ldquo;pull together something quickly.&amp;rdquo; After all, how much time have I spent writing about the language? I should be getting pretty fast by now.
+Self-delusion knows no bounds. No matter how many books I write, every one seems to take longer than the previous ones, not shorter." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="On Java 8 And The Concurrent Python Developer Retreat" />
+    <meta name="twitter:description" content="For many years I&amp;rsquo;ve been getting requests for some kind of sequel to Thinking in Java, 4th Edition. Over two years ago, I finally decided to &amp;ldquo;pull together something quickly.&amp;rdquo; After all, how much time have I spent writing about the language? I should be getting pretty fast by now.
+Self-delusion knows no bounds. No matter how many books I write, every one seems to take longer than the previous ones, not shorter." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="On Java 8 And The Concurrent Python Developer Retreat" />
+  <meta property="og:description" content="For many years I&amp;rsquo;ve been getting requests for some kind of sequel to Thinking in Java, 4th Edition. Over two years ago, I finally decided to &amp;ldquo;pull together something quickly.&amp;rdquo; After all, how much time have I spent writing about the language? I should be getting pretty fast by now.
+Self-delusion knows no bounds. No matter how many books I write, every one seems to take longer than the previous ones, not shorter." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2017/06/27/on-java-8-and-the-concurrent-python-developer-retreat/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2017/06/27/on-java-8-and-the-concurrent-python-developer-retreat/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">On Java 8 And The Concurrent Python Developer Retreat</h1>
+      <p class="post-meta">@Bruce Eckel · Jun 27, 2017 · 3 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>For many years I&rsquo;ve been getting requests for some kind of sequel to <em>Thinking
+in Java, 4th Edition</em>. Over two years ago, I finally decided to &ldquo;pull together
+something quickly.&rdquo; After all, how much time have I spent writing about the
+language? I should be getting pretty fast by now.</p>
+
+<p>Self-delusion knows no bounds. No matter how many books I write, every one
+seems to take longer than the previous ones, not shorter. I hope this is
+because I&rsquo;m getting more meticulous.</p>
+
+<p>Another factor is that Java 8 is a dramatic departure from previous versions
+of Java. It has pulled a major rabbit out of a hat with the introduction of
+lambdas and functional programming&mdash;perhaps not as pure as you expect from a
+real functional language, but a huge step forward nonetheless. Along with
+<code>CompletableFuture</code>s and <code>Stream</code>s,  Java 8 is a radical improvement in the
+experience of programming with Java.</p>
+
+<p>I&rsquo;ve rolled the book out very slowly; for the last couple of months it&rsquo;s been
+in beta to make sure there were no glitches in the delivery or reading
+experience, but it is now officially released.</p>
+
+<p>You can find it at <a href="http://onjava8.com">www.OnJava8.com</a>.</p>
+
+<p>This book is far too large to publish as a single print volume, and my intent
+has always been to only publish it as an eBook. Color syntax highlighting for
+code listings is, alone, worth the cost of admission. Searchability, font
+resizing or text-to-voice for the vision-impaired, the fact you can always
+keep it with you&mdash;there are so many benefits to eBooks it&rsquo;s hard to name them
+all.</p>
+
+<p>Anyone buying this book needs a computer to run the programs and write code,
+and the eBook reads nicely on a computer (I was also surprised to discover it
+reads tolerably well on a phone). However, the best reading experience is on a
+tablet computer. Tablets are inexpensive enough you can now buy one for less
+than you&rsquo;d pay for an equivalent print version of this book (which, note, does
+not exist). It&rsquo;s much easier to read a tablet in bed (for example) than trying
+to manage the pages of a physical book, especially one this big. When working
+at your computer, you don&rsquo;t have to hold the pages open when using a tablet at
+your side. It might feel different at first, but I think you&rsquo;ll find the
+benefits far outweigh the discomfort of adapting.</p>
+
+<p>I&rsquo;ve done the research, and Google Play Books provides a very nice reading
+experience on every platform, including Linux and iOS devices. As an
+experiment, I&rsquo;ve decided to try publishing exclusively through <a href="http://onjava8.com">Google
+Books</a>.</p>
+
+<h1 id="the-concurrent-python-developer-retreat">The Concurrent Python Developer Retreat</h1>
+
+<p>I will be attending GopherCon in Denver with my friend Luciano Ramalho (Author
+of Fluent Python), and afterwards he&rsquo;ll be coming with me to my home in
+Crested Butte, Colorado where we&rsquo;ll be holding the Concurrent Python Developer
+retreat, July 16-19 2017. This will focus on all the aspects of concurrency in
+Python, as part of the development work for my book project <a href="http://www.ConcurrentPython.com">Concurrent
+Python</a>. This will be a free ebook, available now
+and throughout development (it might also turn into a print book if the
+interest is there). The target audience is people who know Python but don&rsquo;t
+know anything about concurrency, so if that&rsquo;s you, please consider joining the
+retreat. You can find out more, and register, <a href="http://www.Developer-Retreat.com">here</a>.</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>429</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

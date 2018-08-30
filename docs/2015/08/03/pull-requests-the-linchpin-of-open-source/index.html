@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Pull Requests: The Linchpin of Open Source</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="When Linus Torvalds started creating Linux, he managed the code base himself. People would email him patches and he would either include them or not.
+To maintain the code base &amp;ndash; to have checkpoints and be able to back up to an earlier known point &amp;ndash; he used a Distributed Version Control System (DVCS) which, as the name implies, is for managing versions.
+So there were these two seemingly-separate things: incorporating patches and managing versions." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="Pull Requests: The Linchpin of Open Source" />
+    <meta name="twitter:description" content="When Linus Torvalds started creating Linux, he managed the code base himself. People would email him patches and he would either include them or not.
+To maintain the code base &amp;ndash; to have checkpoints and be able to back up to an earlier known point &amp;ndash; he used a Distributed Version Control System (DVCS) which, as the name implies, is for managing versions.
+So there were these two seemingly-separate things: incorporating patches and managing versions." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Pull Requests: The Linchpin of Open Source" />
+  <meta property="og:description" content="When Linus Torvalds started creating Linux, he managed the code base himself. People would email him patches and he would either include them or not.
+To maintain the code base &amp;ndash; to have checkpoints and be able to back up to an earlier known point &amp;ndash; he used a Distributed Version Control System (DVCS) which, as the name implies, is for managing versions.
+So there were these two seemingly-separate things: incorporating patches and managing versions." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2015/08/03/pull-requests-the-linchpin-of-open-source/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2015/08/03/pull-requests-the-linchpin-of-open-source/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Pull Requests: The Linchpin of Open Source</h1>
+      <p class="post-meta">@Bruce Eckel · Aug 3, 2015 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>When Linus Torvalds started creating Linux, he managed the code base himself.
+People would email him patches and he would either include them or not.</p>
+
+<p>To maintain the code base &ndash; to have checkpoints and be able to back up to an
+earlier known point &ndash; he used a <em>Distributed Version Control System</em> (DVCS)
+which, as the name implies, is for managing versions.</p>
+
+<p>So there were these two seemingly-separate things: incorporating patches and
+managing versions.</p>
+
+<p>Linus originally used a proprietary DVCS called BitKeeper, but at some point
+became dissatisfied with that and created the open-source Git system instead.
+But even then he continued to take patch requests via email, incorporate them in
+and create new versions using Git.</p>
+
+<p>Later, Github formed to provide repositories for Git projects (and BitBucket did
+the same thing, but started out using Mercurial, which was written in Python.
+More recently BitBucket has changed to predominantly support Git, although it
+still also supports Mercurial).</p>
+
+<p>Github’s innovation was in incorporating the mechanism of the patch request into
+the DVCS process, rather than relying on email patches and hand-processing. Now
+you can review a patch, and if you accept it you incorporate it into your
+project with the push of a button.</p>
+
+<p>For some reason, they chose to use the term “pull request” rather than “patch
+request.” For years this confused me and I just ignored it, thinking “well, if
+you want to pull something, pull it &ndash; don’t bother asking me about it!” (This
+confusion is one big reason for the failure of the <a href="https://bitbucket.org/BruceEckel/python-3-patterns-idioms">Python Patterns
+book</a>).</p>
+
+<p>At OSCON in the speaker room I overhead someone declaring that the pull request
+is the cornerstone of the open-source process. Along with my studies of
+<a href="http://www.reinventing-business.com/">emerging organizational structures</a>,
+this created an epiphany for me.</p>
+
+<p>The project owner is the one with commit privileges (he or she can also grant
+others commit privileges and they can work out some internal way of making
+decisions, but let’s keep it simple for now). Anytime someone submits a
+pull/patch request, the committer can incorporate it or deny it, depending on
+whether it fits the committer’s vision/standards/requirements. It’s a yes/no
+decision, and at that point the committer re-asserts their leadership on the
+project.</p>
+
+<p>Taken in isolation, this system produces a single autocratic ruler, and relies
+on that ruler’s benevolence. If the ruler decides to behave badly you end up
+with the scenario we’re all familiar with: “my way or the highway,” and this is
+what makes so many companies unpleasant to work for &ndash; even if they start out as
+nice places to work, the door is always open for them to become unpleasant,
+dictatorial environments, so simple Brownian motion means they’ll probably end
+up there.</p>
+
+<p>Open source leaves a second door open, however. If your pull requests keep
+getting ignored <em>and</em> you feel strongly enough about a project, you can turn
+your fork into a new project and take it in another direction. If your
+leadership is better than the original, people will begin to prefer your
+version. Effectively, it creates a marketplace of genetic variations around a
+single project, rather than arbitrarily forcing that project to have a single
+implementation, even when something around that project is broken.</p>
+
+<p>The pull request allows an individual to express their vision, and to make it
+clear to contributors whether they’re on the same page as the project owner. It
+prevents the leaden morass that is consensus (unless a group of committers
+choose to practice it). The fork allows genetic variation within an open-source
+project, so the marketplace can choose the best-suited version.</p>
+
+<p>Here’s a very nice <a href="https://guides.github.com/introduction/flow/">overview of the
+process</a>.</p>
+
+<p>(<em>James Ward explained most of this to me</em>)</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>1123</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

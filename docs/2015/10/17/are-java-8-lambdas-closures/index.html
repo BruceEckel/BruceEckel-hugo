@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Are Java 8 Lambdas Closures?</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="(Significantly rewritten 11/25/2015)
+Based on what I&amp;rsquo;ve heard, I was surprised to discover that the short answer is &amp;ldquo;yes, with a caveat that, after explanation, isn&amp;rsquo;t terrible.&amp;rdquo; So, a qualified yes.
+For the longer answer, we must first explore the question of &amp;ldquo;why, again, are we doing all this?&amp;rdquo;
+Abstraction over Behavior The simplest way to look at the need for lambdas is that they describe what computation should be performed, rather than how it should be performed." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="Are Java 8 Lambdas Closures?" />
+    <meta name="twitter:description" content="(Significantly rewritten 11/25/2015)
+Based on what I&amp;rsquo;ve heard, I was surprised to discover that the short answer is &amp;ldquo;yes, with a caveat that, after explanation, isn&amp;rsquo;t terrible.&amp;rdquo; So, a qualified yes.
+For the longer answer, we must first explore the question of &amp;ldquo;why, again, are we doing all this?&amp;rdquo;
+Abstraction over Behavior The simplest way to look at the need for lambdas is that they describe what computation should be performed, rather than how it should be performed." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Are Java 8 Lambdas Closures?" />
+  <meta property="og:description" content="(Significantly rewritten 11/25/2015)
+Based on what I&amp;rsquo;ve heard, I was surprised to discover that the short answer is &amp;ldquo;yes, with a caveat that, after explanation, isn&amp;rsquo;t terrible.&amp;rdquo; So, a qualified yes.
+For the longer answer, we must first explore the question of &amp;ldquo;why, again, are we doing all this?&amp;rdquo;
+Abstraction over Behavior The simplest way to look at the need for lambdas is that they describe what computation should be performed, rather than how it should be performed." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2015/10/17/are-java-8-lambdas-closures/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2015/10/17/are-java-8-lambdas-closures/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Are Java 8 Lambdas Closures?</h1>
+      <p class="post-meta">@Bruce Eckel · Oct 17, 2015 · 8 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>(<em>Significantly rewritten 11/25/2015</em>)</p>
+
+<p>Based on what I&rsquo;ve heard, I was surprised to discover that the short answer is
+&ldquo;yes, with a caveat that, after explanation, isn&rsquo;t terrible.&rdquo; So, a qualified
+yes.</p>
+
+<p>For the longer answer, we must first explore the question of &ldquo;why, again, are
+we doing all this?&rdquo;</p>
+
+<h2 id="abstraction-over-behavior">Abstraction over Behavior</h2>
+
+<p>The simplest way to look at the need for lambdas is that they describe <em>what</em>
+computation should be performed, rather than <em>how</em> it should be performed.
+Traditionally, we&rsquo;ve used <em>external iteration</em>, where we specify exactly how to
+step through a sequence and perform operations:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// InternalVsExternalIteration.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">interface</span> <span class="nc">Pet</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">speak</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Rat</span> <span class="kd">implements</span> <span class="n">Pet</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">speak</span><span class="o">()</span> <span class="o">{</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Squeak!&#34;</span><span class="o">);</span> <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Frog</span> <span class="kd">implements</span> <span class="n">Pet</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">speak</span><span class="o">()</span> <span class="o">{</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Ribbit!&#34;</span><span class="o">);</span> <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InternalVsExternalIteration</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Pet</span><span class="o">&gt;</span> <span class="n">pets</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Rat</span><span class="o">(),</span> <span class="k">new</span> <span class="n">Frog</span><span class="o">());</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">Pet</span> <span class="n">p</span> <span class="o">:</span> <span class="n">pets</span><span class="o">)</span> <span class="c1">// External iteration
+</span><span class="c1"></span>            <span class="n">p</span><span class="o">.</span><span class="na">speak</span><span class="o">();</span>
+        <span class="n">pets</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nl">Pet:</span><span class="o">:</span><span class="n">speak</span><span class="o">);</span> <span class="c1">// Internal iteration
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+<p>The <code>for</code> loop represents external iteration and specifies exactly how it is
+done. This kind of code is redundant, and duplicated throughout our programs.
+With the <code>forEach</code>, however, we tell it to call <code>speak</code> (here, using a method
+reference, which is more succinct than a lambda) for each element, but we don&rsquo;t
+have to specify how the loop works. The iteration is handled internally, inside
+the <code>forEach</code>.</p>
+
+<p>This &ldquo;what not how&rdquo; is the basic motivation for lambdas. But to understand
+closures, we must look more deeply, into the motivation for functional
+programming itself.</p>
+
+<h2 id="functional-programming">Functional Programming</h2>
+
+<p>Lambdas/Closures are there to aid functional programming. Java 8 is not
+suddenly a functional programming language, but (like Python) now has some
+support for functional programming on top of its basic object-oriented
+paradigm.</p>
+
+<p>The core idea of functional programming is that you can create and manipulate
+functions, including creating functions at runtime. Thus, functions become
+another thing that your programs can manipulate (instead of just data). This
+adds a lot of power to programming.</p>
+
+<p>A <em>pure</em> functional programming language includes other restrictions, notably
+data invariance. That is, you don&rsquo;t have variables, only unchangeable values.
+This sounds overly constraining at first (how can you get anything done without
+variables?) but it turns out that you can actually accomplish everything with
+values that you can with variables (you can prove this to yourself using Scala,
+which is itself <em>not</em> a pure functional language but has the option to use
+values everywhere). Invariant functions take arguments and produce results
+without modifying their environment, and thus are much easier to use for
+parallel programming because an invariant function doesn&rsquo;t have to lock shared
+resources.</p>
+
+<p>Before Java 8, the only way to create functions at runtime was through bytecode
+generation and loading (which is quite messy and complex).</p>
+
+<p>Lambdas provide two basic features:</p>
+
+<ol>
+<li><p>More succinct function-creation syntax.</p></li>
+
+<li><p>The ability to create functions at runtime, which can then be
+passed/manipulated by other code.</p></li>
+</ol>
+
+<p>Closures concern this second issue.</p>
+
+<h2 id="what-is-a-closure">What is a Closure?</h2>
+
+<p>A closure uses variables that are outside of the function scope. This is not a
+problem in traditional procedural programming &ndash; you just use the variable &ndash;
+but when you start producing functions at runtime it does become a problem. To
+see the issue, I&rsquo;ll start with a Python example. Here, <code>make_fun()</code> is creating
+and returning a function called <code>func_to_return</code>, which is then used by the
+rest of the program:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Closures.py</span>
+
+<span class="k">def</span> <span class="nf">make_fun</span><span class="p">():</span>
+    <span class="c1"># Outside the scope of the returned function:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">func_to_return</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+        <span class="n">nonlocal</span> <span class="n">n</span>
+        <span class="c1"># Without &#39;nonlocal&#39; n += arg produces:</span>
+        <span class="c1"># local variable &#39;n&#39; referenced before assignment</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&#34;: &#34;</span><span class="p">)</span>
+        <span class="n">arg</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="n">arg</span>
+        <span class="k">return</span> <span class="n">n</span>
+
+    <span class="k">return</span> <span class="n">func_to_return</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">make_fun</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">make_fun</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&#34;=&#34;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+<span class="s2">&#34;&#34;&#34; Output:
+</span><span class="s2">0 0: 1
+</span><span class="s2">1 1: 3
+</span><span class="s2">3 2: 6
+</span><span class="s2">6 3: 10
+</span><span class="s2">10 4: 15
+</span><span class="s2">==========
+</span><span class="s2">0 10: 11
+</span><span class="s2">11 11: 23
+</span><span class="s2">23 12: 36
+</span><span class="s2">36 13: 50
+</span><span class="s2">50 14: 65
+</span><span class="s2">&#34;&#34;&#34;</span></code></pre></div>
+<p>Notice that <code>func_to_return</code> manipulates two fields that are outside its scope:
+<code>n</code> and <code>arg</code> (depending on what it is, <code>arg</code> might be a copy, or it might
+refer to something outside its scope). The <code>nonlocal</code> declaration is required
+because of the way Python works: if you just start using a variable, it assumes
+that variable is local. Here, the compiler (yes, Python has a compiler and yes,
+it actually does some &ndash; admittedly quite limited &ndash; static type checking) sees
+that <code>n += arg</code> uses <code>n</code> which, within the scope of <code>func_to_return</code>, hasn&rsquo;t
+been initialized, and generates an error message. But if we say that <code>n</code> is
+<code>nonlocal</code>, Python realizes that we&rsquo;re using the <code>n</code> that&rsquo;s defined outside the
+function scope, and which <em>has</em> been initialized, so it&rsquo;s OK.</p>
+
+<p>Now we encounter the problem: if we simply return <code>func_to_return</code>, what
+happens to <code>n</code>, which is outside the scope of <code>func_to_return</code>? Ordinarily we&rsquo;d
+expect <code>n</code> to go out of scope and become unavailable, but if that happens then
+<code>func_to_return</code> won&rsquo;t work. In order to support dynamic creation of functions,
+<code>func_to_return</code> must &ldquo;close over&rdquo; and keep alive <code>n</code> when the function is
+returned, and that&rsquo;s what happens &ndash; thus the term <em>closure</em>.</p>
+
+<p>To test <code>make_fun()</code>, we call it twice and capture the resulting function in
+<code>x</code> and <code>y</code>. The fact that <code>x</code> and <code>y</code> produce completely different results
+shows that each call to <code>make_fun()</code> produces a completely independent
+<code>func_to_return</code> with completely independent closed-over storage for <code>n</code>.</p>
+
+<h2 id="java-8-lambdas">Java 8 Lambdas</h2>
+
+<p>Now let&rsquo;s see what the same example looks like with lambdas:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// AreLambdasClosures.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.function.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AreLambdasClosures</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">make_fun</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// Outside the scope of the returned function:
+</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">arg</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">n</span> <span class="o">+</span> <span class="s">&#34; &#34;</span> <span class="o">+</span> <span class="n">arg</span> <span class="o">+</span> <span class="s">&#34;: &#34;</span><span class="o">);</span>
+            <span class="n">arg</span> <span class="o">+=</span> <span class="n">1</span><span class="o">;</span>
+            <span class="c1">// n += arg; // Produces error message
+</span><span class="c1"></span>            <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">arg</span><span class="o">;</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">try_it</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">make_fun</span><span class="o">(),</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">make_fun</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">5</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">10</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">15</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">y</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="n">AreLambdasClosures</span><span class="o">().</span><span class="na">try_it</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">0 0: 1
+</span><span class="cm">0 1: 2
+</span><span class="cm">0 2: 3
+</span><span class="cm">0 3: 4
+</span><span class="cm">0 4: 5
+</span><span class="cm">0 10: 11
+</span><span class="cm">0 11: 12
+</span><span class="cm">0 12: 13
+</span><span class="cm">0 13: 14
+</span><span class="cm">0 14: 15
+</span><span class="cm">*/</span></code></pre></div>
+<p>It&rsquo;s a mixed bag: we can indeed access <code>n</code>, but we immediately run into trouble
+when we try to modify <code>n</code>. The error message is: <code>local variables referenced
+from a lambda expression must be final or effectively final</code>.</p>
+
+<p>It turns out that, in Java, lambdas only close over <em>values</em>, but not
+variables. Java requires those values to be unchanging, as if they had been
+declared <code>final</code>. So they must be <code>final</code> whether you declare them that way or
+not. Thus, &ldquo;effectively <code>final</code>.&rdquo; And thus, Java has &ldquo;closures with
+restrictions,&rdquo; which might not be &ldquo;perfect&rdquo; closures, but are nonetheless still
+quite useful.</p>
+
+<p>If we create heap-based objects, we can modify the object, because the compiler
+only cares that the reference is not modified. For example:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// AreLambdasClosures2.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.function.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">myInt</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AreLambdasClosures2</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Consumer</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">make_fun2</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">myInt</span> <span class="n">n</span> <span class="o">=</span> <span class="k">new</span> <span class="n">myInt</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">arg</span> <span class="o">-&gt;</span> <span class="n">n</span><span class="o">.</span><span class="na">i</span> <span class="o">+=</span> <span class="n">arg</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+<p>This compiles without complaint, and you can test it by putting the <code>final</code>
+keyword on the definition for <code>n</code>. Of course, if you use this with any kind of
+concurrency, you have the problem of mutable shared state.</p>
+
+<p>Lambda expressions accomplish &ndash; at least partially &ndash; the desired goal: it&rsquo;s
+now possible to create functions dynamically. If you step outside the bounds,
+you get an error message, but there&rsquo;s generally a way to solve the problem.
+It&rsquo;s not as straightforward as the Python solution, but this is Java, after
+all, and we&rsquo;ve been trained to take what we are given. And ultimately the
+end result, while somewhat constricted (face it, everything in Java is
+somewhat constricted) is not too shabby.</p>
+
+<p>I asked why the feature wasn&rsquo;t just called &ldquo;closures&rdquo; instead of &ldquo;lambdas,&rdquo;
+since it has the characteristics of a closure? The answer I got was that
+closure is a loaded and ill defined term, and was likely to create more
+heat than light. When someone says &ldquo;real closures,&rdquo; it too often means
+&ldquo;what closure meant in the first language I encountered with something
+called closures.&rdquo;</p>
+
+<p>I don&rsquo;t see an OO versus FP (functional programming) debate here; that is
+not my intention. Indeed, I don&rsquo;t really see a &ldquo;versus&rdquo; issue. OO is good
+for abstracting over data (and just because Java forces objects on you
+doesn&rsquo;t mean that objects are the answer to every problem), while FP is
+good for abstracting over behavior. Both paradigms are useful, and mixing
+them together has been even more useful for me, both in Python and now in
+Java 8. (I have also recently been using Pandoc, written in the pure FP
+Haskell language, and I&rsquo;ve been extremely impressed with that, so it
+seems there is a valuable place for pure FP languages as well).</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>1048</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

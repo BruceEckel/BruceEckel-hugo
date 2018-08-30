@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>A Canonical equals() For Java</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="Even with the help of Java 7&amp;rsquo;s Objects.equals(), the equals() method is often written in a verbose and messy fashion. This article shows how you can write a succinct equals() in a format that allows easy checking with visual inspection.
+ When you create a new class, it automatically inherits class Object. If you don&amp;rsquo;t override equals(), you&amp;rsquo;ll get Objects equals() method. By default this compares addresses, so only if you are comparing the exact same objects will you get true." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="A Canonical equals() For Java" />
+    <meta name="twitter:description" content="Even with the help of Java 7&amp;rsquo;s Objects.equals(), the equals() method is often written in a verbose and messy fashion. This article shows how you can write a succinct equals() in a format that allows easy checking with visual inspection.
+ When you create a new class, it automatically inherits class Object. If you don&amp;rsquo;t override equals(), you&amp;rsquo;ll get Objects equals() method. By default this compares addresses, so only if you are comparing the exact same objects will you get true." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="A Canonical equals() For Java" />
+  <meta property="og:description" content="Even with the help of Java 7&amp;rsquo;s Objects.equals(), the equals() method is often written in a verbose and messy fashion. This article shows how you can write a succinct equals() in a format that allows easy checking with visual inspection.
+ When you create a new class, it automatically inherits class Object. If you don&amp;rsquo;t override equals(), you&amp;rsquo;ll get Objects equals() method. By default this compares addresses, so only if you are comparing the exact same objects will you get true." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2017/01/07/a-canonical-equals-for-java/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2017/01/07/a-canonical-equals-for-java/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">A Canonical equals() For Java</h1>
+      <p class="post-meta">@Bruce Eckel · Jan 7, 2017 · 11 min read</p>
+    </header>
+    <article class="post-content">
+
+<blockquote>
+<p>Even with the help of Java 7&rsquo;s <code>Objects.equals()</code>, the <code>equals()</code> method is often
+written in a verbose and messy fashion. This article shows how you can
+write a succinct <code>equals()</code> in a format that allows easy checking with visual
+inspection.</p>
+</blockquote>
+
+<p>When you create a new class, it automatically inherits class <code>Object</code>. If you
+don&rsquo;t override <code>equals()</code>, you&rsquo;ll get <code>Object</code>s <code>equals()</code> method. By default
+this compares addresses, so only if you are comparing the <em>exact same</em> objects
+will you get <code>true</code>. The default case is the &ldquo;most discriminating.&rdquo;</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// DefaultComparison.java
+</span><span class="c1"></span>
+<span class="kd">class</span> <span class="nc">DefaultComparison</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">k</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">DefaultComparison</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="kt">int</span> <span class="n">k</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">DefaultComparison</span>
+      <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultComparison</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">,</span> <span class="n">3</span><span class="o">),</span>
+      <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultComparison</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">,</span> <span class="n">3</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">a</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">true
+</span><span class="cm">false
+</span><span class="cm">*/</span></code></pre></div>
+<p>Normally you&rsquo;ll want to relax this restriction. Typically, if two objects are
+the same type and have fields with identical values, you&rsquo;ll consider those
+objects equal, but there may also be fields that you don&rsquo;t want to include in
+the <code>equals()</code> comparison. This is part of the class design process.</p>
+
+<p>A proper <code>equals()</code> must satisfy the following five conditions:</p>
+
+<ol>
+<li><p>Reflexive: For any <code>x</code>, <code>x.equals(x)</code> should return <code>true</code>.</p></li>
+
+<li><p>Symmetric: For any <code>x</code> and <code>y</code>, <code>x.equals(y)</code> should return <code>true</code> if and
+only if <code>y.equals(x)</code> returns <code>true</code>.</p></li>
+
+<li><p>Transitive: For any <code>x</code>, <code>y</code>, and <code>z</code>, if <code>x.equals(y)</code> returns <code>true</code>
+and <code>y.equals(z)</code> returns <code>true</code>, then <code>x.equals(z)</code> should return <code>true</code>.</p></li>
+
+<li><p>Consistent: For any <code>x</code> and <code>y</code>, multiple invocations of <code>x.equals(y)</code>
+consistently return <code>true</code> or consistently return <code>false</code>, provided no
+information used in equals comparisons on the object is modified.</p></li>
+
+<li><p>For any non-<code>null x</code>, <code>x.equals(null)</code> should return <code>false</code>.</p></li>
+</ol>
+
+<p>Here are the tests that satisfy those conditions and determine whether the
+object you&rsquo;re comparing yourself to (which we&rsquo;ll call here the <strong>rval</strong>) is
+equal to this object:</p>
+
+<ol>
+<li><p>If the <strong>rval</strong> is <code>null</code>, it&rsquo;s not equal.</p></li>
+
+<li><p>If the <strong>rval</strong> is <code>this</code> (you&rsquo;re comparing yourself to yourself),
+the two objects are equal.</p></li>
+
+<li><p>If the <strong>rval</strong> is not the same class or subclass, the two objects are not
+equal.</p></li>
+
+<li><p>If all the above checks pass, then you must decide which fields in the
+<strong>rval</strong> are important (and consistent), and compare those.</p></li>
+</ol>
+
+<p>Java 7 introduced the <code>Objects</code> class to help with this process, which we use
+to write a better <code>equals()</code>.</p>
+
+<p>The following examples compare different versions of the <code>Equality</code> class. To
+prevent duplicate code we&rsquo;ll build the examples using the <em>Factory Method</em>. The
+<code>EqualityFactory</code> interface simply provides a <code>make()</code> method to produce an
+<code>Equality</code> object, so a different <code>EqualityFactory</code> can produce a different
+subtype of <code>Equality</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// EqualityFactory.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">interface</span> <span class="nc">EqualityFactory</span> <span class="o">{</span>
+  <span class="n">Equality</span> <span class="nf">make</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="n">String</span> <span class="n">s</span><span class="o">,</span> <span class="kt">double</span> <span class="n">d</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
+<p>Now we&rsquo;ll define <code>Equality</code> containing three fields (all of which we consider
+important during comparison) and an <code>equals()</code> method that fulfills the four
+checks described above. The constructor displays its type name to ensure we are
+performing the tests we think we are:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Equality.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Equality</span> <span class="o">{</span>
+  <span class="kd">protected</span> <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="n">s</span><span class="o">;</span>
+  <span class="kd">protected</span> <span class="kt">double</span> <span class="n">d</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">Equality</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="n">String</span> <span class="n">s</span><span class="o">,</span> <span class="kt">double</span> <span class="n">d</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">;</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;made &#39;Equality&#39;&#34;</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">rval</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">rval</span> <span class="o">==</span> <span class="k">this</span><span class="o">)</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(!(</span><span class="n">rval</span> <span class="k">instanceof</span> <span class="n">Equality</span><span class="o">))</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">Equality</span> <span class="n">other</span> <span class="o">=</span> <span class="o">(</span><span class="n">Equality</span><span class="o">)</span><span class="n">rval</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(!</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">i</span><span class="o">))</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(!</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">s</span><span class="o">))</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(!</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">d</span><span class="o">))</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">void</span>
+  <span class="nf">test</span><span class="o">(</span><span class="n">String</span> <span class="n">descr</span><span class="o">,</span> <span class="n">String</span> <span class="n">expected</span><span class="o">,</span> <span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;-- Testing %s --%n&#34;</span> <span class="o">+</span>
+      <span class="s">&#34;%s instanceof Equality: %s%n&#34;</span> <span class="o">+</span>
+      <span class="s">&#34;Expected %s, got %s%n&#34;</span><span class="o">,</span>
+      <span class="n">descr</span><span class="o">,</span> <span class="n">descr</span><span class="o">,</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">Equality</span><span class="o">,</span>
+      <span class="n">expected</span><span class="o">,</span> <span class="n">equals</span><span class="o">(</span><span class="n">rval</span><span class="o">));</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testAll</span><span class="o">(</span><span class="n">EqualityFactory</span> <span class="n">eqf</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Equality</span>
+      <span class="n">e</span> <span class="o">=</span> <span class="n">eqf</span><span class="o">.</span><span class="na">make</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;Monty&#34;</span><span class="o">,</span> <span class="n">3</span><span class="o">.</span><span class="na">14</span><span class="o">),</span>
+      <span class="n">eq</span> <span class="o">=</span> <span class="n">eqf</span><span class="o">.</span><span class="na">make</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;Monty&#34;</span><span class="o">,</span> <span class="n">3</span><span class="o">.</span><span class="na">14</span><span class="o">),</span>
+      <span class="n">neq</span> <span class="o">=</span> <span class="n">eqf</span><span class="o">.</span><span class="na">make</span><span class="o">(</span><span class="n">99</span><span class="o">,</span> <span class="s">&#34;Bob&#34;</span><span class="o">,</span> <span class="n">1</span><span class="o">.</span><span class="na">618</span><span class="o">);</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="s">&#34;null&#34;</span><span class="o">,</span> <span class="s">&#34;false&#34;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="s">&#34;same object&#34;</span><span class="o">,</span> <span class="s">&#34;true&#34;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="s">&#34;different type&#34;</span><span class="o">,</span> <span class="s">&#34;false&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Integer</span><span class="o">(</span><span class="n">99</span><span class="o">));</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="s">&#34;same values&#34;</span><span class="o">,</span> <span class="s">&#34;true&#34;</span><span class="o">,</span> <span class="n">eq</span><span class="o">);</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="s">&#34;different values&#34;</span><span class="o">,</span> <span class="s">&#34;false&#34;</span><span class="o">,</span> <span class="n">neq</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">testAll</span><span class="o">(</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">Equality</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">-- Testing null --
+</span><span class="cm">null instanceof Equality: false
+</span><span class="cm">Expected false, got false
+</span><span class="cm">-- Testing same object --
+</span><span class="cm">same object instanceof Equality: true
+</span><span class="cm">Expected true, got true
+</span><span class="cm">-- Testing different type --
+</span><span class="cm">different type instanceof Equality: false
+</span><span class="cm">Expected false, got false
+</span><span class="cm">-- Testing same values --
+</span><span class="cm">same values instanceof Equality: true
+</span><span class="cm">Expected true, got true
+</span><span class="cm">-- Testing different values --
+</span><span class="cm">different values instanceof Equality: true
+</span><span class="cm">Expected false, got false
+</span><span class="cm">*/</span></code></pre></div>
+<p><code>testAll()</code> performs comparisons with all different types of objects we ever
+expect to encounter. It creates <code>Equality</code> objects using the factory.</p>
+
+<p>In <code>main()</code>, notice the simplicity of the call to <code>testAll()</code>. Because
+<code>EqualityFactory</code> has a single method, it can be used with a lambda expression
+as the <code>make()</code> method.</p>
+
+<p>The above <code>equals()</code> method is annoyingly verbose, and it turns out we can
+simplify it into a canonical form. Observe:</p>
+
+<ol>
+<li><p>The <code>instanceof</code> check eliminates the need to test for <code>null</code></p></li>
+
+<li><p>The comparison to <code>this</code> is redundant. A correctly-written <code>equals()</code> will
+work properly with self comparison.</p></li>
+</ol>
+
+<p>Because <code>&amp;&amp;</code> is a short-circuiting comparison, it quits and produces <code>false</code>
+the first time it encounters a failure. So, by chaining the checks together
+with <code>&amp;&amp;</code>, we can write <code>equals()</code> much more succinctly:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// SuccinctEquality.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SuccinctEquality</span> <span class="kd">extends</span> <span class="n">Equality</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">SuccinctEquality</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="n">String</span> <span class="n">s</span><span class="o">,</span> <span class="kt">double</span> <span class="n">d</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;made &#39;SuccinctEquality&#39;&#34;</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">SuccinctEquality</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="o">((</span><span class="n">SuccinctEquality</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">i</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="o">((</span><span class="n">SuccinctEquality</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">s</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="o">((</span><span class="n">SuccinctEquality</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">d</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Equality</span><span class="o">.</span><span class="na">testAll</span><span class="o">(</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span> <span class="o">-&gt;</span>
+      <span class="k">new</span> <span class="n">SuccinctEquality</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;SuccinctEquality&#39;
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;SuccinctEquality&#39;
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;SuccinctEquality&#39;
+</span><span class="cm">-- Testing null --
+</span><span class="cm">null instanceof Equality: false
+</span><span class="cm">Expected false, got false
+</span><span class="cm">-- Testing same object --
+</span><span class="cm">same object instanceof Equality: true
+</span><span class="cm">Expected true, got true
+</span><span class="cm">-- Testing different type --
+</span><span class="cm">different type instanceof Equality: false
+</span><span class="cm">Expected false, got false
+</span><span class="cm">-- Testing same values --
+</span><span class="cm">same values instanceof Equality: true
+</span><span class="cm">Expected true, got true
+</span><span class="cm">-- Testing different values --
+</span><span class="cm">different values instanceof Equality: true
+</span><span class="cm">Expected false, got false
+</span><span class="cm">*/</span></code></pre></div>
+<p>For each <code>SuccinctEquality</code>, the base-class constructor is called before the
+derived-class constructor. The output shows that we still get the correct
+result. You can tell that short-circuiting happens because both the <code>null</code>
+test and the &ldquo;different type&rdquo; test would otherwise throw exceptions during
+the casts that occur further down the list of comparisons in <code>equals()</code>.</p>
+
+<p><code>Objects.equals()</code> shines when you compose your new class using another class:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// ComposedEquality.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Part</span> <span class="o">{</span>
+  <span class="n">String</span> <span class="n">ss</span><span class="o">;</span>
+  <span class="kt">double</span> <span class="n">dd</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">Part</span><span class="o">(</span><span class="n">String</span> <span class="n">ss</span><span class="o">,</span> <span class="kt">double</span> <span class="n">dd</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">ss</span> <span class="o">=</span> <span class="n">ss</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">dd</span> <span class="o">=</span> <span class="n">dd</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">Part</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">ss</span><span class="o">,</span> <span class="o">((</span><span class="n">Part</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">ss</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">dd</span><span class="o">,</span> <span class="o">((</span><span class="n">Part</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">dd</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ComposedEquality</span> <span class="kd">extends</span> <span class="n">SuccinctEquality</span> <span class="o">{</span>
+  <span class="n">Part</span> <span class="n">part</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">ComposedEquality</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="n">String</span> <span class="n">s</span><span class="o">,</span> <span class="kt">double</span> <span class="n">d</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">);</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Part</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;made &#39;ComposedEquality&#39;&#34;</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">ComposedEquality</span> <span class="o">&amp;&amp;</span>
+      <span class="kd">super</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">rval</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">part</span><span class="o">,</span> <span class="o">((</span><span class="n">ComposedEquality</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">part</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Equality</span><span class="o">.</span><span class="na">testAll</span><span class="o">(</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span> <span class="o">-&gt;</span>
+      <span class="k">new</span> <span class="n">ComposedEquality</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">s</span><span class="o">,</span> <span class="n">d</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;SuccinctEquality&#39;
+</span><span class="cm">made &#39;ComposedEquality&#39;
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;SuccinctEquality&#39;
+</span><span class="cm">made &#39;ComposedEquality&#39;
+</span><span class="cm">made &#39;Equality&#39;
+</span><span class="cm">made &#39;SuccinctEquality&#39;
+</span><span class="cm">made &#39;ComposedEquality&#39;
+</span><span class="cm">-- Testing null --
+</span><span class="cm">null instanceof Equality: false
+</span><span class="cm">Expected false, got false
+</span><span class="cm">-- Testing same object --
+</span><span class="cm">same object instanceof Equality: true
+</span><span class="cm">Expected true, got true
+</span><span class="cm">-- Testing different type --
+</span><span class="cm">different type instanceof Equality: false
+</span><span class="cm">Expected false, got false
+</span><span class="cm">-- Testing same values --
+</span><span class="cm">same values instanceof Equality: true
+</span><span class="cm">Expected true, got true
+</span><span class="cm">-- Testing different values --
+</span><span class="cm">different values instanceof Equality: true
+</span><span class="cm">Expected false, got false
+</span><span class="cm">*/</span></code></pre></div>
+<p>Notice the call to <code>super.equals()</code>&mdash;no need to reinvent it (plus you don&rsquo;t
+always have access to all necessary parts of a base class).</p>
+
+<h3 id="equality-across-subtypes">Equality Across Subtypes</h3>
+
+<p>Inheritance suggests that objects of two different subtypes can be &ldquo;the same&rdquo;
+when they are upcast. Suppose you have a collection of <code>Pet</code> objects. This
+collection will naturally accept subtypes of <code>Pet</code>: In this example, <code>Dog</code>s and
+<code>Pig</code>s. Each <code>Pet</code> has a <code>name</code> and a <code>size</code>, as well as a unique internal <code>id</code>
+number.</p>
+
+<p>We define <code>equals()</code> and <code>hashCode()</code> using the canonical form via the
+<code>Objects</code> class, but we only define them in the base class <code>Pet</code>, and we do not
+include the unique <code>id</code> number in either one. From the standpoint of
+<code>equals()</code>, this means we only care if something is a <code>Pet</code>, not whether it is
+a specific type of <code>Pet</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// SubtypeEquality.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">enum</span> <span class="n">Size</span> <span class="o">{</span> <span class="n">SMALL</span><span class="o">,</span> <span class="n">MEDIUM</span><span class="o">,</span> <span class="n">LARGE</span> <span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Pet</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">counter</span><span class="o">++;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Size</span> <span class="n">size</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">Pet</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">size</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">Pet</span> <span class="o">&amp;&amp;</span>
+      <span class="c1">// Objects.equals(id, ((Pet)rval).id) &amp;&amp; // [1]
+</span><span class="c1"></span>      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="o">((</span><span class="n">Pet</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">name</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+      <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">size</span><span class="o">,</span> <span class="o">((</span><span class="n">Pet</span><span class="o">)</span><span class="n">rval</span><span class="o">).</span><span class="na">size</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">Objects</span><span class="o">.</span><span class="na">hash</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+    <span class="c1">// return Objects.hash(name, size, id);  // [2]
+</span><span class="c1"></span>  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;%s[%d]: %s %s %x&#34;</span><span class="o">,</span>
+      <span class="n">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">(),</span> <span class="n">id</span><span class="o">,</span>
+      <span class="n">name</span><span class="o">,</span> <span class="n">size</span><span class="o">,</span> <span class="n">hashCode</span><span class="o">());</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Dog</span> <span class="kd">extends</span> <span class="n">Pet</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">Dog</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Pig</span> <span class="kd">extends</span> <span class="n">Pet</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">Pig</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SubtypeEquality</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">Pet</span><span class="o">&gt;</span> <span class="n">pets</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="n">pets</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Dog</span><span class="o">(</span><span class="s">&#34;Ralph&#34;</span><span class="o">,</span> <span class="n">Size</span><span class="o">.</span><span class="na">MEDIUM</span><span class="o">));</span>
+    <span class="n">pets</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Pig</span><span class="o">(</span><span class="s">&#34;Ralph&#34;</span><span class="o">,</span> <span class="n">Size</span><span class="o">.</span><span class="na">MEDIUM</span><span class="o">));</span>
+    <span class="n">pets</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">Dog[0]: Ralph MEDIUM a752aeee
+</span><span class="cm">*/</span></code></pre></div>
+<p>If we are just thinking about types, it does make sense&mdash;sometimes&mdash;to only
+consider the classes from the standpoint of their base type, which is the
+foundation of the <em>Liskov Substitution Principle</em>. This code fits nicely with
+that principle because the derived types don&rsquo;t add any extra functionality
+(methods) that isn&rsquo;t in the base class. The derived types only differ in
+behavior, not in interface (which of course is not the general case).</p>
+
+<p>But when we provide two different object types with identical data and place
+them in a <code>HashSet&lt;Pet&gt;</code>, only one of these objects survives. This emphasizes
+that <code>equals()</code> is not a perfectly mathematical concept but (at least
+partially) a mechanical one. <code>hashCode()</code> and <code>equals()</code> must be defined
+hand-in-hand in order to allow types to work properly in a hashed data
+structure.</p>
+
+<p>In the example, both the <code>Dog</code> and <code>Pig</code> hash to the same bucket in the
+<code>HashSet</code>. At this point, the <code>HashSet</code> falls back to <code>equals()</code> to
+differentiate the objects, but <code>equals()</code> also declares the objects to be the
+same. The  <code>HashSet</code> doesn&rsquo;t add the <code>Pig</code> because it&rsquo;s already got an
+identical object.</p>
+
+<p>We can still make the example work by forcing uniqueness on otherwise identical
+objects. Here, each <code>Pet</code> already has a unique <code>id</code> so you can either uncomment
+line <strong>[1]</strong> in <code>equals()</code> or switch to line <strong>[2]</strong> in <code>hashCode()</code>. In the
+canonical form you would do both, to involve all &ldquo;unchanging&rdquo; fields in both
+operations (&ldquo;unchanging&rdquo; so that the <code>equals()</code> and <code>hashCode()</code> don&rsquo;t produce
+different values between storing and retrieving in a hashed data structure. I
+put &ldquo;unchanging&rdquo; in quotes because you must evaluate whether modification might
+happen).</p>
+
+<p><strong>Side note</strong>: in <code>hashCode()</code>, if you are only working with a single field, use
+<code>Objects.hashCode()</code> and if you are using multiple fields use <code>Objects.hash()</code>.</p>
+
+<p>We can also solve the issue by following the standard form and defining
+<code>equals()</code> in the subclasses (but still not including the unique <code>id</code>):</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// SubtypeEquality2.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Dog2</span> <span class="kd">extends</span> <span class="n">Pet</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">Dog2</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">Dog2</span> <span class="o">&amp;&amp;</span>
+      <span class="kd">super</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">rval</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Pig2</span> <span class="kd">extends</span> <span class="n">Pet</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">Pig2</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Size</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">rval</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rval</span> <span class="k">instanceof</span> <span class="n">Pig2</span> <span class="o">&amp;&amp;</span>
+      <span class="kd">super</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">rval</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SubtypeEquality2</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">Pet</span><span class="o">&gt;</span> <span class="n">pets</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="n">pets</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Dog2</span><span class="o">(</span><span class="s">&#34;Ralph&#34;</span><span class="o">,</span> <span class="n">Size</span><span class="o">.</span><span class="na">MEDIUM</span><span class="o">));</span>
+    <span class="n">pets</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Pig2</span><span class="o">(</span><span class="s">&#34;Ralph&#34;</span><span class="o">,</span> <span class="n">Size</span><span class="o">.</span><span class="na">MEDIUM</span><span class="o">));</span>
+    <span class="n">pets</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">Dog2[0]: Ralph MEDIUM a752aeee
+</span><span class="cm">Pig2[1]: Ralph MEDIUM a752aeee
+</span><span class="cm">*/</span></code></pre></div>
+<p>Notice that the <code>hashCode()</code>s are identical, but because the objects are no
+longer <code>equals()</code>, both now appear in the <code>HashSet</code>. Also, <code>super.equals()</code>
+means we don&rsquo;t need access to the <code>private</code> fields in the base class.</p>
+
+<p>One way to look at this is to say that Java separates substitutability from the
+definition of <code>equals()</code> and <code>hashCode()</code>. We can still place <code>Dog</code>s and <code>Pig</code>s
+into a <code>Set&lt;Pet&gt;</code> regardless of how <code>equals()</code> and <code>hashCode()</code> are defined,
+but the objects won&rsquo;t behave correctly in hashed data structures unless those
+methods are defined with hashed structures in mind. Unfortunately, <code>equals()</code>
+is not only used in conjunction with <code>hashCode()</code>. This complicates things when
+you try to avoid defining it for specific classes, and it&rsquo;s why it&rsquo;s worth
+following the canonical form. However, this is further complicated because
+there are times when you don&rsquo;t need to define either method.</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>600</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

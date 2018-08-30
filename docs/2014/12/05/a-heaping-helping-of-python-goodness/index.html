@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>A Heaping Helping Of Python Goodness</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="I really enjoy solving problems quickly and thoroughly. I especially enjoy solving annoying, repetitive problems that invite human error. The icing on the cake is when I learn some new tricks in the process. This last few days was a flurry of problem-solving and trick-learning.
+My favorite tricks are small bits of learning that make code easier to write, read and use. A couple of these are Windows-specific but most are general." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="A Heaping Helping Of Python Goodness" />
+    <meta name="twitter:description" content="I really enjoy solving problems quickly and thoroughly. I especially enjoy solving annoying, repetitive problems that invite human error. The icing on the cake is when I learn some new tricks in the process. This last few days was a flurry of problem-solving and trick-learning.
+My favorite tricks are small bits of learning that make code easier to write, read and use. A couple of these are Windows-specific but most are general." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="A Heaping Helping Of Python Goodness" />
+  <meta property="og:description" content="I really enjoy solving problems quickly and thoroughly. I especially enjoy solving annoying, repetitive problems that invite human error. The icing on the cake is when I learn some new tricks in the process. This last few days was a flurry of problem-solving and trick-learning.
+My favorite tricks are small bits of learning that make code easier to write, read and use. A couple of these are Windows-specific but most are general." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2014/12/05/a-heaping-helping-of-python-goodness/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2014/12/05/a-heaping-helping-of-python-goodness/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">A Heaping Helping Of Python Goodness</h1>
+      <p class="post-meta">@Bruce Eckel · Dec 5, 2014 · 9 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>I really enjoy solving problems quickly and thoroughly. I especially enjoy solving annoying, repetitive problems that invite human error. The icing on the cake is when I learn some new tricks in the process. This last few days was a flurry of problem-solving and trick-learning.</p>
+
+<p>My favorite tricks are small bits of learning that make code easier to write, read and use. A couple of these are Windows-specific but most are general.</p>
+
+<h2 id="1-turn-a-python-program-into-a-windows-batch-file">1. Turn a Python Program into a Windows Batch File</h2>
+
+<p>I&rsquo;m lazy and I don&rsquo;t like typing more than I have to. Even better is to just double-click on a thing from the Windows Explorer. I&rsquo;ve tried doing this with Windows .BAT files in the past but it was ugly and I always had to fiddle around with it, so when I found a universal solution on the Internet I was quite pleased. So far, putting the first line at the top of a batch file has worked everywhere I&rsquo;ve tried it:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="nd">@setlocal</span> <span class="n">enabledelayedexpansion</span> <span class="o">&amp;&amp;</span> <span class="n">python</span> <span class="o">-</span><span class="n">x</span> <span class="s2">&#34;%~f0&#34;</span> <span class="o">%*</span> <span class="o">&amp;</span> <span class="nb">exit</span> <span class="o">/</span><span class="n">b</span> <span class="err">!</span><span class="n">ERRORLEVEL</span><span class="err">!</span>
+<span class="c1">#start python code here (tested on Python 2.7.4)</span></code></pre></div>
+<p>It has the additional benefit that generic scripts are easily adaptable for non-Windows machines &mdash; just take out the first line.</p>
+
+<h2 id="2-with-and-the-context-manager">2. <code>with</code> and the Context Manager</h2>
+
+<p>The <strong>with</strong> keyword has been in Python for awhile now; the simplest way of thinking about it is that it sets up a <strong>try-finally</strong> block for you. One of the things I love most about Python is that the language designers pay attention to the little things that people do over and over and think &ldquo;hey, maybe we can make this better!&rdquo; So sure, you can write your own <strong>try-finally</strong> blocks to do this, but if it gets too messy you won&rsquo;t.</p>
+
+<p>Here, I just wanted to visit a directory, do something, and come back. I found myself doing this in numerous places in the program, so to prevent errors and make the code clearer, I decided to try to do the repetitive activity in one place.</p>
+
+<p>You can write your own context manager class, but in many cases you can do it much more simply using the <strong>contextmanager</strong> decorator on a function. The <strong>yield</strong> in the middle of the function is where you&rsquo;d normally have all your actions in the <strong>try</strong> block, and the code after the <strong>yield</strong> is what would happen in the <strong>finally</strong> block:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">visitDir</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">d</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+
+<span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*/&#39;</span><span class="p">)]</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">visitDir</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">p</span> <span class="o">+</span> <span class="s2">&#34;: &#34;</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s2">&#34;   &#34;</span><span class="p">,</span> <span class="n">f</span></code></pre></div>
+<p>The program just visits each directory one level down from the current one and prints the contents. Notice that <strong>old</strong> is held through the <strong>yield</strong> and used to restore the old directory.</p>
+
+<p>Because of the simplicity of the <strong>contextmanager</strong> decorator, I&rsquo;m going to be using <strong>with</strong> statements a lot more now.</p>
+
+<h2 id="3-command-line-arguments-with-argparse">3. Command-line Arguments with <code>argparse</code></h2>
+
+<p>In the past, I&rsquo;ve tried to use <strong>optparse</strong> but it always ended up feeling too messy and complicated, so I&rsquo;d just punt and pick the arguments off the command line myself. Apparently powers that be observed this happening enough that someone decided to create a simpler, better command-line parsing module. I finally reached for <a href="http://pymotw.com/2/argparse/">argparse</a> this week, and I&rsquo;m now a convert &mdash; argument parsing has become easy, and I won&rsquo;t hesitate to put it into future programs.</p>
+
+<p>Here&rsquo;s a simple example that only uses optional flags, which can come in a single-hyphen short form or a double-hyphen long form:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;-r&#34;</span><span class="p">,</span> <span class="s2">&#34;--run&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Run all the scala scripts and capture any errors&#34;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;-s&#34;</span><span class="p">,</span> <span class="s2">&#34;--simplify&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Remove unimportant trace files &amp; show non-empty error files&#34;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;-c&#34;</span><span class="p">,</span> <span class="s2">&#34;--clean&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Remove all &#39;run&#39; artifacts&#34;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;-p&#34;</span><span class="p">,</span> <span class="s2">&#34;--prerequisites&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Compile prerequisites&#34;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;-u&#34;</span><span class="p">,</span> <span class="s2">&#34;--unusedfiles&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Display non &#39;Solution-&#39; and non &#39;Starter-&#39; scala files&#34;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;-t&#34;</span><span class="p">,</span> <span class="s2">&#34;--test&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Test&#34;</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span> <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">test</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&#34;test&#34;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">clean</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&#34;clean&#34;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">prerequisites</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&#34;prerequisites&#34;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&#34;run&#34;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">simplify</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&#34;simplify&#34;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">unusedfiles</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&#34;unusedfiles&#34;</span></code></pre></div>
+<p>If you have a dash or double-dash in front of an argument, that argument is automatically optional. The default is that arguments can be in any order. It&rsquo;s also possible to have argument parameters and pretty much any other configuration you need; see the above link for details.</p>
+
+<p>You create an <strong>ArgumentParser</strong>, then add arguments. Note that I use both the short and long form of arguments, followed by <strong>action=&lsquo;store_true&rsquo;</strong> which puts a Boolean in that argument&rsquo;s location when it finds the flag. Then you can just perform tests such as <strong>if args.clean</strong> in your code.</p>
+
+<p>The <strong>help</strong> text is displayed when you ask for help with the flag <strong>-h</strong> or <strong>&ndash;help</strong>, and I&rsquo;ve also explicitly called <strong>parser.print_help()</strong> if no flags at all are present; that way if you just run the command you get the help text:</p>
+
+<pre><code>c:\tmp&gt;python argparse-example.py -t -u -r
+test
+run
+unusedfiles
+
+c:\tmp&gt;python argparse-example.py
+usage: argparse-example.py [-h] [-r] [-s] [-c] [-p] [-u] [-t]
+
+optional arguments:
+  -h, --help           show this help message and exit
+  -r, --run            Run all the scala scripts and capture any errors
+  -s, --simplify       Remove unimportant trace files &amp; show non-empty error
+                       files
+  -c, --clean          Remove all 'run' artifacts
+  -p, --prerequisites  Compile prerequisites
+  -u, --unusedfiles    Display non 'Solution-' and non 'Starter-' scala files
+  -t, --test           Test
+</code></pre>
+
+<p>You&rsquo;ll notice that the arguments make this look like a kind of build program, which it is. I seem to reinvent <strong>make</strong>-like build tools on a regular basis, but <strong>argparse</strong> has me thinking that, with enough built-in tools like Python provides, I might not need a build framework &mdash; perhaps all I need to do is use the tools to create a custom builder for each need.</p>
+
+<h2 id="4-creating-standalone-executables-with-pyinstaller">4. Creating Standalone Executables with PyInstaller</h2>
+
+<p>Here&rsquo;s another problem that I&rsquo;ve poked at for years &mdash; well, looked at and decided it was too much trouble. And this week, discovered that someone has made it easy with <a href="https://github.com/pyinstaller/pyinstaller/wiki">PyInstaller</a>.</p>
+
+<p>My friend James Ward asked me to help him create a tool installer. He had written the Mac/Linux version as a <strong>bash</strong> script, and he needed the Windows version of the installer to be dead simple &mdash; the tool is currently messy and fiddly to install, and he wants to use it in a classroom situation and elsewhere, so the out-of-the-box install process must be non-obtrusive, otherwise people won&rsquo;t want to bother with it. I like making things simple and I&rsquo;m annoyed when they are stupidly difficult, so I decided to step up and help.</p>
+
+<p>His initial thought was to make a Windows BAT file, but when I saw what he was trying to do I suggested that might produce too much hair pulling (James did write a support script with BAT and getting that to work wasted a lot of time). We briefly considered Visual Basic, which I&rsquo;ve had some experience with, but then I wondered if the tools for creating Windows .EXE files from Python might have progressed to the point of ease.</p>
+
+<p>And indeed they have &mdash; PyInstaller worked the first time and every time. It has a <strong>&ndash;onefile</strong> flag to produce a single standalone executable with no support files. James was able to create a continuous-integration build for our project (on <a href="http://www.appveyor.com/">Appveyor</a>), which fires every time we do a checkin and starts from a blank virtual machine on the cloud, loads all the necessary tools and builds everything, then runs tests.</p>
+
+<p>One caveat: we were able to do everything using Python&rsquo;s &ldquo;batteries included&rdquo; libraries, so I haven&rsquo;t experimented with bringing in external libraries, but I don&rsquo;t expect problems there. They have a list of packages that they <a href="https://github.com/pyinstaller/pyinstaller/wiki/Supported-Packages">explicitly support</a>, and I suspect that ordinary Python libraries will work just fine.</p>
+
+<p>But wait, there&rsquo;s more! PyInstaller does this magic for different operating systems! Not just Windows, but Linux and Mac OSX. You can read more <a href="http://pythonhosted.org/PyInstaller/#overview-what-pyinstaller-does-and-how-it-does-it">here</a>.</p>
+
+<h2 id="5-simplifying-configuration-and-format">5. Simplifying Configuration, and <code>format()</code></h2>
+
+<p>Because James started with a <strong>bash</strong> script and he hasn&rsquo;t done a lot of bash programming, he followed the bad bash practice of using global variables all over the place, which you see as all uppercase identifiers. I took his script and translated it to Python which we then built into a Windows .EXE file.</p>
+
+<p>I&rsquo;m reading <a href="https://www.jeffknupp.com/writing-idiomatic-python-ebook/">Writing Idiomatic Python</a> which suggests using the <strong>format()</strong> function for string interpolation, so I gave it a try and quickly grew to like it. One thing that started to annoy me was passing it arguments; to use James&rsquo; global variables and keep it all consistent, I was writing things like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;My string with {THING_TO_SUBSTITUTE} in it&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">THING_TO_SUBSTITUTE</span><span class="o">=</span><span class="n">THING_TO_SUBSTITUTE</span><span class="p">)</span></code></pre></div>
+<p>Then I discovered that <strong>format()</strong> could take a dictionary and parse through it to find your particular arguments, and substitute those. So, if I put everything in a single dictionary, I could just pass that in to any <strong>format()</strong> like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="s2">&#34;My string with {THING_TO_SUBSTITUTE} in it&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">cf</span><span class="p">)</span></code></pre></div>
+<p>Where <strong>cf</strong> is the configuration dictionary.</p>
+
+<p>(It turns out that I could also have left everything as global variables and passed <strong>**globals()</strong>).</p>
+
+<p>This worked OK for awhile, but then I started to get bothered by having to write:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">cf</span><span class="p">[</span><span class="s2">&#34;THING_TO_SUBSTITUTE&#34;</span><span class="p">]</span></code></pre></div>
+<p>Everywhere. Too many characters, too noisy to write and read. What I wanted was the much simpler:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">cf</span><span class="o">.</span><span class="n">THING_TO_SUBSTITUTE</span></code></pre></div>
+<p>I discovered that by writing a quick subclass of <strong>dict</strong> I could accomplish this, and the results are:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">platform</span><span class="o">,</span> <span class="nn">pprint</span>
+
+<span class="k">class</span> <span class="nc">Configuration</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+<span class="n">cf</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">(</span>
+    <span class="n">CLEANUP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&#34;LAUNCHER_CLEANUP&#34;</span><span class="p">),</span>
+    <span class="n">TRACE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&#34;LAUNCHER_TRACE&#34;</span><span class="p">),</span>
+    <span class="n">VERSION</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="n">RAW_VERSION</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="n">DOWNLOAD_PATH</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="n">HOST</span><span class="o">=</span><span class="s2">&#34;something.org&#34;</span><span class="p">,</span>
+    <span class="n">DEFAULT_VERSION</span> <span class="o">=</span> <span class="s2">&#34;0.10.33&#34;</span><span class="p">,</span>
+    <span class="n">OS</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+    <span class="n">ARCHITECTURE</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># 64bit or 32bit</span>
+    <span class="n">BASE_LOCAL_DIR</span> <span class="o">=</span> <span class="s2">&#34;{APPDATA}</span><span class="se">\\</span><span class="s2">launcher&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">APPDATA</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&#34;APPDATA&#34;</span><span class="p">)),</span>
+    <span class="n">BIN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="s2">&#34;modules/bin/mod&#34;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">cf</span><span class="o">.</span><span class="n">RAW_VERSION</span> <span class="o">=</span> <span class="s2">&#34;11.0.1&#34;</span>
+
+<span class="k">if</span> <span class="n">cf</span><span class="o">.</span><span class="n">TRACE</span><span class="p">:</span>
+    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&#34;host: {HOST}, OS: {OS}, arch: {ARCHITECTURE}&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">cf</span><span class="p">))</span></code></pre></div>
+<p>Note that reading and writing the configuration variables is much nicer, and using them in a <strong>format()</strong> statement is quite elegant.</p>
+
+<p>Here&rsquo;s the output on one machine:</p>
+
+<pre><code>c:\tmp&gt;set LAUNCHER_TRACE=1
+
+c:\tmp&gt;python config.py
+{'ARCHITECTURE': '32bit',
+ 'BASE_LOCAL_DIR': 'C:\\Users\\Bruce Eckel\\AppData\\Roaming\\launcher',
+ 'BIN': 'modules\\bin\\mod',
+ 'CLEANUP': None,
+ 'DEFAULT_VERSION': '0.10.33',
+ 'DOWNLOAD_PATH': None,
+ 'HOST': 'something.org',
+ 'OS': 'Windows',
+ 'RAW_VERSION': '11.0.1',
+ 'TRACE': '1 ',
+ 'VERSION': None}
+host: something.org, OS: Windows, arch: 32bit
+</code></pre>
+
+<p>It might seem like a small thing, but I find that easier writing and reading of the code makes it worth it.</p>
+
+<h2 id="6-pathlib-is-excellent">6. pathlib is Excellent</h2>
+
+<p>I&rsquo;ve made plenty of use of the <strong>os.path</strong> library. It&rsquo;s very helpful, but it isn&rsquo;t intuitive. The new <strong>pathlib</strong> which was added in Python 3.4 abstracts paths to the point where they are intuitive, which was no simple design feat.</p>
+
+<p>Here&rsquo;s a simple example which renames a group of files scattered throughout subdirectories:</p>
+
+<pre><code>#! py -3
+from pathlib import Path
+
+for old in Path('.').glob(&quot;**/oldname.foo&quot;):
+    old.rename(old.parent / &quot;newname.bar&quot;)
+</code></pre>
+
+<p>I&rsquo;m pretty sure that&rsquo;s the simplest solution to that problem that I&rsquo;ve seen. Note the use of <strong>&rsquo;/&rsquo;</strong> to combine parts of paths. I&rsquo;ve <em>always</em> wanted to do it that way.</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>1364</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

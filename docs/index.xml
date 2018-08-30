@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computing Thoughts</title>
+    <link>http://bruceeckel.github.io/</link>
+    <description>Recent content on Computing Thoughts</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Sep 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://bruceeckel.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A Possible Solution To The Open Source Funding Problem</title>
+      <link>http://bruceeckel.github.io/2017/09/11/a-possible-solution-to-the-open-source-problem/</link>
+      <pubDate>Mon, 11 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/09/11/a-possible-solution-to-the-open-source-problem/</guid>
+      <description>William Gross has posted Give Away Your Code, But Never Your Time, a potential and/or partial solution to the problem of funding open source projects, which I offered a solution for here. I&amp;rsquo;ve since heard from people pointing out projects that have actually used the &amp;ldquo;bounty&amp;rdquo; approach &amp;ndash; I was unintentionally describing something that already exists.
+We&amp;rsquo;ve been solving all these other problems around open source, but not the essential one: how can people get paid for developing open-source software.</description>
+    </item>
+    
+    <item>
+      <title>The Evolution of the Developer Retreat</title>
+      <link>http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/</link>
+      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/</guid>
+      <description>Test post Kotlin Elixir Flutter Ubuntu on Windows</description>
+    </item>
+    
+    <item>
+      <title>Gophercon And The Concurrent Python Developer Retreat</title>
+      <link>http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/</link>
+      <pubDate>Wed, 19 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/</guid>
+      <description>I found Gophercon to be valuable and it restarted my interest in the Go language. I&amp;rsquo;m currently working my way through The Go Programming Language Phrasebook and plan to explore ways to call Go from Python (described later in this post).
+If I hadn&amp;rsquo;t been attending with my friend Luciano Ramalho it would have been a different experience. The conference is clearly commercial and I had a strong sense of having my experience decided for me.</description>
+    </item>
+    
+    <item>
+      <title>On Java 8 And The Concurrent Python Developer Retreat</title>
+      <link>http://bruceeckel.github.io/2017/06/27/on-java-8-and-the-concurrent-python-developer-retreat/</link>
+      <pubDate>Tue, 27 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/06/27/on-java-8-and-the-concurrent-python-developer-retreat/</guid>
+      <description>For many years I&amp;rsquo;ve been getting requests for some kind of sequel to Thinking in Java, 4th Edition. Over two years ago, I finally decided to &amp;ldquo;pull together something quickly.&amp;rdquo; After all, how much time have I spent writing about the language? I should be getting pretty fast by now.
+Self-delusion knows no bounds. No matter how many books I write, every one seems to take longer than the previous ones, not shorter.</description>
+    </item>
+    
+    <item>
+      <title>Pycon 2017</title>
+      <link>http://bruceeckel.github.io/2017/05/30/pycon-2017/</link>
+      <pubDate>Tue, 30 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/05/30/pycon-2017/</guid>
+      <description>This year I repeated my strategy of &amp;ldquo;Don&amp;rsquo;t go to any recorded sessions,&amp;rdquo; and also did more volunteering (one of these was at the green room, and again one of the session chairs failed to show up so you&amp;rsquo;ll see me introducing three of the talks).
+Dinners In the past I&amp;rsquo;ve kind of stumbled into dinner groups, but not always. This time I made more of an effort and was rewarded with dinner friends every night.</description>
+    </item>
+    
+    <item>
+      <title>PyCaribbean Keynote On Youtube</title>
+      <link>http://bruceeckel.github.io/2017/04/19/pycaribbean-keynote-on-youtube/</link>
+      <pubDate>Wed, 19 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/04/19/pycaribbean-keynote-on-youtube/</guid>
+      <description>I gave the closing keynote at PyCaribbean, the Python conference held in Puerto Rico. It&amp;rsquo;s called Science is What Works, and you can see it on YouTube. The slides are available here.
+I think a closing keynote should provide perspective and look at things from a higher point of view. By then, the audience is full of technical information and, I believe, looking for relief rather than more code.
+Even though I was a physics major as an undergraduate, I&amp;rsquo;ve begun to realize over the last ten years or so that I didn&amp;rsquo;t understand what science was, and that&amp;rsquo;s probably why I was only a mediocre physics student, at best.</description>
+    </item>
+    
+    <item>
+      <title>Constructors Are Not Thread-Safe</title>
+      <link>http://bruceeckel.github.io/2017/01/13/constructors-are-not-thread-safe/</link>
+      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/01/13/constructors-are-not-thread-safe/</guid>
+      <description>When you imagine the construction process, it can be easy to think that it&amp;rsquo;s thread-safe. After all, no one can even see the new object before it finishes initialization, so how could there be contention over that object? Indeed, the Java Language specification (JLS) confidently states:
+&amp;ldquo;There is no practical need for a constructor to be synchronized, because it would lock the object under construction, which is normally not made available to other threads until all constructors for the object have completed their work.</description>
+    </item>
+    
+    <item>
+      <title>A Canonical equals() For Java</title>
+      <link>http://bruceeckel.github.io/2017/01/07/a-canonical-equals-for-java/</link>
+      <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2017/01/07/a-canonical-equals-for-java/</guid>
+      <description>Even with the help of Java 7&amp;rsquo;s Objects.equals(), the equals() method is often written in a verbose and messy fashion. This article shows how you can write a succinct equals() in a format that allows easy checking with visual inspection.
+ When you create a new class, it automatically inherits class Object. If you don&amp;rsquo;t override equals(), you&amp;rsquo;ll get Objects equals() method. By default this compares addresses, so only if you are comparing the exact same objects will you get true.</description>
+    </item>
+    
+    <item>
+      <title>Dining Philosophers in Java 8</title>
+      <link>http://bruceeckel.github.io/2016/12/29/dining-philosophers-in-java-8/</link>
+      <pubDate>Thu, 29 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/12/29/dining-philosophers-in-java-8/</guid>
+      <description>Because tasks can become blocked, it&amp;rsquo;s possible for one task to get stuck waiting for another task, which in turn waits for another task, and so on, until the chain leads back to a task waiting on the first one. You get a continuous loop of tasks waiting on each other, and no one can move. This is called deadlock.1
+If you try running a program and it deadlocks right away, you can immediately track down the bug.</description>
+    </item>
+    
+    <item>
+      <title>Notes from The Elm Developer Retreat</title>
+      <link>http://bruceeckel.github.io/2016/10/09/the-elm-developer-retreat/</link>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/10/09/the-elm-developer-retreat/</guid>
+      <description>This Developer Retreat was held Oct 6-9, 2016. So far the consensus seems to be that Thursday-Sunday is best, because Monday is often a big meeting day at companies (and taking two days at the end of the week is within tolerability). At peak, we had six attendees including myself; on the weekend we had two students from Colorado Mesa University in Grand Junction.
+There will be another retreat directly following the Winter Tech Forum.</description>
+    </item>
+    
+    <item>
+      <title>The Elm Developer Retreat</title>
+      <link>http://bruceeckel.github.io/2016/09/12/the-elm-developer-retreat/</link>
+      <pubDate>Mon, 12 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/09/12/the-elm-developer-retreat/</guid>
+      <description>Developer Retreats are the most relaxed and low-ceremony events you can imagine, and I&amp;rsquo;ve been very satisfied with the first two.
+October 6-9 in Crested Butte CO, we are going to tackle the Elm programming language and make a start on building the Open-Spaces Board UI. You can find full details here.
+Some of us have been studying Elm a bit already but this will be a group exploration so if you haven&amp;rsquo;t had any experience with the language yet you&amp;rsquo;re in good company (although any pre-retreat studying you do will help).</description>
+    </item>
+    
+    <item>
+      <title>A Model To Fund Open-Source Projects</title>
+      <link>http://bruceeckel.github.io/2016/06/20/a-model-to-fund-open-source-projects/</link>
+      <pubDate>Mon, 20 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/06/20/a-model-to-fund-open-source-projects/</guid>
+      <description>Synopsis Place a bounty on the next release of an open-source project. Until the bounty is met, those who need/want the newest release must pay an amount in order to get it. Previous releases remain free. Once the bounty is met, the new release becomes free.
+The Problem of Funding I think open-source is one of the most important cultural and business innovations produced (so far) by the computing and network revolution.</description>
+    </item>
+    
+    <item>
+      <title>Pycon 2016</title>
+      <link>http://bruceeckel.github.io/2016/06/15/pycon-2016/</link>
+      <pubDate>Wed, 15 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/06/15/pycon-2016/</guid>
+      <description>Pycon was wonderful this year. It was held at the Portland convention center which I like, and there were about 40% women at the conference; my perception was that around the same percentage of women were speaking. I credit Guido Van Rossum with requesting that the conference and the community become more inclusive (his goal is 50%). This is an amazing accomplishment in our field; my usual experience is in the low single digits.</description>
+    </item>
+    
+    <item>
+      <title>Java 8 Parallel Operations Are Not As Simple As They Seem</title>
+      <link>http://bruceeckel.github.io/2016/04/27/java-8-parallel-operations-are-not-as-simple-as-they-seem/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/04/27/java-8-parallel-operations-are-not-as-simple-as-they-seem/</guid>
+      <description>As an exploration of the uncertainties of streams and parallel streams, let&amp;rsquo;s look at a problem that seems simple: summing an incremental sequence of numbers. There turns out to be a surprising number of ways to do this, and I&amp;rsquo;ll take the risk of comparing them through timing&amp;mdash;trying to be careful, but acknowledging that I might fall into one of the many fundamental pitfalls when timing code execution. The results may have some flaws (there&amp;rsquo;s no &amp;ldquo;warming up&amp;rdquo; of the JVM, for example), but I think it nonetheless gives some useful indications.</description>
+    </item>
+    
+    <item>
+      <title>Video Of Belarus Conference Opening Keynote</title>
+      <link>http://bruceeckel.github.io/2016/01/10/video-of-belarus-conference-opening-keynote/</link>
+      <pubDate>Sun, 10 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2016/01/10/video-of-belarus-conference-opening-keynote/</guid>
+      <description>Here is the opening keynote presentation I gave at the Jet Conference in Minsk, Belarus, last Fall, titled A Language is More Than a Language.
+For some reason, all my travels in recent years have been exceptional, and this one was no different. Everyone there was really warm and enthusiastic.</description>
+    </item>
+    
+    <item>
+      <title>Are Java 8 Lambdas Closures?</title>
+      <link>http://bruceeckel.github.io/2015/10/17/are-java-8-lambdas-closures/</link>
+      <pubDate>Sat, 17 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/10/17/are-java-8-lambdas-closures/</guid>
+      <description>(Significantly rewritten 11/25/2015)
+Based on what I&amp;rsquo;ve heard, I was surprised to discover that the short answer is &amp;ldquo;yes, with a caveat that, after explanation, isn&amp;rsquo;t terrible.&amp;rdquo; So, a qualified yes.
+For the longer answer, we must first explore the question of &amp;ldquo;why, again, are we doing all this?&amp;rdquo;
+Abstraction over Behavior The simplest way to look at the need for lambdas is that they describe what computation should be performed, rather than how it should be performed.</description>
+    </item>
+    
+    <item>
+      <title>Jet Conference Slides</title>
+      <link>http://bruceeckel.github.io/2015/09/24/jet-conference-slides/</link>
+      <pubDate>Thu, 24 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/09/24/jet-conference-slides/</guid>
+      <description>Here are the slides for my opening keynote at the JET Conference in Minsk, Belarus, Sept 28, 2015. Note that many of the slides also have notes.
+The evening before the conference, I will be presenting &amp;ldquo;Creating Trust Organizations,&amp;rdquo; and you can find the slides for that here.
+ </description>
+    </item>
+    
+    <item>
+      <title>What I Do</title>
+      <link>http://bruceeckel.github.io/2015/08/29/what-i-do/</link>
+      <pubDate>Sat, 29 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/08/29/what-i-do/</guid>
+      <description>I have a very narrow set of skills, which can be summarized as “delving into a language and helping others understand and (sometimes) solve problems involving that language.” That’s too simple, however &amp;ndash; because I ultimately seek “the best” language, for my own personal definition of “best.”
+I also leave languages behind. While I once knew all the ins and outs of C++, for example, I stopped studying that language after C++98, searching for a language that gave me more.</description>
+    </item>
+    
+    <item>
+      <title>News, Readables, Viewables</title>
+      <link>http://bruceeckel.github.io/2015/08/06/news-readables-viewables/</link>
+      <pubDate>Thu, 06 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/08/06/news-readables-viewables/</guid>
+      <description>I will be giving the opening keynote at the JET conference in Minsk, Belarus on September 28. The title is “A Language is More Than a Language,” about the necessity for everything that surrounds a programming language. You can find the description here.
+ An interview with me on Opensource.com.
+ The creator of the Elm language about language design philosophy. This makes me want to learn Elm.
+ Kent Beck gives an amazing closing keynote.</description>
+    </item>
+    
+    <item>
+      <title>Pull Requests: The Linchpin of Open Source</title>
+      <link>http://bruceeckel.github.io/2015/08/03/pull-requests-the-linchpin-of-open-source/</link>
+      <pubDate>Mon, 03 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/08/03/pull-requests-the-linchpin-of-open-source/</guid>
+      <description>When Linus Torvalds started creating Linux, he managed the code base himself. People would email him patches and he would either include them or not.
+To maintain the code base &amp;ndash; to have checkpoints and be able to back up to an earlier known point &amp;ndash; he used a Distributed Version Control System (DVCS) which, as the name implies, is for managing versions.
+So there were these two seemingly-separate things: incorporating patches and managing versions.</description>
+    </item>
+    
+    <item>
+      <title>Python Conference 2015 In Montreal</title>
+      <link>http://bruceeckel.github.io/2015/08/02/python-conference-2015-in-montreal/</link>
+      <pubDate>Sun, 02 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/08/02/python-conference-2015-in-montreal/</guid>
+      <description>Pycon is a community-organized conference, and if it’s not already there it’s steadily evolving towards a Teal organization (what I’ve started calling a Trust Organization). It’s not controlled from the top, so lots of people make great things happen. One example I discovered at this conference: some 50 (I think) students are fully sponsored to come to the conference. When you speak at Pycon, you still pay all your expenses and your entrance fee.</description>
+    </item>
+    
+    <item>
+      <title>Getting Better Ideas Presentation</title>
+      <link>http://bruceeckel.github.io/2015/05/04/getting-better-ideas-presentation/</link>
+      <pubDate>Mon, 04 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/05/04/getting-better-ideas-presentation/</guid>
+      <description>While at the Python Conference in Montreal in April, I gave a presentation at VuWall titled The Next Big Challenge: Getting Better Ideas. Here&amp;rsquo;s the video.</description>
+    </item>
+    
+    <item>
+      <title>The Second Edition Of Atomic Scala Is Out</title>
+      <link>http://bruceeckel.github.io/2015/04/06/the-second-edition-of-atomic-scala-is-out/</link>
+      <pubDate>Mon, 06 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/04/06/the-second-edition-of-atomic-scala-is-out/</guid>
+      <description>The changes to the second edition include a large number of fixes to the exercises and solutions, corrections from bug reports, and any updates necessary for Scala version 2.11. Some examples are replaced or improved, and much of the book’s prose is improved.
+If you bought the first edition eBook, you automatically get an update to the second edition. Unfortunately, the number of changes to the first edition print book are just too comprehensive to summarize in a document.</description>
+    </item>
+    
+    <item>
+      <title>Avoiding Complexity</title>
+      <link>http://bruceeckel.github.io/2015/03/31/avoiding-complexity/</link>
+      <pubDate>Tue, 31 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/03/31/avoiding-complexity/</guid>
+      <description>A post I wrote back in 2004 about the various problems that stem from our apparent desire to complexify everything.</description>
+    </item>
+    
+    <item>
+      <title>Big Improvements In Ebook Creation</title>
+      <link>http://bruceeckel.github.io/2015/03/31/big-improvements-in-ebook-creation/</link>
+      <pubDate>Tue, 31 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/03/31/big-improvements-in-ebook-creation/</guid>
+      <description>I just finished the eBook of the 2nd edition of Atomic Scala. The PDF is, of course, the easiest since it gets created directly from Word (before you tell me I should use something other than Word &amp;mdash; I have done numerous experiments, and Word still provides the most power of anything I&amp;rsquo;ve found that allows a single document to produce camera-ready publishable pages, and at the same time generates and maintains a table of contents and index).</description>
+    </item>
+    
+    <item>
+      <title>Websockets In Python &#43; Flask On Heroku</title>
+      <link>http://bruceeckel.github.io/2015/03/10/websockets-in-flask-on-heroku/</link>
+      <pubDate>Tue, 10 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/03/10/websockets-in-flask-on-heroku/</guid>
+      <description>Websockets change the shape of Internet development by allowing communication both ways &amp;mdash; not only can the client send messages to the server, but with a websocket the server can at any time push information to the client (not just when the client decides to connect to the server). In effect this brings us back to the convenient world of desktop applications where the program and the user interface have two-way communication.</description>
+    </item>
+    
+    <item>
+      <title>Why Not Go (Golang) There?</title>
+      <link>http://bruceeckel.github.io/2015/02/15/why-not-go-there/</link>
+      <pubDate>Sun, 15 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/02/15/why-not-go-there/</guid>
+      <description>While there are a LOT of things I really like about the Go language, the bottom line is that I don&amp;rsquo;t use it (mostly because when I studied it the libraries were kind of scarce, something that&amp;rsquo;s apparently changed a lot). It attracted me, but not enough for me to change over from Python.
+Go has made some brilliant design decisions. I especially like the built-in features that in most other languages you must go figure out for yourself &amp;mdash; like the build tool, standard formatting (enforced with go fmt) a test framework (which you run with go test), and natively-supported concurrency/parallelism.</description>
+    </item>
+    
+    <item>
+      <title>Rethinking Errors -- Learning from Scala and Go</title>
+      <link>http://bruceeckel.github.io/2015/02/10/rethinking-errors/</link>
+      <pubDate>Tue, 10 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/02/10/rethinking-errors/</guid>
+      <description>Here is the video of the presentation I gave at Pycon 2013 on different ways of thinking about error handling, based on studying Scala and Go.</description>
+    </item>
+    
+    <item>
+      <title>The Winter Tech Forum</title>
+      <link>http://bruceeckel.github.io/2015/01/09/the-winter-tech-forum/</link>
+      <pubDate>Fri, 09 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2015/01/09/the-winter-tech-forum/</guid>
+      <description>&amp;rdquo;) Photo courtesy JC Leacock
+Although the Java Posse has ended transmission, we are still having the conference, renamed to the Winter Tech Forum (yes, that&amp;rsquo;s WTF &amp;ndash; because we&amp;rsquo;re always trying to figure things out). Come create conversation, generate ideas, hack projects, create workshops, ski, snowshoe, snowmobile and experience small-town living.
+The dates are Feb 23 - 27, 2015. Many people like to arrive earlier and stay a bit later; activities start with the Sunday evening barbecue and go through Saturday morning breakfast.</description>
+    </item>
+    
+    <item>
+      <title>Operator Underloading In Scala</title>
+      <link>http://bruceeckel.github.io/2014/12/30/operator-underloading-in-scala/</link>
+      <pubDate>Tue, 30 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2014/12/30/operator-underloading-in-scala/</guid>
+      <description>Here&amp;rsquo;s a place where Scala does some clever stuff which ultimately might produce a more complicated programming model than one would like. I discovered it while sorting out some issues with the first exercise in the References &amp;amp; Mutability atom in Atomic Scala.
+I&amp;rsquo;ll give you the examples directly out of the solution guide &amp;mdash; this includes the use of our tiny AtomicScala test framework, but if you don&amp;rsquo;t want to include that you can just comment out the import and all the is statements and you&amp;rsquo;ll still get the same results.</description>
+    </item>
+    
+    <item>
+      <title>Aberdeen International School Computer Club</title>
+      <link>http://bruceeckel.github.io/2014/12/17/aberdeen-international-school-computer-club/</link>
+      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2014/12/17/aberdeen-international-school-computer-club/</guid>
+      <description>During my October trip to Europe to speak at Geecon Prague (see here, here and here), I traveled to Scotland to visit friends Jason and Brooke (just to my right in the photograph) and to see the place. While I was there Jason asked me to speak to the brand-new computer club that he was helping with, at the Aberdeen International School where they both teach.
+The club had decided to use Python as their learning language, so of course I was enthusiastic.</description>
+    </item>
+    
+    <item>
+      <title>A Heaping Helping Of Python Goodness</title>
+      <link>http://bruceeckel.github.io/2014/12/05/a-heaping-helping-of-python-goodness/</link>
+      <pubDate>Fri, 05 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2014/12/05/a-heaping-helping-of-python-goodness/</guid>
+      <description>I really enjoy solving problems quickly and thoroughly. I especially enjoy solving annoying, repetitive problems that invite human error. The icing on the cake is when I learn some new tricks in the process. This last few days was a flurry of problem-solving and trick-learning.
+My favorite tricks are small bits of learning that make code easier to write, read and use. A couple of these are Windows-specific but most are general.</description>
+    </item>
+    
+    <item>
+      <title>Using Github Pages for Blogging</title>
+      <link>http://bruceeckel.github.io/2014/11/19/using-github-pages/</link>
+      <pubDate>Wed, 19 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2014/11/19/using-github-pages/</guid>
+      <description>I&amp;rsquo;ve wanted to move this programming blog away from Artima for what seems like several years now (Here&amp;rsquo;s an earlier update on the process). My buddy Bill hasn&amp;rsquo;t found developing the blogging platform to be of much interest anymore, and in particular he realizes there are many better alternatives at this point.
+The conversion took a surprising amount of research, partly because I&amp;rsquo;ve been away from blogging technology for quite awhile.</description>
+    </item>
+    
+    <item>
+      <title>Finding Flow</title>
+      <link>http://bruceeckel.github.io/2014/11/18/finding-flow/</link>
+      <pubDate>Tue, 18 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2014/11/18/finding-flow/</guid>
+      <description>(This post is an experiment to test a new blogging platform. This version is just straight out of MarkdownPad into Github pages, with no other software on my local machine)
+Balancing Uncertainty via Concrete Projects The Reinventing Business project is my &amp;ldquo;own personal Everest to climb,&amp;rdquo; my project that, once I saw it, I couldn&amp;rsquo;t unsee. It&amp;rsquo;s also very unclear whether I will ever make any significant breakthroughs in that area.</description>
+    </item>
+    
+    <item>
+      <title>New Programming Blog Site</title>
+      <link>http://bruceeckel.github.io/2014/11/17/new-programming-blog-site/</link>
+      <pubDate>Mon, 17 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/2014/11/17/new-programming-blog-site/</guid>
+      <description>Finally! My programming blog officially moves from Artima to this site, as of now.
+I&amp;rsquo;ve been poking at this problem for at least two years. It almost seems like I was unconsciously waiting for the right system to sort itself out, and it has: Jekyll on Github pages (with MarkdownPad for editing) has won over my heart and mind. I&amp;rsquo;m pretty darn happy about this &amp;mdash; I had gotten to the point where it was just too much trouble to blog on Artima, and so a lot of ideas have gone un-captured.</description>
+    </item>
+    
+    <item>
+      <title>Stm Seems To Have Failed</title>
+      <link>http://bruceeckel.github.io/stm-seems-to-have-failed/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://bruceeckel.github.io/stm-seems-to-have-failed/</guid>
+      <description>http://softtalkblog.com/2010/05/18/microsoft-discontinues-software-transactional-memory-experiment/
+http://joeduffyblog.com/2010/01/03/a-brief-retrospective-on-transactional-memory/
+http://www.perfdynamics.com/Manifesto/USLscalability.html</description>
+    </item>
+    
+  </channel>
+</rss>

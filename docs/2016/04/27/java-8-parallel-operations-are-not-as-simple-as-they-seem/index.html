@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Java 8 Parallel Operations Are Not As Simple As They Seem</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="As an exploration of the uncertainties of streams and parallel streams, let&amp;rsquo;s look at a problem that seems simple: summing an incremental sequence of numbers. There turns out to be a surprising number of ways to do this, and I&amp;rsquo;ll take the risk of comparing them through timing&amp;mdash;trying to be careful, but acknowledging that I might fall into one of the many fundamental pitfalls when timing code execution. The results may have some flaws (there&amp;rsquo;s no &amp;ldquo;warming up&amp;rdquo; of the JVM, for example), but I think it nonetheless gives some useful indications." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="Java 8 Parallel Operations Are Not As Simple As They Seem" />
+    <meta name="twitter:description" content="As an exploration of the uncertainties of streams and parallel streams, let&amp;rsquo;s look at a problem that seems simple: summing an incremental sequence of numbers. There turns out to be a surprising number of ways to do this, and I&amp;rsquo;ll take the risk of comparing them through timing&amp;mdash;trying to be careful, but acknowledging that I might fall into one of the many fundamental pitfalls when timing code execution. The results may have some flaws (there&amp;rsquo;s no &amp;ldquo;warming up&amp;rdquo; of the JVM, for example), but I think it nonetheless gives some useful indications." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Java 8 Parallel Operations Are Not As Simple As They Seem" />
+  <meta property="og:description" content="As an exploration of the uncertainties of streams and parallel streams, let&amp;rsquo;s look at a problem that seems simple: summing an incremental sequence of numbers. There turns out to be a surprising number of ways to do this, and I&amp;rsquo;ll take the risk of comparing them through timing&amp;mdash;trying to be careful, but acknowledging that I might fall into one of the many fundamental pitfalls when timing code execution. The results may have some flaws (there&amp;rsquo;s no &amp;ldquo;warming up&amp;rdquo; of the JVM, for example), but I think it nonetheless gives some useful indications." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2016/04/27/java-8-parallel-operations-are-not-as-simple-as-they-seem/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2016/04/27/java-8-parallel-operations-are-not-as-simple-as-they-seem/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Java 8 Parallel Operations Are Not As Simple As They Seem</h1>
+      <p class="post-meta">@Bruce Eckel · Apr 27, 2016 · 8 min read</p>
+    </header>
+    <article class="post-content"><p>As an exploration of the uncertainties of streams and parallel streams, let&rsquo;s
+look at a problem that seems simple: summing an incremental sequence of numbers.
+There turns out to be a surprising number of ways to do this, and I&rsquo;ll take the
+risk of comparing them through timing&mdash;trying to be careful, but acknowledging
+that I might fall into one of the many fundamental pitfalls when timing code
+execution. The results may have some flaws (there&rsquo;s no &ldquo;warming up&rdquo; of the JVM,
+for example), but I think it nonetheless gives some useful indications.</p>
+
+<p>I&rsquo;ll start with a timing method <code>timeTest()</code> which takes a <code>LongSupplier</code>,
+measures the length of the <code>getAsLong()</code> call, compares the result with a
+<code>checkValue</code> and displays the results. It also assigns the <code>result</code> to a
+volatile value just in case Java is tempted to optimize away the calculation.</p>
+
+<p>Note that everything rigorously uses <code>long</code>s whereever possible; I spent a
+bit of time chasing down quiet overflows before realizing that I missed &lsquo;long&rsquo;s
+in important places.</p>
+
+<p>All the numbers and discussions about time and memory refer to &ldquo;my machine.&rdquo;
+Your experience will probably be different.</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Summing.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.stream.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Summing</span> <span class="o">{</span>
+  <span class="kd">static</span> <span class="kd">volatile</span> <span class="kt">long</span> <span class="n">x</span><span class="o">;</span>
+  <span class="kd">static</span> <span class="kt">void</span> <span class="nf">timeTest</span><span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">,</span> <span class="kt">long</span> <span class="n">checkValue</span><span class="o">,</span>
+    <span class="n">LongSupplier</span> <span class="n">operation</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">id</span> <span class="o">+</span> <span class="s">&#34;: &#34;</span><span class="o">);</span>
+    <span class="kt">long</span> <span class="n">t</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+    <span class="kt">long</span> <span class="n">result</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="na">getAsLong</span><span class="o">();</span>
+    <span class="kt">long</span> <span class="n">duration</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">-</span> <span class="n">t</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">result</span> <span class="o">==</span> <span class="n">checkValue</span><span class="o">)</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">duration</span> <span class="o">+</span> <span class="s">&#34;ms&#34;</span><span class="o">);</span>
+    <span class="k">else</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;result: %d\ncheckValue: %d\n&#34;</span><span class="o">,</span>
+        <span class="n">result</span><span class="o">,</span> <span class="n">checkValue</span><span class="o">);</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">result</span><span class="o">;</span> <span class="c1">// Prevent optimization
+</span><span class="c1"></span>  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">SZ</span> <span class="o">=</span> <span class="n">100_000_000</span><span class="o">;</span>
+  <span class="c1">// This even works:
+</span><span class="c1"></span>  <span class="c1">// public static int SZ = 1_000_000_000;
+</span><span class="c1"></span>  <span class="c1">// Gauss&#39;s formula:
+</span><span class="c1"></span>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">CHECK</span> <span class="o">=</span>
+    <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">SZ</span> <span class="o">*</span> <span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">SZ</span> <span class="o">+</span> <span class="n">1</span><span class="o">)/</span><span class="n">2</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">CHECK</span><span class="o">);</span>
+    <span class="n">timeTest</span><span class="o">(</span><span class="s">&#34;Sum Stream&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">LongStream</span><span class="o">.</span><span class="na">rangeClosed</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">SZ</span><span class="o">).</span><span class="na">sum</span><span class="o">());</span>
+    <span class="n">timeTest</span><span class="o">(</span><span class="s">&#34;Sum Stream Parallel&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">LongStream</span><span class="o">.</span><span class="na">rangeClosed</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">SZ</span><span class="o">).</span><span class="na">parallel</span><span class="o">().</span><span class="na">sum</span><span class="o">());</span>
+    <span class="n">timeTest</span><span class="o">(</span><span class="s">&#34;Sum Iterated&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">LongStream</span><span class="o">.</span><span class="na">iterate</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">limit</span><span class="o">(</span><span class="n">SZ</span><span class="o">+</span><span class="n">1</span><span class="o">).</span><span class="na">sum</span><span class="o">());</span>
+    <span class="c1">// Takes longer, runs out of memory above 1_000_000:
+</span><span class="c1"></span>    <span class="c1">// timeTest(&#34;Sum Iterated Parallel&#34;, CHECK, () -&gt;
+</span><span class="c1"></span>    <span class="c1">//   LongStream.iterate(0, i -&gt; i + 1)
+</span><span class="c1"></span>    <span class="c1">//     .parallel()
+</span><span class="c1"></span>    <span class="c1">//     .limit(SZ+1).sum());
+</span><span class="c1"></span>  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">5000000050000000
+</span><span class="cm">Sum Stream: 625ms
+</span><span class="cm">Sum Stream Parallel: 158ms
+</span><span class="cm">Sum Iterated: 2521ms
+</span><span class="cm">*/</span></code></pre></div>
+<p>The <code>CHECK</code> value is calculated using the formula created by Carl Friedrich
+Gauss while still in primary school in the late 1700&rsquo;s.</p>
+
+<p>This first version of <code>main()</code> uses the straightforward approach of generating a
+<code>Stream</code> and calling <code>sum()</code>. We see the benefits of streams in that a <code>SZ</code> of a
+billion is handled without overflow (I use a smaller number so the program
+doesn&rsquo;t take so long to run). Using the basic range operation with <code>parallel()</code>
+is notably faster.</p>
+
+<p>If <code>iterate()</code> is used to produce the sequence the slowdown is dramatic,
+probably because the lambda must be called each time a number is generated. But
+if we try to parallelize that, the result not only takes longer than the
+non-parallel version but it also runs out of memory when <code>SZ</code> gets above a
+million. Of course you wouldn&rsquo;t use <code>iterate()</code> when you could use <code>range()</code>,
+but if you&rsquo;re generating something other than a simple sequence you must use
+<code>iterate()</code>. Applying <code>parallel()</code> is a reasonable thing to attempt, but
+produces these surprising results. We can make some initial observations
+regarding the stream parallel algorithms:</p>
+
+<ul>
+<li><p>Stream parallelism divides the incoming data into pieces so the algorithm(s)
+can be applied to those separate pieces.</p></li>
+
+<li><p>Arrays split cheaply, evenly and with perfect knowledge of split sizes.</p></li>
+
+<li><p>Linked Lists have none of these properties; &ldquo;splitting&rdquo; a linked list only
+means dividing it into &ldquo;first element&rdquo; and &ldquo;rest of list,&rdquo; which is relatively
+useless.</p></li>
+
+<li><p>Stateless generators behave like arrays; the use of <code>range</code> above is
+stateless.</p></li>
+
+<li><p>Iterative generators behave like linked lists; <code>iterate()</code> is an iterative
+generator.</p></li>
+</ul>
+
+<p>Now let&rsquo;s try solving the problem by filling an array with values, then summing
+over the array. Because the array is only allocated once, it seems unlikely
+we&rsquo;ll run into garbage collection timing issues.</p>
+
+<p>First we&rsquo;ll try an array filled with primitive <code>long</code>s:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Summing2.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Summing2</span> <span class="o">{</span>
+  <span class="kd">static</span> <span class="kt">long</span> <span class="nf">basicSum</span><span class="o">(</span><span class="kt">long</span><span class="o">[]</span> <span class="n">ia</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">ia</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+      <span class="n">sum</span> <span class="o">+=</span> <span class="n">ia</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+    <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="c1">// Approximate largest value of SZ before
+</span><span class="c1"></span>  <span class="c1">// running out of memory on my machine:
+</span><span class="c1"></span>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">SZ</span> <span class="o">=</span> <span class="n">20_000_000</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">CHECK</span> <span class="o">=</span>
+    <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">SZ</span> <span class="o">*</span> <span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">SZ</span> <span class="o">+</span> <span class="n">1</span><span class="o">)/</span><span class="n">2</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">CHECK</span><span class="o">);</span>
+    <span class="kt">long</span><span class="o">[]</span> <span class="n">la</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="n">SZ</span><span class="o">+</span><span class="n">1</span><span class="o">];</span>
+    <span class="n">Arrays</span><span class="o">.</span><span class="na">parallelSetAll</span><span class="o">(</span><span class="n">la</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span><span class="o">);</span>
+    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Array Stream Sum&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">la</span><span class="o">).</span><span class="na">sum</span><span class="o">());</span>
+    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Parallel&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">la</span><span class="o">).</span><span class="na">parallel</span><span class="o">().</span><span class="na">sum</span><span class="o">());</span>
+    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Basic Sum&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">basicSum</span><span class="o">(</span><span class="n">la</span><span class="o">));</span>
+    <span class="c1">// Destructive summation:
+</span><span class="c1"></span>    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;parallelPrefix&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">parallelPrefix</span><span class="o">(</span><span class="n">la</span><span class="o">,</span> <span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">);</span>
+      <span class="k">return</span> <span class="n">la</span><span class="o">[</span><span class="n">la</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">];</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">200000010000000
+</span><span class="cm">Array Stream Sum: 114ms
+</span><span class="cm">Parallel: 27ms
+</span><span class="cm">Basic Sum: 33ms
+</span><span class="cm">parallelPrefix: 49ms
+</span><span class="cm">*/</span></code></pre></div>
+<p>The first limitation is memory size; because the array is allocated up front, we
+can&rsquo;t create anything nearly as large as the previous version. Parallelizing
+speeds things up, even a bit faster than just looping through using
+<code>basicSum()</code>. Interestingly, <code>Arrays.parallelPrefix()</code> doesn&rsquo;t speed things up
+as much as we might imagine. However, any of these techniques might be more
+useful under other conditions&mdash;that&rsquo;s why you can&rsquo;t make any deterministic
+statements about what to do, other than &ldquo;you have to try it out.&rdquo;</p>
+
+<p>Finally, consider the effect of using wrapped <code>Long</code>s instead:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Summing3.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Summing3</span> <span class="o">{</span>
+  <span class="kd">static</span> <span class="kt">long</span> <span class="nf">basicSum</span><span class="o">(</span><span class="n">Long</span><span class="o">[]</span> <span class="n">ia</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">ia</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+      <span class="n">sum</span> <span class="o">+=</span> <span class="n">ia</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+    <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="c1">// Approximate largest value of SZ before
+</span><span class="c1"></span>  <span class="c1">// running out of memory on my machine:
+</span><span class="c1"></span>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">SZ</span> <span class="o">=</span> <span class="n">10_000_000</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">CHECK</span> <span class="o">=</span>
+    <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">SZ</span> <span class="o">*</span> <span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">SZ</span> <span class="o">+</span> <span class="n">1</span><span class="o">)/</span><span class="n">2</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">CHECK</span><span class="o">);</span>
+    <span class="n">Long</span><span class="o">[]</span> <span class="n">La</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Long</span><span class="o">[</span><span class="n">SZ</span><span class="o">+</span><span class="n">1</span><span class="o">];</span>
+    <span class="n">Arrays</span><span class="o">.</span><span class="na">parallelSetAll</span><span class="o">(</span><span class="n">La</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">i</span><span class="o">);</span>
+    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Long Array Stream Reduce&#34;</span><span class="o">,</span>
+      <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">La</span><span class="o">).</span><span class="na">reduce</span><span class="o">(</span><span class="n">0L</span><span class="o">,</span> <span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">));</span>
+    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Long Basic Sum&#34;</span><span class="o">,</span> <span class="n">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">basicSum</span><span class="o">(</span><span class="n">La</span><span class="o">));</span>
+    <span class="c1">// Destructive summation:
+</span><span class="c1"></span>    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Long parallelPrefix&#34;</span><span class="o">,</span><span class="n">CHECK</span><span class="o">,</span> <span class="o">()-&gt;</span> <span class="o">{</span>
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">parallelPrefix</span><span class="o">(</span><span class="n">La</span><span class="o">,</span> <span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">);</span>
+      <span class="k">return</span> <span class="n">La</span><span class="o">[</span><span class="n">La</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">];</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">50000005000000
+</span><span class="cm">Long Array Stream Reduce: 1046ms
+</span><span class="cm">Long Basic Sum: 21ms
+</span><span class="cm">Long parallelPrefix: 3287ms
+</span><span class="cm">*/</span></code></pre></div>
+<p>Now the amount of memory available is approximately cut in half, and the amount
+of time required has exploded in all cases except <code>basicSum()</code>, which simply
+loops through the array. Surprisingly, <code>Arrays.parallelPrefix()</code> takes
+significantly longer than any other approach.</p>
+
+<p>I separated the <code>parallel()</code> version because running it inside the above program
+caused a lengthy garbage collection, distorting the results:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Summing4.java
+</span><span class="c1"></span><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Summing4</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Summing3</span><span class="o">.</span><span class="na">CHECK</span><span class="o">);</span>
+    <span class="n">Long</span><span class="o">[]</span> <span class="n">La</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Long</span><span class="o">[</span><span class="n">Summing3</span><span class="o">.</span><span class="na">SZ</span><span class="o">+</span><span class="n">1</span><span class="o">];</span>
+    <span class="n">Arrays</span><span class="o">.</span><span class="na">parallelSetAll</span><span class="o">(</span><span class="n">La</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">i</span><span class="o">);</span>
+    <span class="n">Summing</span><span class="o">.</span><span class="na">timeTest</span><span class="o">(</span><span class="s">&#34;Long Parallel&#34;</span><span class="o">,</span>
+      <span class="n">Summing3</span><span class="o">.</span><span class="na">CHECK</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span>
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">La</span><span class="o">).</span><span class="na">parallel</span><span class="o">().</span><span class="na">reduce</span><span class="o">(</span><span class="n">0L</span><span class="o">,</span><span class="nl">Long:</span><span class="o">:</span><span class="n">sum</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/* Output:
+</span><span class="cm">50000005000000
+</span><span class="cm">Long Parallel: 1008ms
+</span><span class="cm">*/</span></code></pre></div>
+<p>It&rsquo;s slightly faster than the non-<code>parallel()</code> version, but not significantly.</p>
+
+<p>A big reason for this increase in time is the processor memory cache. With the
+primitive <code>long</code>s in <code>Summing2.java</code>, the array <code>la</code> is contiguous memory. The
+processor can more easily anticipate the use of this array and keep the cache
+filled with the array elements that will be needed next. Accessing the cache is
+much, much faster than going out to main memory. It appears that the
+<code>Long parallelPrefix</code> calculation suffers because it not only reads two array
+elements for each calculation, plus writes the result back into the array, and
+each of these produces an out-of-cache reference for the <code>Long</code>.</p>
+
+<p>With <code>Summing3.java</code> and <code>Summing4.java</code>, <code>La</code> is an array of <code>Long</code>, which is
+not a continguous array of data, but a contiguous array of references to <code>Long</code>
+objects. Even though that array will probably be kept in cache, the objects
+pointed to will almost always be out-of-cache.</p>
+
+<p>These examples have used different <code>SZ</code> values to show the memory limits. To do
+a time comparison, here are the results with <code>SZ</code> set to the smallest value of
+10 million:</p>
+
+<pre><code>Sum Stream: 69ms
+Sum Stream Parallel: 18ms
+Sum Iterated: 277ms
+Array Stream Sum: 57ms
+Parallel: 14ms
+Basic Sum: 16ms
+parallelPrefix: 28ms
+Long Array Stream Reduce: 1046ms
+Long Basic Sum: 21ms
+Long parallelPrefix: 3287ms
+Long Parallel: 1008ms
+</code></pre>
+
+<p>While the various new built-in &ldquo;parallel&rdquo; tools in Java 8 are terrific, I&rsquo;ve
+seen them treated as magical panaceas: &ldquo;All you need to do is throw in
+<code>parallel()</code> and it will run faster!&rdquo; I hope I&rsquo;ve begun to show that this is not
+the case at all, and that blindly applying the built-in &ldquo;parallel&rdquo; operations
+can sometimes even make things run a lot slower.</p>
+
+<p>Language and library support for concurrency and parallelism seem like perfect
+candidates for the term &ldquo;leaky abstraction,&rdquo; but I&rsquo;ve started to wonder whether
+there&rsquo;s really any abstraction at all&mdash;when writing these kinds of programs you
+are never shielded from any of the underlying systems and tools, even including
+the CPU cache. Ultimately, if you&rsquo;ve been very careful, what you create will
+work in a particular situation, but it won&rsquo;t work in different situation.
+Sometimes the difference is the way two different machines are configured, or
+the estimated load for the program. This is not specific to Java per se&mdash;it is
+the nature of concurrent and parallel programming.</p>
+
+<p>You might argue that a pure functional language doesn&rsquo;t have these same
+restrictions. Indeed, a pure functional language solves a large number of
+problems. But ultimately, if you write a system that has, for example, a queue
+somewhere, if things aren&rsquo;t tuned right and the input rate either isn&rsquo;t
+estimated correctly or throttled (and throttling means different things and has
+different impacts in different situations), that queue will either fill up and
+block, or overflow. In the end, you must understand all the details, and any
+issue can break your system. It&rsquo;s a very different kind of programming.</p>
+
+<p>I&rsquo;d like feedback on this; if I&rsquo;ve made any obvious missteps please describe
+them in the comments. Thanks!</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>855</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

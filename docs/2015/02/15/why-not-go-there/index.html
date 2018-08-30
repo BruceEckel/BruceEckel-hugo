@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Why Not Go (Golang) There?</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="While there are a LOT of things I really like about the Go language, the bottom line is that I don&amp;rsquo;t use it (mostly because when I studied it the libraries were kind of scarce, something that&amp;rsquo;s apparently changed a lot). It attracted me, but not enough for me to change over from Python.
+Go has made some brilliant design decisions. I especially like the built-in features that in most other languages you must go figure out for yourself &amp;mdash; like the build tool, standard formatting (enforced with go fmt) a test framework (which you run with go test), and natively-supported concurrency/parallelism." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="Why Not Go (Golang) There?" />
+    <meta name="twitter:description" content="While there are a LOT of things I really like about the Go language, the bottom line is that I don&amp;rsquo;t use it (mostly because when I studied it the libraries were kind of scarce, something that&amp;rsquo;s apparently changed a lot). It attracted me, but not enough for me to change over from Python.
+Go has made some brilliant design decisions. I especially like the built-in features that in most other languages you must go figure out for yourself &amp;mdash; like the build tool, standard formatting (enforced with go fmt) a test framework (which you run with go test), and natively-supported concurrency/parallelism." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Why Not Go (Golang) There?" />
+  <meta property="og:description" content="While there are a LOT of things I really like about the Go language, the bottom line is that I don&amp;rsquo;t use it (mostly because when I studied it the libraries were kind of scarce, something that&amp;rsquo;s apparently changed a lot). It attracted me, but not enough for me to change over from Python.
+Go has made some brilliant design decisions. I especially like the built-in features that in most other languages you must go figure out for yourself &amp;mdash; like the build tool, standard formatting (enforced with go fmt) a test framework (which you run with go test), and natively-supported concurrency/parallelism." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2015/02/15/why-not-go-there/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2015/02/15/why-not-go-there/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Why Not Go (Golang) There?</h1>
+      <p class="post-meta">@Bruce Eckel · Feb 15, 2015 · 6 min read</p>
+    </header>
+    <article class="post-content"><p>While there are a LOT of things I really like about <a href="http://golang.org/">the Go language</a>, the bottom line is that I don&rsquo;t use it (mostly because when I studied it the libraries were kind of scarce, something that&rsquo;s apparently changed a lot). It attracted me, but not enough for me to change over from Python.</p>
+
+<p>Go has made some brilliant design decisions. I especially like the built-in features that in most other languages you must go figure out for yourself &mdash; like the build tool, standard formatting (enforced with <strong>go fmt</strong>) a test framework (which you run with <strong>go test</strong>), and natively-supported concurrency/parallelism. Other languages (especially new ones) should take note and follow this example. Like Ruby on Rails, make the standard decisions and allow the user to trap-door out if they want, but don&rsquo;t just force everyone to go through the same basic decision exercises when they pick up the language. (One thing that really bugs me, though, is the use of tabs. I thought we had finally shaken that ancient artifact from mechanical typewriters.)</p>
+
+<p>If Go had come out much earlier, I think it might have blown C++ out of the water. But the programming culture has evolved since then, and now things like classes and generics are understood and expected. And perhaps that&rsquo;s one of the issues: Go seems to be competing with C++ for the C crowd. Java already tried to move on from C++ (Gosling made it clear that their only choice for the never-built set-top box was C++ and that was such a heinous thought that they ended up creating a new language instead).</p>
+
+<p>The article <a href="http://crufter.com/2014/12/01/everyday-hassles-in-go/">Everyday Hassles in Go</a> drills down into what&rsquo;s lacking in the language, in particular the need for generics.</p>
+
+<p>I asked my favorite client (So far &mdash; I hope for even better ones in the future) for an update in the year+ since he told me they were moving to Go:</p>
+
+<blockquote>
+<p>Well, a lot of interesting things have happened along that path. Almost nothing I thought would happen has come to pass. About the time everyone hit maximum frustration with Pythons (plural intentional) we decided to have extended weekend retreat to figure out where everything fit. And try as many different types of tequila and chile con quesos as we could. We wanted two paths: a great platform for prototyping that everyone could use and love, a high-performance platform for the few things that really needed to evolve beyond prototype, and a C-something library that could be used by both. If you&rsquo;re going to fantasize it might as well be no-holds-barred, right?</p>
+
+<p>The problem with Go is that it didn&rsquo;t really fit either one of those well. The prototypers (engineers and scientists) are into R, Mathematica, and Python. It might be fair to say that they were moving from R to the other two. Then along came Hadley Wickham on a one-man crusade to drag R into the 21st century. Things like dplyr, ggplot2, data.table, and a few other new packages have completely changed the face of R, much to the chagrin of the old guard and delight of users. So momentum has now swung back towards R, although there is considerable excitement about Mathematica and the new Wolfram language.</p>
+
+<p>On the high-performance side we&rsquo;ve used a combination of C++ and Qt to build apps, although C#&rsquo;s multicore stuff and new Microsoft approach to open source parts of it have changed perceptions. Younger programmers are more excited about C# than C++, so maybe there is something there. I thought that a language that supported concurrency natively like Go would appeal to the crowd, but the lack of scientific library support has turned them off. There seems to be consensus that native concurrency is highly desired, but that sustained investment and momentum are equally important. Google seems unable or unwilling to put resources into Go to compete with other frameworks. Or at least that’s the perception.</p>
+
+<p>We probably talked about other stuff as well, but by that time we were largely incoherent, so I&rsquo;m not sure what else was decided. Since then we&rsquo;ve started moving slowly to C# for heavy stuff. But with each passing year we leave more and more things in prototypes, in large part because they do everything we need with acceptable performance, so C# is becoming less and less relevant. Some people still play with Go, but not enough converts to sustain interest in it. My sense is that in a decade we’ll all be using Wolfram, but it’s a big enough change that old-timers like me can best facilitate it by retiring and making way for those who truly get it. To me it [Wolfram] seems so vast that I’m having a hard time getting my head around the core essentials.</p>
+
+<p>I’m in same boat as you are: I like Go, yet there is nothing particularly compelling about it. It seemed to better fit as replacement for the OO platforms we were using, and we liked the apparent efficiency of the language. And minimal is great as a design philosophy. But most of us felt that it was minimal because only a few zealots were working on it and they could only accomplish so much that way, making it more of an excuse than a bold statement. I wish it would succeed, but if it is going to elbow out the OO big dogs it needs more momentum than it has right now.</p>
+
+<p>I guess another factor that I forgot about was data frames. We use them in R, and Python has them as well (via pandas, which seems like a godsend compared to PyTables for the stuff we do). There was little enthusiasm for building comparable functionality in Go, or even looking into adapting pandas for it (as I had suggested). When we broached the topic with the Go dev team they offered embedded SQL as the answer for working with dynamic tables. Telling that to a bunch of simulation modelers like us is sort of akin to us to suggesting to them that they ought to be using Fortran to improve array processing.</p>
+
+<p>Maybe it will succeed, maybe won’t. But we’ll be watching from the sidelines rather than middle of the pack, which is where our initial enthusiasm led us to believe we’d be by now.</p>
+</blockquote>
+
+<p>What might change my own perspective to make me start using Go as-is? The biggest draw would be a really simple &amp; transparent interface between Python and Go, so that if I need to do low-level hardware things or parallel programming (for more than can be accomplished with the <a href="https://docs.python.org/3.4/library/multiprocessing.html">multiprocessing library</a>), I could easily drop into Go for that. The next-most-compelling factor would be a library that I couldn&rsquo;t find anywhere else &mdash; an excellent example of this in Python is the <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup library</a> for manipulating HTML, the likes of which I&rsquo;ve never seen anywhere.</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>1292</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

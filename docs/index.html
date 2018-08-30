@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Hugo Blog (SEO Version)</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="A blog about all the things related to programming by Bruce Eckel, author of Thinking in Java, Thinking in C&#43;&#43;, Atomic Scala and very soon Atomic Kotlin." />
+
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@bruceeckel" />
+  <meta name="twitter:title" content="Hugo Blog (SEO Version)" />
+  <meta name="twitter:description" content="A blog about all the things related to programming by Bruce Eckel, author of Thinking in Java, Thinking in C&#43;&#43;, Atomic Scala and very soon Atomic Kotlin." />
+  <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+  
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Hugo Blog (SEO Version)" />
+  <meta property="og:description" content="A blog about all the things related to programming by Bruce Eckel, author of Thinking in Java, Thinking in C&#43;&#43;, Atomic Scala and very soon Atomic Kotlin." />
+  <meta property="og:url" content="http://bruceeckel.github.io/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/" />
+<link rel="alternate" type="application/rss+xml" href="http://bruceeckel.github.io/index.xml" title="Computing Thoughts" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h1 class="title">Computing Thoughts</h1>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+              is-active
+            
+            
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-list">
+    <header class="list-header offscreen">
+      <h2 class="list-label">All Posts</h2>
+    </header>
+    
+    
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/09/11/a-possible-solution-to-the-open-source-problem/" class="post-link">A Possible Solution To The Open Source Funding Problem</a></h3>
+    <p class="post-meta">@Bruce Eckel · Sep 11, 2017 · 1 min read</p>
+  </header>
+  
+  <p class="post-summary">William Gross has posted Give Away Your Code, But Never Your Time, a potential and/or partial solution to the problem of funding open source projects, which I offered a solution for here. I’ve since heard from people pointing out projects that have actually used the “bounty” approach – I was unintentionally describing something that already exists.
+We’ve been solving all these other problems around open source, but not the essential one: how can people get paid for developing open-source software.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/09/11/a-possible-solution-to-the-open-source-problem/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/" class="post-link">The Evolution of the Developer Retreat</a></h3>
+    <p class="post-meta">@Bruce Eckel · Aug 29, 2017 · 1 min read</p>
+  </header>
+  
+  <p class="post-summary">Test post Kotlin Elixir Flutter Ubuntu on Windows</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/" class="post-link">Gophercon And The Concurrent Python Developer Retreat</a></h3>
+    <p class="post-meta">@Bruce Eckel · Jul 19, 2017 · 11 min read</p>
+  </header>
+  
+  <p class="post-summary">I found Gophercon to be valuable and it restarted my interest in the Go language. I’m currently working my way through The Go Programming Language Phrasebook and plan to explore ways to call Go from Python (described later in this post).
+If I hadn’t been attending with my friend Luciano Ramalho it would have been a different experience. The conference is clearly commercial and I had a strong sense of having my experience decided for me.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/06/27/on-java-8-and-the-concurrent-python-developer-retreat/" class="post-link">On Java 8 And The Concurrent Python Developer Retreat</a></h3>
+    <p class="post-meta">@Bruce Eckel · Jun 27, 2017 · 3 min read</p>
+  </header>
+  
+  <p class="post-summary">For many years I’ve been getting requests for some kind of sequel to Thinking in Java, 4th Edition. Over two years ago, I finally decided to “pull together something quickly.” After all, how much time have I spent writing about the language? I should be getting pretty fast by now.
+Self-delusion knows no bounds. No matter how many books I write, every one seems to take longer than the previous ones, not shorter.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/06/27/on-java-8-and-the-concurrent-python-developer-retreat/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/05/30/pycon-2017/" class="post-link">Pycon 2017</a></h3>
+    <p class="post-meta">@Bruce Eckel · May 30, 2017 · 12 min read</p>
+  </header>
+  
+  <p class="post-summary">This year I repeated my strategy of “Don’t go to any recorded sessions,” and also did more volunteering (one of these was at the green room, and again one of the session chairs failed to show up so you’ll see me introducing three of the talks).
+Dinners In the past I’ve kind of stumbled into dinner groups, but not always. This time I made more of an effort and was rewarded with dinner friends every night.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/05/30/pycon-2017/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/04/19/pycaribbean-keynote-on-youtube/" class="post-link">PyCaribbean Keynote On Youtube</a></h3>
+    <p class="post-meta">@Bruce Eckel · Apr 19, 2017 · 3 min read</p>
+  </header>
+  
+  <p class="post-summary">I gave the closing keynote at PyCaribbean, the Python conference held in Puerto Rico. It’s called Science is What Works, and you can see it on YouTube. The slides are available here.
+I think a closing keynote should provide perspective and look at things from a higher point of view. By then, the audience is full of technical information and, I believe, looking for relief rather than more code.
+Even though I was a physics major as an undergraduate, I’ve begun to realize over the last ten years or so that I didn’t understand what science was, and that’s probably why I was only a mediocre physics student, at best.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/04/19/pycaribbean-keynote-on-youtube/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/01/13/constructors-are-not-thread-safe/" class="post-link">Constructors Are Not Thread-Safe</a></h3>
+    <p class="post-meta">@Bruce Eckel · Jan 13, 2017 · 5 min read</p>
+  </header>
+  
+  <p class="post-summary">When you imagine the construction process, it can be easy to think that it’s thread-safe. After all, no one can even see the new object before it finishes initialization, so how could there be contention over that object? Indeed, the Java Language specification (JLS) confidently states:
+“There is no practical need for a constructor to be synchronized, because it would lock the object under construction, which is normally not made available to other threads until all constructors for the object have completed their work.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/01/13/constructors-are-not-thread-safe/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2017/01/07/a-canonical-equals-for-java/" class="post-link">A Canonical equals() For Java</a></h3>
+    <p class="post-meta">@Bruce Eckel · Jan 7, 2017 · 11 min read</p>
+  </header>
+  
+  <p class="post-summary">Even with the help of Java 7’s Objects.equals(), the equals() method is often written in a verbose and messy fashion. This article shows how you can write a succinct equals() in a format that allows easy checking with visual inspection.
+ When you create a new class, it automatically inherits class Object. If you don’t override equals(), you’ll get Objects equals() method. By default this compares addresses, so only if you are comparing the exact same objects will you get true.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2017/01/07/a-canonical-equals-for-java/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2016/12/29/dining-philosophers-in-java-8/" class="post-link">Dining Philosophers in Java 8</a></h3>
+    <p class="post-meta">@Bruce Eckel · Dec 29, 2016 · 8 min read</p>
+  </header>
+  
+  <p class="post-summary">Because tasks can become blocked, it’s possible for one task to get stuck waiting for another task, which in turn waits for another task, and so on, until the chain leads back to a task waiting on the first one. You get a continuous loop of tasks waiting on each other, and no one can move. This is called deadlock.1
+If you try running a program and it deadlocks right away, you can immediately track down the bug.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2016/12/29/dining-philosophers-in-java-8/">Read More →</a>
+  </footer>
+</article>
+
+      
+        <article class="post-entry">
+  <header class="post-header">
+    <h3 class="post-title"><a href="http://bruceeckel.github.io/2016/10/09/the-elm-developer-retreat/" class="post-link">Notes from The Elm Developer Retreat</a></h3>
+    <p class="post-meta">@Bruce Eckel · Oct 9, 2016 · 3 min read</p>
+  </header>
+  
+  <p class="post-summary">This Developer Retreat was held Oct 6-9, 2016. So far the consensus seems to be that Thursday-Sunday is best, because Monday is often a big meeting day at companies (and taking two days at the end of the week is within tolerability). At peak, we had six attendees including myself; on the weekend we had two students from Colorado Mesa University in Grand Junction.
+There will be another retreat directly following the Winter Tech Forum.</p>
+  <footer class="post-footer">
+    <a class="read-more" href="http://bruceeckel.github.io/2016/10/09/the-elm-developer-retreat/">Read More →</a>
+  </footer>
+</article>
+
+      
+    
+    
+      <footer class="list-footer">
+        <nav class="pagination">
+          <h3 class="offscreen">Pagination</h3>
+          
+          
+            <a class="pagination-next" href="/page/2/">Older Posts →</a>
+          
+        </nav>
+      </footer>
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

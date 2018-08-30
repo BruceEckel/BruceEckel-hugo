@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Notes from The Elm Developer Retreat</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="This Developer Retreat was held Oct 6-9, 2016. So far the consensus seems to be that Thursday-Sunday is best, because Monday is often a big meeting day at companies (and taking two days at the end of the week is within tolerability). At peak, we had six attendees including myself; on the weekend we had two students from Colorado Mesa University in Grand Junction.
+There will be another retreat directly following the Winter Tech Forum." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="Notes from The Elm Developer Retreat" />
+    <meta name="twitter:description" content="This Developer Retreat was held Oct 6-9, 2016. So far the consensus seems to be that Thursday-Sunday is best, because Monday is often a big meeting day at companies (and taking two days at the end of the week is within tolerability). At peak, we had six attendees including myself; on the weekend we had two students from Colorado Mesa University in Grand Junction.
+There will be another retreat directly following the Winter Tech Forum." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Notes from The Elm Developer Retreat" />
+  <meta property="og:description" content="This Developer Retreat was held Oct 6-9, 2016. So far the consensus seems to be that Thursday-Sunday is best, because Monday is often a big meeting day at companies (and taking two days at the end of the week is within tolerability). At peak, we had six attendees including myself; on the weekend we had two students from Colorado Mesa University in Grand Junction.
+There will be another retreat directly following the Winter Tech Forum." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2016/10/09/the-elm-developer-retreat/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2016/10/09/the-elm-developer-retreat/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Notes from The Elm Developer Retreat</h1>
+      <p class="post-meta">@Bruce Eckel · Oct 9, 2016 · 3 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>This <a href="http://developer-retreat.com">Developer Retreat</a> was held Oct 6-9, 2016.
+So far the consensus seems to be that Thursday-Sunday is best, because Monday
+is often a big meeting day at companies (and taking two days at the end of the
+week is within tolerability). At peak, we had six attendees including myself; on
+the weekend we had two students from Colorado Mesa University in Grand Junction.</p>
+
+<p>There will be another retreat directly following the <a href="http://www.WinterTechForum.com">Winter Tech
+Forum</a>.</p>
+
+<ol>
+<li><p>We all agreed that developer retreats are great, and we will continue doing
+them and evolving the format.</p>
+
+<p>A. For one thing, it&rsquo;s much, much easier to figure things out in a group.</p></li>
+
+<li><p>This is the second themed retreat (versus the very first un-themed retreat
+after the last Winter Tech Forum), and the themed approach is definitely a
+winner.</p></li>
+
+<li><p>We all agreed that Elm is amazing and none of us ever want to write
+Javascript again (to be honest we already didn&rsquo;t want to write Javascript
+anymore).</p></li>
+
+<li><p>On the first day we went through <a href="https://pragmaticstudio.com/elm">The Pragmatic Studio Elm
+Videos</a>, which are out of date from 0.17 (he&rsquo;s
+working on an updated version which I will happily get), and we found this an
+excellent way to get everyone up to speed. When we ran into problems we stopped
+the video and figured them out. We also stopped and fixed the example code to
+make it work with 0.17, and that was a great exercise as well.</p></li>
+
+<li><p>For support, the <a href="http://elm-lang.org">Elm site</a> directs you to the <a href="http://elmlang.herokuapp.com/">Elm
+Slack Channel</a> and this was indeed very helpful.
+One person there even gave me a starting point for my &ldquo;grid of squares&rdquo; problem.</p></li>
+
+<li><p>The slack channel directs you to the <a href="http://faq.elm-community.org/">FAQ</a>.</p></li>
+
+<li><p>Chromecast is a great way to work in groups to go through and explain code.</p></li>
+
+<li><p>There are a lot of useful resources for learning Elm. I&rsquo;ve captured a number
+of them, along with the link to our Github repository, at the bottom of this
+post.</p></li>
+
+<li><p>We tried Google Spaces. It&rsquo;s nice and easy but has a number of drawbacks
+compared to Slack that were show-stoppers for us. So at the Winter Tech Forum
+we&rsquo;ll continue using Slack, unless something better shows up in the meantime.</p>
+
+<p>A. Messages can only be 170 characters.</p>
+
+<p>B. You can&rsquo;t do code snippets like you can in Slack.</p></li>
+
+<li><p>Someone on the Elm Slack channel suggested that there be some way to allow
+remote participation, even if it&rsquo;s just to set up a dedicated Slack channel. In
+the past I&rsquo;ve also had requests to set up a web cam. This merits investigation.</p></li>
+</ol>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><p>The <a href="https://guide.elm-lang.org/get_started.html">Getting Started Guide</a>.</p></li>
+
+<li><p><a href="http://elm-lang.org/">The official Elm website</a>. Go here to install Elm, or you
+can just try it directly <a href="http://elm-lang.org/try">on the web</a>.</p></li>
+
+<li><p><a href="https://github.com/swoogles/ElmRetreat">Our Github repository</a>. Most of the subdirectories represent one person.</p></li>
+
+<li><p><a href="https://www.manning.com/books/elm-in-action">Richard Feldman&rsquo;s Elm book</a> is a
+very good introduction, even though only the first three chapters are complete
+so far. Richard works side-by-side with Evan Czaplicki (the creator of Elm) so
+the accuracy of this book seems like it should be very reliable.</p></li>
+
+<li><p><a href="http://package.elm-lang.org/">package.elm-lang.org</a>: Lots of examples that
+other people have created. You will discover here features that you don&rsquo;t see
+in other literature.</p></li>
+
+<li><p><a href="https://github.com/avh4/elm-format">Elm-format</a> to impose standard formatting on your code.</p></li>
+
+<li><p><a href="https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/">99 problems solved using Elm</a></p></li>
+
+<li><p><a href="https://www.dailydrip.com/topics/elm">Learn Elm in one small lesson per day</a></p></li>
+
+<li><p><a href="http://blog.jenkster.com/2016/04/how-i-structure-elm-apps.html">One way to structure Elm apps</a></p></li>
+
+<li><p><a href="https://medium.com/@zenitram.oiram/a-beginners-guide-to-websockets-in-elm-and-crystal-8f510c28eb61#.9fza1v5e">Introduction to Websockets in Elm</a></p></li>
+
+<li><p><a href="https://github.com/etaque/elm-hexagons/blob/master/src/Hexagons/Grid.elm">A Grid Component</a></p></li>
+</ul>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>690</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

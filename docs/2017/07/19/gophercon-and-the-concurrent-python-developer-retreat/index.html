@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Gophercon And The Concurrent Python Developer Retreat</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Bruce Eckel" />
+  <meta name="description" content="I found Gophercon to be valuable and it restarted my interest in the Go language. I&amp;rsquo;m currently working my way through The Go Programming Language Phrasebook and plan to explore ways to call Go from Python (described later in this post).
+If I hadn&amp;rsquo;t been attending with my friend Luciano Ramalho it would have been a different experience. The conference is clearly commercial and I had a strong sense of having my experience decided for me." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bruceeckel" />
+    <meta name="twitter:title" content="Gophercon And The Concurrent Python Developer Retreat" />
+    <meta name="twitter:description" content="I found Gophercon to be valuable and it restarted my interest in the Go language. I&amp;rsquo;m currently working my way through The Go Programming Language Phrasebook and plan to explore ways to call Go from Python (described later in this post).
+If I hadn&amp;rsquo;t been attending with my friend Luciano Ramalho it would have been a different experience. The conference is clearly commercial and I had a strong sense of having my experience decided for me." />
+    <meta name="twitter:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Gophercon And The Concurrent Python Developer Retreat" />
+  <meta property="og:description" content="I found Gophercon to be valuable and it restarted my interest in the Go language. I&amp;rsquo;m currently working my way through The Go Programming Language Phrasebook and plan to explore ways to call Go from Python (described later in this post).
+If I hadn&amp;rsquo;t been attending with my friend Luciano Ramalho it would have been a different experience. The conference is clearly commercial and I had a strong sense of having my experience decided for me." />
+  <meta property="og:url" content="http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/" />
+  <meta property="og:image" content="http://bruceeckel.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.47.1" />
+
+
+<link rel="canonical" href="http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/" />
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Computing Thoughts" />
+<meta name="msapplication-tooltip" content="Computing Thoughts" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="/img/BruceEckelPicture.png" alt="Avatar">
+  
+  <h2 class="title">Computing Thoughts</h2>
+  
+  <p class="subtitle">Bruce Eckel&#39;s Programming Blog</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="/">Home</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com/About/Bruce.php">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.atomicscala.com/">Atomic Scala</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.mindviewinc.com">Mindview</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://www.wintertechforum.com/">Winter Tech Forum</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:mindviewinc@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/bruceeckel" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/bruceeckel" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a rel="alternate" type="application/rss+xml" href="/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Gophercon And The Concurrent Python Developer Retreat</h1>
+      <p class="post-meta">@Bruce Eckel · Jul 19, 2017 · 11 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>I found Gophercon to be valuable and it restarted my interest in the Go language.
+I&rsquo;m currently working my way through <a href="https://play.google.com/store/books/details?id=scyH562VXZUC">The Go Programming Language
+Phrasebook</a> and
+plan to explore ways to call Go from Python (described later in this post).</p>
+
+<p>If I hadn&rsquo;t been attending with my friend <a href="http://www.oreilly.com/pub/au/5939">Luciano
+Ramalho</a> it would have been a different
+experience. The conference is clearly commercial and I had a strong sense of
+having my experience decided for me. Most of the time there was only one
+activity going on, perhaps a selection of talks (often too crowded to get into),
+but a number of times only a single keynote or something happening that was
+intended to force the attendees to hang out around the vendor booths. This
+served the conference organizers and the vendors, but it wasn&rsquo;t all that
+valuable for the attendees.</p>
+
+<p>I would strongly recommend that the Gophercon organizers attend and study
+<a href="https://us.pycon.org">Pycon</a> to experience an attendee-centered conference. At
+Pycon, there&rsquo;s always a multitude of things to do and experience. With
+Gophercon, what you see on the resulting online videos is not that different
+from what you get by attending. Sure, there are the occasional opportunities
+for meeting new folks. Meals are probably the best for this, because you need to
+sit somewhere and that tends to produce new connections. The conference parties
+are intended to achieve this, but these basically throw you into a big noisy
+space with food and possibly games, and rely on you to start conversations. A few
+thoughtful (and free) touches would catalyze the connections that people at the
+conference clearly want to make.</p>
+
+<p>Here&rsquo;s an example. I mentioned my observations to Luciano, and before I knew it
+he had spontaneously created an open-spaces conference at one of the tables,
+simply by making a sign on that table reading &ldquo;Pythonistas who love Go&rdquo; and
+tweeting about it. The people who showed up were hungry for this conversation
+and I think there could have been a lot more of this. Instead, if people weren&rsquo;t
+interested in what was going on or the talk they wanted to see was too crowded,
+they ended up working on their own at one of the tables. I loved Luciano&rsquo;s
+tactic and will try something like that myself if I end up in a similar
+situation &ndash; I&rsquo;ll call it <em>guerilla open spaces</em>.</p>
+
+<p>We stayed for part of the &ldquo;community day,&rdquo; an optional post-conference event
+when everyone really started to connect. This was, to my perception, the
+highest-energy and most collaborative day of the conference, and showed what
+kind of potential this conference really has. It was also an opportunity for
+open-source project sprinting, but as was discovered long ago at Pycon, one day
+doesn&rsquo;t do it. In fact, you&rsquo;re lucky if you get people up to speed with tools
+and the project on the first day, which is why Pycon has four post-conference
+sprint days (I only sprinted for a couple of days last year, three days this
+year, and next year I will stay the whole four days &ndash; the experience and learnings
+I&rsquo;ve gotten from sprinting has just been fantastic).</p>
+
+<p>A lot of people had either completely come over from Python or were programming
+in both Python and Go. A number of speakers told this story. My impression was
+that the Python-Go crossover was the most common one, but that&rsquo;s probably
+because I was particularly interested in it. I did find it a little unfortunate
+that several of the speakers said mildly deprecating things about Python,
+especially since I&rsquo;d like to explore using Python everywhere possible, for the
+power and development speed, and to see if Go can be used to solve many of
+Python&rsquo;s concurrency issues.</p>
+
+<p>Indeed, I went to Gophercon not just because Luciano asked me to, but because I
+hoped to understand more about Go&rsquo;s concurrency model. I came away with a much
+better but far-from-perfect understanding. Everything I&rsquo;ve learned so far
+continues to support the idea that Go can be used in conjunction with Python, at
+least for some set of concurrency problems. So I want to continue that
+experiment.</p>
+
+<p>I had a very interesting discussion with one person who is a big fan of both
+Python and Go, and had a strong understanding of concurrency. He made a
+fascinating observation, which is that there are areas where Go is &ldquo;more
+Pythonic&rdquo; than Python, as per Tim Peters&rsquo; <a href="https://www.python.org/dev/peps/pep-0020/">The Zen of
+Python</a>. In particular, &ldquo;There
+should be one&ndash;and preferably only one&ndash;obvious way to do it.&rdquo; When it comes
+to concurrency, there are many competing ways to solve that problem, and
+the main fork happens between asynch (when you&rsquo;re waiting around for something
+external to happen) and parallelism (when your problem takes lots of processing
+power). The basic solutions in Python are <code>async/await</code> and <code>multiprocessing</code>.
+But in Go, you don&rsquo;t have to think about the type of concurrency problem
+you&rsquo;re solving; you just use goroutines for everything. Thus, more Pythonic:
+one obvious way to do it.</p>
+
+<p>I was especially interested in the <a href="https://grpc.io/">grpc</a> cross-language
+bridge. There was a presentation that used this, and the grpc intro pages have
+working examples, one of which is Python to Go, which I tested on my Windows
+10 machine. The <code>grpc</code> unboxing experience was seamless and exceptionally
+good, which means I&rsquo;ll probably explore it further when I need high-speed
+foreign-function calls. There&rsquo;s a certain attraction to using something
+supported by Google.</p>
+
+<p>However, during the developer retreat, Jim Fulton told us about
+<a href="http://msgpack.org/">MessagePack</a> which has a <a href="https://github.com/msgpack-rpc/msgpack-rpc">cross-language RPC
+implementation</a>. This also seems
+worthy of exploration.</p>
+
+<p>The conference made Go a particularly interesting way to offload concurrency
+problems from Python. Using Go is the one solution we didn&rsquo;t get to during the
+developer retreat, but I see a lot of possibility here for <a href="http://www.concurrentpython.com">Concurrent
+Python</a> and I intend to explore this avenue
+further.</p>
+
+<h2 id="the-conconcurrent-python-developer-retreat">The Conconcurrent Python Developer Retreat</h2>
+
+<p>I&rsquo;ll say that the &ldquo;core&rdquo; members of the event were myself, Luciano and <a href="http://jimfulton.info/">Jim
+Fulton</a> of Zope fame. We had others who were attending
+and contributing while still remotely working at their jobs (un-named in case
+that&rsquo;s an issue) and one intern from the local college who was attempting to
+drink from the firehose.</p>
+
+<p>In this retreat, we were too ambitious. I&rsquo;ve had plenty of experiences trying
+to do too much, but the topic was interesting and we had some good minds
+working on it so I got drawn into the enthusiasm.</p>
+
+<p>We were too ambitious but we learned a great deal. We usually take more breaks
+and do more outside activities, but our ambition drove us more this time so we
+exhausted ourselves on a couple of occasions. I need to pay more attention to
+this in the future and perhaps even add a little structure around breaks and
+activities.</p>
+
+<p>We did manage to get one walk in on the third day, after we had all gotten
+mentally exhausted.</p>
+
+<p>At Gophercon, Luciano and I talked to the folks at the <strong>Twitch.tv</strong> booth,
+who convinced us that Twitch is about more than gaming, and that it would be a
+good way to livestream programming events. This idea was interesting enough
+that after Luciano told me Thoughtworks&rsquo; choice for streaming camera and
+microphone, I ordered them from Amazon so we could use them for part of the
+conference. Alas, Amazon failed: the days kept passing and I kept hearing
+about delays in delivery, so it never happened. Next time we&rsquo;ll give it a try.</p>
+
+<p>As an experiment I bought a Google Chromecast perhaps a year ago. I&rsquo;ve hardly
+used it for anything, but during workshops like this it&rsquo;s priceless to be able
+to have anyone in the room quickly and easily cast their desktop to the TV. We
+used it almost constantly during this developer retreat.</p>
+
+<h2 id="the-projects">The Projects</h2>
+
+<blockquote>
+<p>All these projects reside in the <a href="https://github.com/ConcurrentPython">Concurrent Python Github
+Repository</a>.</p>
+</blockquote>
+
+<p>As previously mentioned, Python tends to partition concurrency into async and
+parallel, so we came up with projects to test those approaches.</p>
+
+<p>The first was based on something I&rsquo;ve been thinking of for awhile. I enjoy
+webcomics but the reading tools require too much mousing-and-clicking. In
+addition, while they originally might open the comic directly in the reader,
+it turns out that the artists often only get paid if you open the page (and
+the associated ads) on the supporting site.</p>
+
+<p>So the first project used asynch calls to open a list of pages, opening each
+in a tab when it became available. In
+<a href="https://github.com/ConcurrentPython/WebComicReader">WebComicReader</a> you&rsquo;ll
+see multiple Python files, each containing the different approaches we tried,
+including basic async/await, concurrent futures, and gevent. Not everything
+worked, or worked easily, or produced the results we expected (Remember we
+were in full exploration mode; pull requests welcome).</p>
+
+<p>To explore parallelism, Luciano came up with the idea of grabbing some images
+and performing CPU-intensive image processing on them &ndash; we chose the
+application of a blur filter. Various solutions are in the <a href="https://github.com/ConcurrentPython/Parallel_Image_Processing">Parallel Image
+Processing</a>
+repository. <code>linear.py</code> just does them one at a time, to show the longest
+possible processing duration, while the other two experiment with parallel
+versions.</p>
+
+<p>One of the more illuminating days was the last one. As we implemented the
+photo-blurring problem using various techniques, Jim kept mentioning Rust. Jim
+had implemented a ZODB server in Rust a year before, so it seemed like an
+ideal opportunity to learn more about this language. Lots of people seem to
+use the refrain &ldquo;I don&rsquo;t know much about Rust but it sounds interesting and
+I&rsquo;d like to explore it more.&rdquo; So I asked Jim if he&rsquo;d be willing to work
+through the photo-blurring problem in Rust and he agreed.</p>
+
+<p>The first interesting thing was setup. Jim worked on this for awhile before
+he just built the environment in a Docker container. This showed that Rust
+is still in flux; there seemed to be language feature error messages that
+popped up around libraries unless you had exactly the right combination
+of compiler and tools; I think we ended up using the nightly build. It seems
+like just getting set up could be quite daunting for a novice.</p>
+
+<p>Jim hadn&rsquo;t done much with Rust in the past year, but before that he had built a
+fairly complex piece of software. In the intervening year, many of the details
+of Rust had slipped away from him and he had to recover them. I&rsquo;ve had this same
+experience with C++. When you have so many facets you need to keep in your head,
+and when the features in question are not language-intuitive but rather are
+low-level details necessary to satisfy some other need, then it&rsquo;s easy to lose
+track of those details.</p>
+
+<p>In the case of C++, the extra mental baggage came from both the requirement of
+backwards compatibility with C, and performance. This threw in lots of special
+cases you had to remember. In the cast of Rust, there&rsquo;s no
+backwards-compatibility issue, which was a relief, but that simplification was
+far more than overwhelmed by all the performance issues.</p>
+
+<p>From my limited exposure to the language, I feel safe in saying that the entire
+<em>raison d&rsquo;etre</em> of Rust is performance. You&rsquo;d choose this language if you are
+solving a problem fundamentally driven by performance. One oft-repeated use case
+is rewriting <a href="https://mozilla.org/en-US/firefox/new">Firefox</a> in Rust. Considering
+how many people use web browsers, something like this could, for example,
+significantly reduce electric power usage while at the same time increasing the
+responsiveness of the browser. For that kind of problem it makes a lot of sense.</p>
+
+<p>But the mental overhead and the amount of work necessary is enormous. In Rust
+you must constantly pay attention to memory management. When you call a
+function, you must also understand how your memory management is going to
+interact with that function, and make decisions about it. This is on top of the
+complexity of the language. My perception is that if you decide to create a
+project in Rust, you must live and breathe that language and it will completely
+occupy your brain, with no room for any other language.</p>
+
+<p>Before committing to Rust for a project, you must be very clear that the costs
+are worth the benefits. Rewriting FireFox, for sure. But for a problem like ours
+it wasn&rsquo;t clear that the performance was faster than the other approaches. This
+might well be due to a poor implementation of the Rust image processing library
+we used, but after all the work it would be pretty disappointing to discover
+that a solution in Go or even Python was around the same speed or even faster.</p>
+
+<p>You can find the Rust implementation of the image processor
+<a href="https://github.com/ConcurrentPython/rust-image">here</a>. Jim put this up a few
+days after the conference, and it now looks deceptively much simpler than
+what we were seeing during development.</p>
+
+<p>Rust is not the language I&rsquo;m seeking because it&rsquo;s not a rapid-development
+solution, so I&rsquo;m putting it on the back shelf for the time being. I can
+definitely imagine projects where it could be a good solution, but I doubt I&rsquo;d
+want to work on those projects.</p>
+
+<p>Once I get far enough through the Go book, I want to try implementing the
+image-processing problem in Go and see what kind of performance comes from that.</p>
+
+<p>Keep in mind that I have always had a particular orientation towards achieving
+desired results while minimizing development effort. If you have different
+objectives and needs, you will probably come to different conclusions than I do.</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This post was published <strong>407</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Computing Thoughts</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>
