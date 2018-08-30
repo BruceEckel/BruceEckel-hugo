@@ -22,15 +22,6 @@ We&amp;rsquo;ve been solving all these other problems around open source, but no
     </item>
     
     <item>
-      <title>The Evolution of the Developer Retreat</title>
-      <link>http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/</link>
-      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/</guid>
-      <description>Test post Kotlin Elixir Flutter Ubuntu on Windows</description>
-    </item>
-    
-    <item>
       <title>Gophercon And The Concurrent Python Developer Retreat</title>
       <link>http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/</link>
       <pubDate>Wed, 19 Jul 2017 00:00:00 +0000</pubDate>
@@ -359,17 +350,6 @@ Balancing Uncertainty via Concrete Projects The Reinventing Business project is 
       <guid>http://bruceeckel.github.io/2014/11/17/new-programming-blog-site/</guid>
       <description>Finally! My programming blog officially moves from Artima to this site, as of now.
 I&amp;rsquo;ve been poking at this problem for at least two years. It almost seems like I was unconsciously waiting for the right system to sort itself out, and it has: Jekyll on Github pages (with MarkdownPad for editing) has won over my heart and mind. I&amp;rsquo;m pretty darn happy about this &amp;mdash; I had gotten to the point where it was just too much trouble to blog on Artima, and so a lot of ideas have gone un-captured.</description>
-    </item>
-    
-    <item>
-      <title>Stm Seems To Have Failed</title>
-      <link>http://bruceeckel.github.io/stm-seems-to-have-failed/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://bruceeckel.github.io/stm-seems-to-have-failed/</guid>
-      <description>http://softtalkblog.com/2010/05/18/microsoft-discontinues-software-transactional-memory-experiment/
-http://joeduffyblog.com/2010/01/03/a-brief-retrospective-on-transactional-memory/
-http://www.perfdynamics.com/Manifesto/USLscalability.html</description>
     </item>
     
   </channel>

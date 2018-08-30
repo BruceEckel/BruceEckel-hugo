@@ -1,6 +1,7 @@
 ---
 title: Stm Seems To Have Failed
 url: /stm-seems-to-have-failed
+published: false
 ---
 
 

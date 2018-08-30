@@ -8,11 +8,6 @@
   </url>
   
   <url>
-    <loc>http://bruceeckel.github.io/2017/08/29/the-evolution-of-the-developer-retreat/</loc>
-    <lastmod>2017-08-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://bruceeckel.github.io/2017/07/19/gophercon-and-the-concurrent-python-developer-retreat/</loc>
     <lastmod>2017-07-19T00:00:00+00:00</lastmod>
   </url>
@@ -192,10 +187,6 @@
     <loc>http://bruceeckel.github.io/post/</loc>
     <lastmod>2017-09-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://bruceeckel.github.io/stm-seems-to-have-failed/</loc>
   </url>
   
   <url>
