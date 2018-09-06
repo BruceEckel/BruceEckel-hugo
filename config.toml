@@ -20,7 +20,7 @@ pygmentscodefences = true
 
 # Change highlight style here.
 # For a full list see: https://xyproto.github.io/splash/docs/all.html
-pygmentsStyle = "manni"
+pygmentsStyle = "solarized-light"
 
 # Other Chroma options can be added here (and in the highlight shortcode in the markdown file)
 # See list of supported options: https://gohugo.io/content-management/syntax-highlighting/#options
