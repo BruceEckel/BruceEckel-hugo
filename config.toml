@@ -41,8 +41,7 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
   # Sidebar text also supports markdown
   # New lines can be added with </br> or normal markdown (two spaces at the end of line or two new lines).
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
-  # sidebarText = """Occasional musings about the world of programming.
-  """
+  # sidebarText = """Occasional musings about the world of programming."""
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
   sidebarMenuEnabled = false
   sidebarMenuHeader = "Sidebar Links"
@@ -141,18 +140,17 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
 # If navigationNewWindow (under [params]) is set to true then all links except root ("/") will open in a new window
 # If it does not exist or is set to false then links will open in the same window
 [[menu.main]]
-  Name = "Blog"
+  Name = "/"
   URL = "/"
-  weight = -5
-
-[[menu.main]]
-  Name = "Google"
-  URL = "https://www.google.com/"
   weight = -5
 
 [[menu.main]]
   Name = "MindView LLC"
   URL = "http://www.MindViewLLC.com"
+
+[[menu.main]]
+  Name = "Winter Tech Forum"
+  URL = "https://www.WinterTechForum.com/"
 
 
 # Sidebar menus
