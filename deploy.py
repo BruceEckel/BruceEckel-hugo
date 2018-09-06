@@ -29,7 +29,7 @@ for item in target.iterdir():
     else:
         unknown(item)
 
-for src in (Path.cwd() / "docs").iterdir():
+for src in (Path.cwd() / "public").iterdir():
     print(f"copying {src.name}")
     if src.is_file():
         shutil.copy(src, target)

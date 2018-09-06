@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- added from octo -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  {{ if not .Site.Params.disableGoogleFonts }}
+    <!-- If local Google Fonts are enabled -->
+    {{ if not .Site.Params.remoteFonts }}
+      <link href="/css/fonts.css" rel="stylesheet" type="text/css">
+    {{ else }}
+      <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+      <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+    {{ end }}
+  {{ end }}
+
+  <!-- goes into the title bar -->
+  <title>{{ .Title }}</title>
+
+  <!-- css -->
+  <!-- original css -->
+  <link rel="stylesheet" href="/css/hugo-octopress.css">
+
+  <!-- css overrides -->
+  {{ range .Site.Params.customCSS }}
+    <link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
+  {{ end }}
+
+  {{ if not .Site.Params.fontAwesome }}
+    <link rel="stylesheet" href="/css/fork-awesome.min.css">
+  {{ else }}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  {{ end }}
+
+  <!-- Icons -->
+  <link href="{{ "/favicon.png" | absURL }}" rel="icon">
+
+  <!-- RSS -->
+  {{ with .RSSLink }}<link href="{{ . }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />{{ end }}
+
+  <meta name="description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.defaultDescription }}{{ end }}">
+  <meta name="keywords" content="{{ range $index, $element := .Keywords }}{{ if gt $index 0 }},{{ end }}{{ . }}{{ else }}{{ .Site.Params.defaultKeywords }}{{ end }}">
+
+  <meta name="author" content="{{ .Site.Params.author }}">
+
+  <!-- Generator version for usage tacking -->
+  {{ .Hugo.Generator }}
+
+  <!-- Google Analytics -->
+  {{ template "_internal/google_analytics_async.html" . }}
+
+  <!-- Enable Twitter card -->
+  {{ with .Site.Params.twitterCardEnabled }}
+    {{ partial "custom_twitter_card.html" $ }}
+  {{ end }}
+
+</head>
+<body{{ with .Site.Params.theme }} class="{{ . }}"{{ end }}>
+
+<!-- top header for octopress -->
+<header role="banner">{{ partial "octo-header.html" . }}</header>
+
+<!-- navigation -->
+<nav role="navigation">{{ partial "navigation.html" . }}</nav>

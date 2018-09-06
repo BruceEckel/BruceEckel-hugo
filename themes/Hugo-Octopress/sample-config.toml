@@ -1,7 +1,7 @@
-baseURL = "http://bruceeckel.github.io/"
+baseurl = "http://example.com"
 disablePathToLower = false
 languageCode = "en-us"
-title = "Computing Thoughts"
+title = "Site title"
 theme = "hugo-octopress"
 
 # Disqus shortcode
@@ -20,7 +20,7 @@ pygmentscodefences = true
 
 # Change highlight style here.
 # For a full list see: https://xyproto.github.io/splash/docs/all.html
-pygmentsStyle = "manni"
+pygmentsStyle = "solarized-dark"
 
 # Other Chroma options can be added here (and in the highlight shortcode in the markdown file)
 # See list of supported options: https://gohugo.io/content-management/syntax-highlighting/#options
@@ -33,23 +33,31 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
 
   # --- Start sidebar options ---
   # Number of last posts that will be displayed in the sidebar - set to 0 or remove to hide this section
-  sidebarRecentLimit = 10
+  sidebarRecentLimit = 5
 
   # Sidebar header - passed to markdownify so you can write markdown here
-  # sidebarHeader = "Sidebar Header"
+  sidebarHeader = "Sidebar Header"
 
   # Sidebar text also supports markdown
   # New lines can be added with </br> or normal markdown (two spaces at the end of line or two new lines).
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
-  sidebarText = """Occasional musings about the world of programming.
+  sidebarText = """Here's a [link to google](https://www.google.com)
+  </br>
+  Second line
+  </br>
+  Third line
+  This line has two spaces in the end to create a new line using markdown
+  Forth line
   """
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
-  sidebarMenuEnabled = false
+  sidebarMenuEnabled = true
   sidebarMenuHeader = "Sidebar Links"
 
   # sidebar links
-  github = "https://github.com/BruceEckel/"
-  twitter = "https://twitter.com/BruceEckel/"
+  github = "https://github.com/parsiya/"
+  bitbucket = "https://bitbucket.org/parsiya/"
+  twitter = "https://twitter.com/cryptogangsta/"
+  keybase = "https://keybase.io/parsiya/"
   stackoverflow = ""
   linkedin = ""
   googleplus = ""
@@ -67,17 +75,17 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
   truncate = true
 
   # Author's name (appears in meta tags and under posts)
-  author = "Bruce Eckel"
+  author = "Author's name"
 
   # This text appears in the site header under website title
-  subtitle = "Bruce Eckel's Programming Blog"
+  subtitle = "Subtitle appears under website title"
 
   # Search engine URL
   searchEngineURL = "https://www.google.com/search"
 
   # Text of the "Continue Reading" label. Supports markdown and inline HTML.
   # For example, &rarr; == right arrow.
-  continueReadingText = "Read More &rarr;"
+  continueReadingText = "Would you like to know more? &rarr;"
 
   # Google analytics code - remove if you do not have/want Google Analytics - needs JavaScript
   # googleAnalytics = "UA-XXXXX-X"
@@ -118,7 +126,7 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
 
   # Remove or Set to false to use local fonts
   # remoteFonts = false
-
+  
   # Remove or set to false to use FontAwesome CDN, otherwise the theme uses ForkAwesome local fonts.
   # fontAwesome = false
 
@@ -132,7 +140,7 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
   # Enable with this.
   # twitterCardEnabled = true
   # Don't include the @.
-  # twitterCardSite =
+  # twitterCardSite = 
   # twitterCardDomain = "parsiya.net"
   # Don't include the @.
   # twitterCardAuthor = "CryptoGangsta"
@@ -151,8 +159,8 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
   weight = -5
 
 [[menu.main]]
-  Name = "MindView LLC"
-  URL = "http://www.MindViewLLC.com"
+  Name = "This theme on Github"
+  URL = "https://www.github.com/parsiya/hugo-octopress"
 
 
 # Sidebar menus
