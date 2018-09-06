@@ -41,15 +41,15 @@ post = "/blog/:year-:month-:day-:title/" # change the post URL to look like the 
   # Sidebar text also supports markdown
   # New lines can be added with </br> or normal markdown (two spaces at the end of line or two new lines).
   # when adding two new lines, remember to remove the indentation otherwise the new line will be treated as a codeblock
-  sidebarText = """Occasional musings about the world of programming.
+  # sidebarText = """Occasional musings about the world of programming.
   """
   # Sidebar menu - if true will add a sidebar menu between sidebar text and recent posts
   sidebarMenuEnabled = false
   sidebarMenuHeader = "Sidebar Links"
 
   # sidebar links
-  github = "https://github.com/BruceEckel/"
-  twitter = "https://twitter.com/BruceEckel/"
+  # github = "https://github.com/BruceEckel/"
+  # twitter = "https://twitter.com/BruceEckel/"
   stackoverflow = ""
   linkedin = ""
   googleplus = ""
