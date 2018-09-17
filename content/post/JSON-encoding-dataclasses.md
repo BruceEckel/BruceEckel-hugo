@@ -11,10 +11,10 @@ can access them within Hugo templates (including Hugo shortcodes, which are call
 from a Markdown file) by saying `.Site.Data.<filename>`, and then use the contents as
 part of your static-site build.
 
-This feature came in handy for the (AtomicKotlin.com)[http://atomickotlin.com/] 
+This feature came in handy for the [AtomicKotlin.com](http://atomickotlin.com/)
 site, because the ebook deployment service
 I'm using (Stepik.org) uses numeric ids for each chapter, and I needed to generate links for
-the [sample chapters](http://atomickotlin.com/sample/). 
+the [sample chapters](http://atomickotlin.com/sample/).
 I decided to generate JSON from this list of ids, and thought it would
 be interesting to see whether Python 3.7's `@dataclass` could be used for this.
 
@@ -45,7 +45,7 @@ class Person:
 def person_list(person_constructor, source: str):
     return [
         person_constructor(n[0], n[1], i)
-        for i, n in enumerate(map(str.split, 
+        for i, n in enumerate(map(str.split,
             source.strip().splitlines()))
     ]
 
@@ -69,7 +69,7 @@ each instance of a `Person` object. This allows us to use a different `Person` c
 later in this post.
 
 `person_list()` takes a block of text, splits it into lines, then maps `str.split()` to each
-line, producing a first and last name. It uses `enumerate()` to generate id numbers, and 
+line, producing a first and last name. It uses `enumerate()` to generate id numbers, and
 returns a `list` of `Person` objects for use in testing.
 
 The output shows that the `@dataclass` decorator automatically generates a `__str__()` method
