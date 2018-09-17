@@ -10,16 +10,61 @@ author: "Bruce Eckel"
 
 
 ```python
-# Python 3.7
-import json
+# person.py
+# Requires Python 3.7
 from dataclasses import dataclass
 from pprint import pprint
+
 
 @dataclass
 class Person:
     first: str
     last: str
     id: int
+
+
+def person_list(constructor, source: str):
+    return [
+        constructor(n[0], n[1], i)
+        for i, n in enumerate(map(str.split, source.strip().splitlines()))
+    ]
+
+
+def muppets(constructor):
+    return person_list(
+        constructor,
+        """
+        Kermit Frog
+        Fozzie Bear
+        Bunsen Honeydew
+        Rowlf Dog
+        Camilla Chicken
+    """,
+    )
+
+
+if __name__ == "__main__":
+
+    pprint(muppets(Person))
+```
+
+
+**Output:**
+
+```
+[Person(first='Kermit', last='Frog', id=0),
+ Person(first='Fozzie', last='Bear', id=1),
+ Person(first='Bunsen', last='Honeydew', id=2),
+ Person(first='Rowlf', last='Dog', id=3),
+ Person(first='Camilla', last='Chicken', id=4)]
+```
+
+
+
+```python
+# person_encoder.py
+import json
+from person import Person, muppets
 
 
 class PersonEncoder(json.JSONEncoder):
@@ -30,27 +75,14 @@ class PersonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-people = [Person(n.split()[0], n.split()[1], i)
-    for i, n in enumerate("""
-        Kermit Frog
-        Fozzie Bear
-        Bunsen Honeydew
-        Rowlf Dog
-        Camilla Chicken
-        """.strip().splitlines())]
+if __name__ == "__main__":
 
-pprint(people)
-print(json.dumps(people, cls=PersonEncoder, indent=2))
+    print(json.dumps(muppets(Person), cls=PersonEncoder, indent=2))
 ```
 
+**Output:**
 
-Output:
 ```
-[Person(first='Kermit', last='Frog', id=0),
- Person(first='Fozzie', last='Bear', id=1),
- Person(first='Bunsen', last='Honeydew', id=2),
- Person(first='Rowlf', last='Dog', id=3),
- Person(first='Camilla', last='Chicken', id=4)]
 [
   {
     "first": "Kermit",
@@ -80,37 +112,58 @@ Output:
 ]
 ```
 
-
-
 ```python
-# Python 3.7
+# namedtuple_encoder.py
 import json
-from dataclasses import dataclass
-from pprint import pprint
+from person import muppets
+from collections import namedtuple
 
-@dataclass
-class Person:
-    first: str
-    last: str
-    id: int
-
-    class JSON(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, Person):
-                return obj.__dict__
-            # Base class default() raises TypeError:
-            return json.JSONEncoder.default(self, obj)
+Person = namedtuple("Person", "first last id")
 
 
-people = [Person(n[0], n[1], i)
-    for i, n in enumerate(map(str.split, """
-        Kermit Frog
-        Fozzie Bear
-        Bunsen Honeydew
-        Rowlf Dog
-        Camilla Chicken
-        """.strip().splitlines()))]
+class PersonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Person):
+            return obj.__dict__
+        # Base class default() raises TypeError:
+        return json.JSONEncoder.default(self, obj)
 
-pprint(people)
-print(json.dumps(people, cls=Person.JSON, indent=2))
+
+if __name__ == "__main__":
+
+    print(json.dumps(muppets(Person), cls=PersonEncoder, indent=2))
 ```
+
+**Output:**
+
+```
+[
+  [
+    "Kermit",
+    "Frog",
+    0
+  ],
+  [
+    "Fozzie",
+    "Bear",
+    1
+  ],
+  [
+    "Bunsen",
+    "Honeydew",
+    2
+  ],
+  [
+    "Rowlf",
+    "Dog",
+    3
+  ],
+  [
+    "Camilla",
+    "Chicken",
+    4
+  ]
+]
+```
+
+
