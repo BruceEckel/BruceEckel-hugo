@@ -1,8 +1,8 @@
 ---
 date: '2018-09-16'
 published: false
-title: JSON Encoding Dataclasses
-url: /2018/09/16/JSON-encoding-dataclasses
+title: JSON Encoding Python Dataclasses
+url: /2018/09/16/JSON-encoding-python-dataclasses
 author: "Bruce Eckel"
 ---
 
@@ -30,7 +30,6 @@ class PersonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-# From listofrandomnames.com:
 people = [Person(n.split()[0], n.split()[1], i)
     for i, n in enumerate("""
         Kermit Frog
@@ -79,4 +78,39 @@ Output:
     "id": 4
   }
 ]
+```
+
+
+
+```python
+# Python 3.7
+import json
+from dataclasses import dataclass
+from pprint import pprint
+
+@dataclass
+class Person:
+    first: str
+    last: str
+    id: int
+
+    class JSON(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, Person):
+                return obj.__dict__
+            # Base class default() raises TypeError:
+            return json.JSONEncoder.default(self, obj)
+
+
+people = [Person(n[0], n[1], i)
+    for i, n in enumerate(map(str.split, """
+        Kermit Frog
+        Fozzie Bear
+        Bunsen Honeydew
+        Rowlf Dog
+        Camilla Chicken
+        """.strip().splitlines()))]
+
+pprint(people)
+print(json.dumps(people, cls=Person.JSON, indent=2))
 ```
