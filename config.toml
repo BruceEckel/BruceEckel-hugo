@@ -1,4 +1,4 @@
-baseURL = "http://bruceeckel.github.io/"
+baseURL = "/"
 disablePathToLower = false
 languageCode = "en-us"
 title = "Computing Thoughts"
