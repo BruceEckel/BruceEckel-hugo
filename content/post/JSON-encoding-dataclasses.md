@@ -151,7 +151,7 @@ element of the list.
 
 To take the example a little further, let's see how hard it is to apply the
 same technique to a `namedtuple`, which has much in common with a `@dataclass` except
-that the fields of a `namedtuple` are invariant. It turns out that `PersonEncoder`
+that the fields of a `namedtuple` are immutable. It turns out that `PersonEncoder`
 is identical:
 
 ```python
