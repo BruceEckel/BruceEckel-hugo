@@ -1,0 +1,32 @@
+<!-- 404 page -->
+
+{{ partial "header.html" . }}
+
+<div id="main">
+  <div id="content">
+    <div>
+      <article role="article">
+        <header>
+          <h1 class="entry-title">
+            {{ with .Site.Params.notFoundHeader }}
+              {{ . | markdownify }}
+            {{ else }}
+              Not Found
+            {{ end }}
+          </h1>
+        </header>
+        <div id="blog-archives" class="category">
+          {{ with .Site.Params.notFoundText }}
+            {{ . | markdownify }}
+          {{ else }}
+            Please either go back or use the navigation/sidebar menus.
+          {{ end }}
+        </div>
+      </article>
+    </div>
+
+    {{ partial "sidebar.html" . }}
+  </div>
+</div>
+
+{{ partial "footer.html" . }}
