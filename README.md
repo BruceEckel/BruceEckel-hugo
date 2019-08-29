@@ -8,10 +8,11 @@ To create a new post:
 hugo new post/<title>.md
 ```
 
-Once you're finished editing, deploy with:
+Once you're finished editing, deploy using Github desktop.
+
+Netlify builds the site automatically, so the only reason to run Hugo locally
+is to check the post for errors:
 
 ```
-deploy.bat
+hugo
 ```
-
-Then update using Github desktop.
