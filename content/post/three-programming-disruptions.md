@@ -1,6 +1,6 @@
 ---
 date: '2019-08-29'
-published: false
+published: true
 title: Three Programming Disruptions
 url: /2019/08/29/three-programming-disruptions
 author: "Bruce Eckel"
