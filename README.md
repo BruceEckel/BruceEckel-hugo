@@ -10,9 +10,7 @@ hugo new post/<title>.md
 
 Once you're finished editing, deploy using Github desktop.
 
-Netlify builds the site automatically, so the only reason to run Hugo locally
-is to check the post for errors:
+Netlify builds the site automatically, so the only reason to run the `hugo` command locally
+is to check the post for errors.
 
-```
-hugo
-```
+To test the site locally, run `local.bat`.
