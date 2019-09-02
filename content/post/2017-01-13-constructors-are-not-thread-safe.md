@@ -8,9 +8,8 @@ url: /2017/01/13/constructors-are-not-thread-safe
 
 When you imagine the construction process, it can be easy to think that it's
 thread-safe. After all, no one can even see the new object before it finishes
-initialization, so how could there be contention over that object? Indeed,
-the [Java Language
-specification](http://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.8.3)
+initialization, so how could there be contention over that object? Indeed, the
+[Java Language Specification](http://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.8.3)
 (JLS) confidently states:
 
 *"There is no practical need for a constructor to be synchronized, because it
