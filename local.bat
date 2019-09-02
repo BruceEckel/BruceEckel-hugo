@@ -3,4 +3,4 @@ from subprocess import call
 call("hugo")
 import webbrowser
 webbrowser.open("http://localhost:1313/", new=1, autoraise=True)
-call("hugo server")
+call("hugo server --disableFastRender")

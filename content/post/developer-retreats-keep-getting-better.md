@@ -1,6 +1,6 @@
 ---
 date: '2019-08-30'
-published: false
+published: true
 title: Developer Retreats Keep Getting Better
 url: /2019/08/30/developer-retreats-keep-getting-better
 author: "Bruce Eckel"
@@ -15,11 +15,11 @@ his schedule, so he wanted to come to Crested Butte and have a retreat. This
 seems to have become a pattern: someone I know would like to come here, and we
 end up organizing a retreat around their trip.
 
-In the past we've had retreats around specific subjects, but I've found that this
-created pressure to "move forward" and "be productive" which seems to make the
-event more like work and less like a retreat, taking important amounts of fun
-and relaxation away. So with each successive retreat I've tried to remove anything
-that allows us to fall into our normal mindset of urgency.
+In the past we've had retreats around specific subjects, but I've found that
+this created pressure to "move forward" and "be productive" which seems to make
+the event more like work and less like a retreat, depleting important amounts
+of fun and relaxation. So with each successive retreat I've tried to remove
+anything that allows us to fall into our normal mindset of urgency.
 
 Initially, I stated that the only "rule" was the
 ["law of two feet"](https://www.wintertechforum.com/open-spaces/#the-law-of-two-feet)
@@ -67,8 +67,8 @@ Not everyone worked on Claudia; Josh and Cody were spending time on a project th
 been working on for our customer, and I was recovering from a previous week-long workshop
 so I mostly just observed and participated in discussions.
 
-{{< figure src="/images/CodyJoshLucianoBruce.jpg" title="Cody Bontecou, Joshua
-Fry, Luciano Ramalho and Me having breakfast at McGill's in Crested Butte" >}}
+{{< figure src="/images/CodyJoshLucianoBruce.jpg"
+title="Cody Bontecou, Joshua Fry, Luciano Ramalho and Me having breakfast at McGill's in Crested Butte" >}}
 
 Our friend Bill Frasure had his 30th birthday on the Blue Mesa Reservoir so we
 joined him on a rented pontoon boat, and our friend Joe brought his kayaks:
@@ -78,6 +78,6 @@ joined him on a rented pontoon boat, and our friend Joe brought his kayaks:
 This was such a pleasant experience that I've decided pontoon boating should
 be included as a possibility for future Summer events.
 
-{{< figure src="/images/LucianoBlueMesa.jpg" title="Joe and Luciano Ramalho at the Blue Mesa" >}}
+{{< figure src="/images/LucianoBlueMesa.jpg" title="Joe and Luciano at the Blue Mesa" >}}
 
 
