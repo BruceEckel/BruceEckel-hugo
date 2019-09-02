@@ -50,11 +50,34 @@ Luciano wanted to create a foundation for experimenting with the "Distributed
 Consensus Problem" (an introduction can be found
 [here](https://blog.acolyer.org/2019/03/08/a-generalised-solution-to-distributed-consensus/)),
 using the [RAFT algorithm](https://raft.github.io/)---that link includes a simulation
-to make it easier to understand.
-
-https://github.com/standupdev/claudia
+to make it easier to understand. To do this, he ordered and assembled a group
+of Raspberry Pi computers, each connected to a Unicorn Hat display:
 
 {{< figure src="/images/Claudia.jpg" title="Claudia: The RAFT Simulation Platform" >}}
+
+Steve Tarver introduced us to Ansible and created the configuration for
+Claudia. This was new to several of us, so it was very useful to have Steve
+there as an expert.
+
 {{< figure src="/images/SteveAndJim.jpg" title="Steve Tarver and Jim Baker with Claudia" >}}
-{{< figure src="/images/CodyJoeBlueMesa.jpg" title="Cody Bontecou and Joe Webber Unloading Kayaks at the Blue Mesa" >}}
+
+Here's the [Github repo](https://github.com/standupdev/claudia) for the project.
+
+Not everyone worked on Claudia; Josh and Cody were spending time on a project they've
+been working on for our customer, and I was recovering from a previous week-long workshop
+so I mostly just observed and participated in discussions.
+
+{{< figure src="/images/CodyJoshLucianoBruce.jpg" title="Cody Bontecou, Joshua
+Fry, Luciano Ramalho and Me having breakfast at McGill's in Crested Butte" >}}
+
+Our friend Bill Frasure had his 30th birthday on the Blue Mesa Reservoir so we
+joined him on a rented pontoon boat, and our friend Joe brought his kayaks:
+
+{{< figure src="/images/CodyJoeBlueMesa.jpg" title="Cody and Joe Webber Unloading Kayaks at the Blue Mesa" >}}
+
+This was such a pleasant experience that I've decided pontoon boating should
+be included as a possibility for future Summer events.
+
 {{< figure src="/images/LucianoBlueMesa.jpg" title="Joe and Luciano Ramalho at the Blue Mesa" >}}
+
+
