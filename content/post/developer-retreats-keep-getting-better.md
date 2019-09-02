@@ -46,6 +46,11 @@ as announcing that you are heading to a coffee shop or to breakfast in case
 other people want to join you. And of course, sharing technical information
 about projects.
 
+The main location for the retreat is the training room for
+[Evolve Coworking](https://www.evolvework.co/). I'm still planning to put up
+a Chromecast-enabled monitor in that room, as well as painting part of the
+wall with whiteboard paint.
+
 Luciano wanted to create a foundation for experimenting with the "Distributed
 Consensus Problem" (an introduction can be found
 [here](https://blog.acolyer.org/2019/03/08/a-generalised-solution-to-distributed-consensus/)),
