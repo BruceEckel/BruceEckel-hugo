@@ -23,7 +23,7 @@ assumptions we make without questioning their validity.
 I now see that one problem I have with many of the accumulated design ideas is
 their unspoken assumption that:
 
-> 1. We somehow know how a system will change.
+> We somehow know how a system will change.
 
 We don't, but we want to think we do. Thus, adding the extra complexity is
 worth it. The very assumption that part of our job is *knowing* how a system
@@ -73,7 +73,7 @@ the legitimate use of interfaces when it happened.
 
 This made me think of a second unspoken assumption:
 
-> 2. Abstractions are always worth their cost
+> Abstractions are always worth their cost
 
 There are times when an abstraction helps make something clearer, at which point
 I feel good about using it. Yes, it might also enable future change, but I don't
