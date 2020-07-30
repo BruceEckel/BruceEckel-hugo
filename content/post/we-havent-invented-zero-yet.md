@@ -32,4 +32,19 @@ if there are no chickens, I don't get told there are zero chickens, I find out
 instead that there is nothing of any kind, which is not what I asked.
 
 This becomes especially problematic when designing generic containers. If we
-create (in Kotlin) a `Yard`
+create (in Kotlin) a `Yard` that can contain chickens or goats or old cars, we
+must deal with the problem of an empty `Yard`. One way to sidestep this is to
+force the user to provide initial values:
+
+```kotlin
+class Yard<T>(private var resident: T){
+  fun add(item: T) { resident = item }
+  fun get() = resident
+}
+
+class Chicken
+
+fun main() {
+  val yardWithChicken = Yard(Chicken())
+}
+```
