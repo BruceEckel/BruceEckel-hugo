@@ -1,7 +1,7 @@
 ---
 title: "We Haven't Invented Zero Yet"
 date: '2020-07-30'
-published: false
+published: true
 url: /2020/07/30/we-havent-invented-zero-yet
 author: "Bruce Eckel"
 ---
@@ -45,7 +45,7 @@ class Yard<T>(private var resident: T){
 class Chicken
 
 fun main() {
-  val yardWithChicken = Yard(Chicken())
+  val chickenYard = Yard(Chicken())
 }
 ```
 
@@ -70,3 +70,32 @@ fun main() {
   chicken?.layEgg()
 }
 ```
+
+If there is no chicken in the yard, I must not ask it to lay an egg or
+everything collapses. Fortunately, Kotlin provides extra safety syntax for this
+but I still have to dance around the issue.
+
+When you add zero to a number system, that zero pervades throughout everything
+you can do with that number system. So now instead of saying there are one,
+two, or many chickens vs. nothing of any kind, we can say that there are zero
+chickens, zero goats, or zero old cars. Zero has a type.
+
+`null` has no type. You can't have `null` chickens, you just have `null`.
+Computer science hasn't invented the equivalent of zero yet.
+
+What would this "zero object" look like? If I create a `Yard<Chicken>` and
+there is no `Chicken` in that `Yard`, instead of `null` I need a "zero
+`Chicken`"&mdash;something with the *shape* of a `Chicken`, that I can perform
+`Chicken` operations upon without asking (at least, in most cases) whether it
+is a zero `Chicken` or not.
+
+And just like zero in a number system allows you to say that there can be zero
+of a thing, the concept of a zero object must pervade the entire system (it
+must be built into the language). So if I ask a zero `Chicken` to `layEgg()`,
+it will hand me a zero `Egg`. Every time you create a new type, its
+zero-analogue must be created by the language.
+
+Computer programming needs to invent its own zero to free us from the tyranny
+of `null`.
+
+*I am the author, with Svetlana Isakova, of [Atomic Kotlin](https://www.atomickotlin.com/)*
