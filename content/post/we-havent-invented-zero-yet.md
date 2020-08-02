@@ -98,6 +98,10 @@ zero-analogue must be created by the language.
 Computer programming needs to invent its own zero to free us from the tyranny
 of `null`.
 
+(Roman Elizarov discusses some aspects of this issue
+[here](https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5)
+and [here](https://medium.com/@elizarov/dealing-with-absence-of-value-307b80534903)).
+
 [Comment on Reddit](https://www.reddit.com/r/Kotlin/comments/i0rzam/computer_science_needs_the_equivalent_of_zero/)
 
 *I am the author, with Svetlana Isakova, of [Atomic Kotlin](https://www.atomickotlin.com/)*
