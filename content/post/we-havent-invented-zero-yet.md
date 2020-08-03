@@ -6,6 +6,8 @@ url: /2020/07/30/we-havent-invented-zero-yet
 author: "Bruce Eckel"
 ---
 
+*I am the author, with Svetlana Isakova, of [Atomic Kotlin](https://www.atomickotlin.com/).*
+
 I suspect most people currently alive were introduced to the concept of zero
 quite early in their development&mdash;early enough that they internalized it
 as a foundational principle and don't ask questions about it. In addition, many
@@ -98,10 +100,20 @@ zero-analogue must be created by the language.
 Computer programming needs to invent its own zero to free us from the tyranny
 of `null`.
 
-(Roman Elizarov discusses some aspects of this issue
-[here](https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5)
-and [here](https://medium.com/@elizarov/dealing-with-absence-of-value-307b80534903)).
-
 [Comment on Reddit](https://www.reddit.com/r/Kotlin/comments/i0rzam/computer_science_needs_the_equivalent_of_zero/)
 
-*I am the author, with Svetlana Isakova, of [Atomic Kotlin](https://www.atomickotlin.com/)*
+## Notes
+
++ A number of commenters pointed out that what I describe is similar to the
+[null object pattern](https://en.wikipedia.org/wiki/Null_object_pattern). This
+is true but what I'm actually asking for is an automatic null object pattern.
+Remember that design patterns represent language failures.
+
++ Roman Elizarov discusses some aspects of this issue
+[here](https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5)
+and [here](https://medium.com/@elizarov/dealing-with-absence-of-value-307b80534903).
+
++ [This post](http://twistedoakstudios.com/blog/Post330_non-nullable-types-vs-c-fixing-the-billion-dollar-mistake)
+muses over numerous approaches for mitigating `null` in C#, and a number of
+these approaches were incorporated into Kotlin. Note that C#'s `default` captures
+a little of what I'm talking about here.
