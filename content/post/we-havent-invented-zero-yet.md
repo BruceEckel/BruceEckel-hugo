@@ -109,6 +109,10 @@ of `null`.
 is true but what I'm actually asking for is an automatic null object pattern.
 Remember that design patterns represent language failures.
 
++ [Here is a nice comparison](https://medium.com/@fatihcoskun/kotlin-nullable-types-vs-java-optional-988c50853692)
+of Java's `Optional` and Kotlin's built-in alternative to `Optional`, showing the
+advantages of the Kotlin approach.
+
 + Roman Elizarov discusses some aspects of this issue
 [here](https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5)
 and [here](https://medium.com/@elizarov/dealing-with-absence-of-value-307b80534903).
