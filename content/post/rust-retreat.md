@@ -76,4 +76,21 @@ discovered [PyO3](https://github.com/PyO3), which really beautifully solves most
 (all?) of the setup for interfacing Python and Rust. If you want to write Rust
 extensions for Python, this appears to be the nicest solution.
 
+We then turned our attention to [Go](https://golang.org/), which also has some
+nice potential as an extension language for Python. When we looked for
+something similar to PyO3 for Go, there appeared to be several abandoned
+projects. Had the Go community decided their language wasn't worth adapting to
+Python? Then gRPC appeared&mdash;this is Google's super-performant remote
+procedure call system, which they use virtually everywhere and which apparently
+supports billions of calls per second across Google.
+
+I first encountered this concept when I was on the C++ standards committee and
+the [CORBA](https://www.corba.org/) initiative began. A core part of CORBA was
+the goal of making language-agnostic function calls across networks. The Object
+Management Group was (at least at the time) bogged down with bureacracy and
+was controlled predominantly by the larger organizations that could pay the
+costs of being on that committee. The focus was on the specification and you
+had to implement it by hand, which wasn't easy. My first experience of creating
+a CORBA system didn't happen until it was available (and easy) on Python.
+
 
