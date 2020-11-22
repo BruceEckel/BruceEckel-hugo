@@ -154,3 +154,6 @@ extension.
 - [ALPS Spec](https://tools.ietf.org/html/draft-amundsen-richardson-foster-alps-04)
 
 - [ALPS Example](https://github.com/alps-io/alps-contacts)
+
+**I am the Author of [Atomic Kotlin](https://www.atomickotlin.com/)
+(with Svetlana Isakova) and [On Java 8](https://www.onjava8.com/).**
