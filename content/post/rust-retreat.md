@@ -161,4 +161,4 @@ extension.
 [Comment on Reddit](https://www.reddit.com/r/Python/comments/jz6a0z/python_extensions_with_rust_and_go/)
 
 - **I am the Author of [Atomic Kotlin](https://www.atomickotlin.com/)
-(with Svetlana Isakova) and [On Java 8](https://www.onjava8.com/).**
+(with Svetlana Isakova), [On Java 8](https://www.onjava8.com/), and other books.**
