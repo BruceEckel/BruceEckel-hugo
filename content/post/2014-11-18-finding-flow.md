@@ -20,22 +20,19 @@ I've come full circle to realize that I find flow in computer programming, and i
 
 The first obvious thing to look at is upgrading to the new, open-sourced version 8 of Java. There are other opportunities here: replacing Ant with Gradle, for example, and choosing better libraries rather than the standard libraries --- ultimately creating an improved hybrid of Java by picking and choosing best-of-breed tools and libraries.
 
-This sounded good but I immediately encountered a problem when I started researching the Java 8 language itself. Here's a set of articles that give an overview of what's new and different in Java 8:
+This sounded good but I immediately encountered a problem when I started
+researching the Java 8 language itself. I found many articles on Java 8 that
+were full of hope and promise, and made me feel that yes, I was on the right
+track here. But then I found these:
 
-* [https://blog.paralleluniverse.co/2014/05/01/modern-java/](https://blog.paralleluniverse.co/2014/05/01/modern-java/)
-* [https://blog.paralleluniverse.co/2014/05/08/modern-java-pt2/](https://blog.paralleluniverse.co/2014/05/08/modern-java-pt2/)
-* [https://blog.paralleluniverse.co/2014/05/15/modern-java-pt3/](https://blog.paralleluniverse.co/2014/05/15/modern-java-pt3/)
-* [https://java.dzone.com/articles/why-we-need-lambda-expressions](https://java.dzone.com/articles/why-we-need-lambda-expressions)
+* [https://dzone.com/articles/whats-wrong-java-8-currying-vs](https://dzone.com/articles/whats-wrong-java-8-currying-vs)
+* [https://dzone.com/articles/whats-wrong-java-8-part-ii](https://dzone.com/articles/whats-wrong-java-8-part-ii)
+* [https://dzone.com/articles/whats-wrong-java-8-part-iii](https://dzone.com/articles/whats-wrong-java-8-part-iii)
+* [https://dzone.com/articles/whats-wrong-java-8-part-iv](https://dzone.com/articles/whats-wrong-java-8-part-iv)
+* [https://dzone.com/articles/java-8-optional-whats-point](https://dzone.com/articles/java-8-optional-whats-point)
 
-The above articles are full of hope and promise, and made me feel that yes, I was on the right track here. But then I found these:
-
-* [https://java.dzone.com/articles/whats-wrong-java-8-currying-vs](https://java.dzone.com/articles/whats-wrong-java-8-currying-vs)
-* [https://java.dzone.com/articles/whats-wrong-java-8-part-ii](https://java.dzone.com/articles/whats-wrong-java-8-part-ii)
-* [https://java.dzone.com/articles/whats-wrong-java-8-part-iii](https://java.dzone.com/articles/whats-wrong-java-8-part-iii)
-* [https://java.dzone.com/articles/whats-wrong-java-8-part-iv](https://java.dzone.com/articles/whats-wrong-java-8-part-iv)
-* [https://java.dzone.com/articles/java-8-optional-whats-point](https://java.dzone.com/articles/java-8-optional-whats-point)
-
-Consider, for example, some code from the last article in the above list (a test of code listings and syntax highlighting in github-flavored markdown):
+Consider, for example, some code from the last article in the above list (a
+test of code listings and syntax highlighting in github-flavored markdown):
 
 ```java
 public static void main(String[] args) {
