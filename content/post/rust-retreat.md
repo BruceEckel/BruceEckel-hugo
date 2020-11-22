@@ -1,7 +1,7 @@
 ---
 date: '2020-10-04'
 published: false
-title: The Rust Developer Retreat
+title: Python Extensions with Rust and Go
 url: /2020/10/04/rust-retreat
 author: "Bruce Eckel"
 ---
@@ -13,12 +13,12 @@ important to give up the idea that "we must accomplish something in an amount
 of time." Only with the sigh of relief that comes from liberating yourself from
 goals is your brain allowed to float to the most interesting places.
 
-My friend Jeremy Cerise, who comes to most of these retreats, had said that he
-had become re-interested in the Rust language again and wanted to explore it.
-We had touched on Rust a couple of years before, but that retreat was invested
-with urgency and goals and Rust ended up feeling too complicated and
-cumbersome. I was skeptical, but I've found that if Jeremy is interested in
-something, there's probably something there, so Rust was worth a second look.
+My friend Jeremy Cerise, who comes to most of these retreats, said that he had
+become re-interested in the Rust language and wanted to explore it. We had
+touched on Rust a couple of years before, but that retreat was invested with
+urgency and goals and Rust ended up feeling too complicated and cumbersome. I
+was skeptical, but I've found that if Jeremy is interested in something,
+there's probably something there, so Rust was worth a second look.
 
 We had both gotten Covid at the [Winter Tech
 Forum](https://www.wintertechforum.com/) in March, so it seemed like we could
@@ -42,13 +42,13 @@ provides as much language and compiler support as possible to guarantee that
 you don't mis-manage your memory, because you're doing it all by hand.
 
 This is what can seem weird at first about Rust. Garbage collectors do a lot of
-valuable work for the programmer. They librate programmers to focus on the
+valuable work for the programmer. They liberate programmers to focus on the
 problem at hand rather than being forced to pay attention to low-level details.
 There is some overhead, but that overhead almost universally pays off in the
-form of programmer overhead. The compromise of giving up the garbage collector
-feels like a significant step backward.
+form of programmer overhead. Giving up a garbage collector feels like a
+significant step backward.
 
-And this focus on low-level efficiency pervades Rust. Any Rust code you look at
+This focus on low-level efficiency pervades Rust. Any Rust code you look at
 leaves a metallic taste in your mouth of being right next to the hardware. That
 awareness of hardware is ever-present, and for that reason I've started calling
 Rust a "very-high-level assembly language."
@@ -61,40 +61,58 @@ seen anything that comes close to Rust for solving the problem of writing
 low-level code.
 
 Both Jeremy and I have strong Python backgrounds, and we both became fascinated
-with a problem that has plagued the Python community from its beginning: when
-you need to do something low-level, what do you do. Python was designed to be
-able to call C components, but this was always messy and complicated. Over the
-years there have been many attempts to solve this problem, some better than
-others but none I have ever looked at and felt no intimidation.
+with a problem that has plagued the Python community from its beginning:
+low-level extensions. Python was designed to be able to call C components, but
+this was always messy and complicated. Over the years there have been many
+attempts to solve this problem, some better than others but none I have ever
+looked at and felt no intimidation.
 
 So we wondered whether Rust might be a good solution for speeding up slow parts
 of a Python program. We started with [this
 article](https://developers.redhat.com/blog/2017/11/16/speed-python-using-rust/),
 but couldn't get it to work because of what turned out to be a simple renaming
 problem that doesn't seem to be mentioned anywhere. Upon giving up, we
-discovered [PyO3](https://github.com/PyO3), which really beautifully solves most
+discovered [PyO3](https://github.com/PyO3), which beautifully solves most
 (all?) of the setup for interfacing Python and Rust. If you want to write Rust
-extensions for Python, this appears to be the nicest solution.
+extensions for Python, PyO3 appears to be the nicest solution.
 
 We then turned our attention to [Go](https://golang.org/), which also has nice
 potential as an extension language for Python. When we looked for something
-similar to PyO3 for Go, there appeared to be several abandoned projects. Had
-the Go community decided their language wasn't worth adapting to Python? Then
-we remembered gRPC&mdash;this is Google's super-performant remote procedure
-call system, which they use virtually everywhere and which apparently supports
-billions of calls per second across Google.
+similar to PyO3 for Go, there appeared to be several abandoned projects. This
+one looked the most promising:
 
-I first encountered this concept when I was on the C++ standards committee and
-the [CORBA](https://www.corba.org/) initiative began. A core part of CORBA was
-the goal of making language-agnostic function calls across networks.
+- [gopy: Generate Python Extensions in Go](https://github.com/go-python/gopy)
 
-In almost all Remote Procedure Call (RPC) protocols, you describe data and
-functions using an Interface Description Language (IDL) which is like a
-programming language that has been restricted to only describing data
-structures and function interfaces. Then you run the IDL through a generator
-that produces code for your specific programming language, add your
-application-specific code and deploy the result. Using a universal format for
-interfacing greatly simplifies the process of making RPCs.
+However there were statements like *This is a newly-improved version that works
+with current (e.g., 1.12) versions of Go.* (the current version of Go is 1.15;
+was about two years ago). Also: *Limitations: Windows completely untested,
+likely needs something special*. (Windows dwarfs every other platform out
+there. You've *got* to support it).
+
+Has the Go community decided their language wasn't worth adapting to Python?
+Maybe we didn't look hard enough? Then we remembered gRPC, Google's
+super-performant *remote procedure call* (RPC) system, which they use virtually
+everywhere and which apparently supports billions of calls per second across
+Google.
+
+- [Tutorial: Python and gRPC](https://grpc.io/docs/languages/python/basics/)
+
+- [gRPC Python Docs](https://grpc.github.io/grpc/python/)
+
+I've always been fascinated with getting different languages to interact with
+each other. It seems very powerful to be able to use the best features of each
+language. I first encountered the idea of RPCs when I was on the C++ standards
+committee as the [CORBA](https://www.corba.org/) initiative began. A core part
+of CORBA was the goal of making language-agnostic function calls across
+networks.
+
+In most RPC protocols you describe data and functions using an *interface
+description language* (IDL). An IDL is like a programming language that has
+been restricted so it can only describe data structures and function
+interfaces. You you run the IDL through a generator that produces code for your
+specific programming language, add your application-specific code and deploy
+the result. Using a common format for interfacing greatly simplifies the
+process of making RPCs.
 
 The Object Management Group that created CORBA was (at least at the time)
 bogged down with bureacracy and was controlled predominantly by the larger
@@ -110,12 +128,29 @@ implementation and supporting tools. We saw solutions like XML/RPC which worked
 nicely but had limitations and enough performance overhead that you needed to
 balance the cost of making calls over the wire to the benefits of the remote
 call. Ideally, calling overhead should not be a factor in deciding whether to
-use remote procedure calls. Add to this the immense costs of tiny amounts of
-memory or delays on Google's massive system and they were compelled to make
+use remote procedure calls. And consider Google's massive system: tiny amounts
+of memory or delays could produce immense impacts. They were compelled to make
 gRPC as efficient as humanly possible. If overhead is a non-issue, calling from
 Python to another language becomes a much easier decision. But is this the
 case?
 
-Jeremy created a experiment you can find [here](), in which he makes one million
-local calls to a Python function and a million calls to that same Python function
-running remotely (in this case, on a different machine in a different process).
+This article shows that Rust is at least 30% faster than Go in all their
+testing algorithms, and sometimes much faster than that:
+
+- [When to use Rust and when to use Go](https://blog.logrocket.com/when-to-use-rust-and-when-to-use-golang/)
+
+The gRPC approach is a little more complicated, as well, because you must start
+a server in another process to provide the gRPC service in Go. However, if Go
+has features you want, even with the speed differences with Rust, it might
+still be so much faster than what you were trying to do in Python that it could
+never be an issue. If you already understand Go and are comfortable with it and
+don't have time to delve into Rust right now, then Go and gRPC will almost
+certainly solve your problem. But if you know from the start that squeezing out
+every drop of performance is essential, then you want Rust for your Python
+extension.
+
+### ALPS: Generate different IDLs from one spec (such as GraphQL, gRPC and REST):
+
+- [ALPS Spec](https://tools.ietf.org/html/draft-amundsen-richardson-foster-alps-04)
+
+- [ALPS Example](https://github.com/alps-io/alps-contacts)
