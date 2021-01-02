@@ -67,12 +67,12 @@ to handle the Java 11 chapter.
 
 Ideally without throwing things.
 
-It required multiple days, and a lot of self-reasurrance that it was OK to just
-take my time and keep poking at it. I started becoming more engaged with the
-Gradle docs, and of course doing large quantities of internet searches.
+It required multiple dedicated days, and a lot of self-reasurrance that it was
+OK to just take my time and keep poking at it. I started becoming more engaged
+with the Gradle docs, and of course doing large quantities of internet searches.
 
 With patience and perserverance, Gradle slowly began to give up its mysteries.
-At the same time, I began to understand why it had been so baffling to me and
+At the same time, I started understanding why it had been so baffling to me and
 why treating Gradle as an exercise in configuration just doesn't work. You can't
 go at it with a quick-and-dirty attitude, and that's what had stymied me. This
 is the problem I had with Gradle:
@@ -85,10 +85,10 @@ your problem is complicated enough that you must do more. And it turns out that
 "doing more" translates to "knowing everything." Basically, once you get past the
 simple builds you fall off a cliff.
 
-Think of the grappling shoes in Season 1, Episode 1 of *Rick and Morty*. Rick
-explains how they allow you to walk on vertical surfaces, so Morty puts them on
-and promptly falls down a cliff, after which Rick explains that "you have to
-turn them on." Gradle is my grappling shoes.
+Think of the grappling shoes in the very first episode of *Rick and Morty*. Rick
+explains that the shoes allow you to walk on vertical surfaces, so Morty puts
+them on and promptly falls down a cliff, after which Rick explains that "you
+have to turn them on." Gradle is my grappling shoes.
 
 My goal here is to give you perspective, so as you fall down the cliff face you
 will understand what is happening, and what is necessary to climb back up the
@@ -112,17 +112,17 @@ How helpful is DSL syntax, really? I have to translate it into function calls in
 my head when I read it. So for me it's more cognitive overhead and I'm not sure
 if it's ultimately not a hindrance.
 
-## 4. The Framework and Lifecycle
-
-Groovy silently imports a ton of things which you have to know about in order to
-use
-
-## 5. There are Many Ways to do the Same Thing
+## 4. There are Many Ways to do the Same Thing
 
 Groovy allows you to express things in numerous different ways and the Gradle
 documentation immediately seems to revel in all the different ways that you can
 express the same thing. This compounds the complexity of learning cradle. Being
 able to do things a bunch of different ways is not a feature.
+
+## 5. The Framework and Lifecycle
+
+Groovy silently imports a ton of things which you have to know about in order to
+use
 
 ## 6. The Documentation Assumes You
 
