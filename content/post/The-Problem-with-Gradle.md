@@ -6,11 +6,41 @@ url: /2021/01/02/The-Problem-with-Gradle
 author: "Bruce Eckel"
 ---
 
-> (With apologies to Hans Dockter)
+> Or: *How to remain sane when approaching Gradle*
+> (With apologies to Hans Dockter).
 
-To do anything you have to know everything
+I started using `make` in the 80's. When I wrote *Thinking in C++*, I created a
+tool I called `makebuilder`, in C++, which would analyze the examples extracted
+from the book and create an appropriate makefile. `make` is a dedicated tool
+that only cares about dependencies and actions, so it is reasonably
+approachable.
 
-How to Remain Sane when Approaching Groovy
+When I wrote *Thinking in Java*, I created a similar tool I called `antbuilder`,
+which produced an appropriate Ant build file. Although it was created when for
+some reason everyone seemed to think XML was the future of everything, `ant` is
+nonetheless a dedicated build tool so it is, like `make`, reasonably
+approachable.
+
+So I'd had a fair background with build tools when I began looking at Gradle,
+and I had certain expectations, primarily that the tool would have a fairly
+straightforward configuration and setup process, and that things would look
+passably familiar.
+
+This idea was support by what I'd read about Gradle, promising that most
+configurations would be simple and that you'd commonly never need to dip below
+the surface of that configuration.
+
+Stuck for years, depending on others to help figure it out. Very frustrated,
+avoided dealing with it and crossed my fingers. I think I even felt some shame
+around it, especially when I kept hearing how great Gradle is, how easy, etc.
+
+Watched Youtube video where they just did things but never really explained. You
+know the kind of people who have memorized the entire unix command-line suite? I
+realized that's what I was seeing.
+
+> To do anything you have to know everything
+
+internal and external dependencies
 
 ## 1. You're Programming in a Different Language
 
