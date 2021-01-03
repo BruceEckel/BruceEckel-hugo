@@ -22,10 +22,10 @@ nonetheless a dedicated build tool so it is, like `make`, reasonably
 approachable.
 
 So I'd had a fair background with build tools when I began looking at Gradle,
-and I had certain expectations, primarily that the tool would have a fairly
+and I had certain expectations, primarily that the tool would have a
 straightforward configuration and setup process, and that things would look
-passably familiar. This idea was support by what I'd read about Gradle,
-promising that most configurations would be simple and that you'd commonly never
+passably familiar. This idea was supported by what I'd read about Gradle,
+promising that most configurations would be simple and that you'd normally never
 need to dip below the surface of that configuration.
 
 Instead, Gradle was very mysterious for me. It seemed to have innumerable cliffs
@@ -41,10 +41,15 @@ baffling, even after reading a couple of books on Gradle.
 
 After that, I started work on [Atomic Kotlin](https://www.atomickotlin.com/),
 for which we also used Gradle, but my coauthor Svetlana created and managed the
-Gradle files. Partway through the writing the book, Gradle was changed so that
-it could also use Kotlin, but I still didn't understand enough about Gradle with
+Gradle files. Partway through writing the book, Gradle was changed so that it
+could also use Kotlin, but I still didn't understand enough about Gradle with
 Groovy, so I didn't want to risk breaking our system by trying to change to
 Kotlin.
+
+More recently I saw a YouTube video about Gradle where they just did things but
+never really explained. You know the kind of people who have memorized the
+entire Unix command-line suite and use it effortlessly without every looking
+anything up? That seemed to be what I was watching, and it wasn't reassuring.
 
 I was stuck in this place for years, depending on others to help figure it out
 and not understanding it when they did. This was very frustrating and I
@@ -52,20 +57,15 @@ generally avoided dealing with Gradle and crossed my fingers when I did. But
 underneath, it was bugging me to be so stumped by a piece of software
 technology.
 
-More recently I saw a YouTube video about Gradle where they just did things but
-never really explained. You know the kind of people who have memorized the
-entire Unix command-line suite and use it effortlessly without every looking
-anything up? That seemed to be what I was watching, and it wasn't reassuring.
-
 The Chinese publisher of *On Java 8* asked me to add a final chapter on Java 11.
 As I began digging into that, I realized I would need to extract the examples
-into a separate repository with its own Gradle build. I really didn't want to
-ask for help this time (mostly because the helpers nearest to hand have
-expressed significant distaste for working with Gradle). So I decided to commit
-and take the time to figure it out and understand it, at least far enough for me
-to handle the Java 11 chapter.
+into a separate repository with its own Gradle build which required Java 11. I
+really didn't want to ask for help this time (mostly because the helpers nearest
+to hand have expressed significant distaste for working with Gradle). So I
+decided to commit and take the time to figure it out and understand it, at least
+far enough for me to handle the Java 11 chapter.
 
-Ideally without throwing things.
+And ideally without throwing things.
 
 It required multiple dedicated days, and a lot of self-reasurrance that it was
 OK to just take my time and keep poking at it. I started becoming more engaged
@@ -79,11 +79,11 @@ is the problem I had with Gradle:
 
 > ***To do anything you have to know everything***
 
-Yes, it's hypothetically possible to create a simple `build.gradle` for a simple
+Yes, it's hypothetically possible to create a simple `build.gradle` for a basic
 build. But usually by the time you get to the point of *needing* a Gradle build,
 your problem is complicated enough that you must do more. And it turns out that
-"doing more" translates to "knowing everything." Basically, once you get past the
-simple builds you fall off a cliff.
+"doing more" translates to "knowing everything." Once you get past the simple
+things you fall off a cliff.
 
 Think of the grappling shoes in the very first episode of *Rick and Morty*. Rick
 explains that the shoes allow you to walk on vertical surfaces, so Morty puts
@@ -91,10 +91,9 @@ them on and promptly falls down a cliff, after which Rick explains that "you
 have to turn them on." Gradle is my grappling shoes.
 
 My goal here is to give you perspective, so as you fall down the cliff face you
-will understand what is happening, and what is necessary to climb back up the
-cliff.
+will understand what is happening, and what is necessary to climb back up.
 
-tasks and dependencies
+tasks and dependencies (task is 'main'?)
 internal and external dependencies
 
 ## 1. You're not Configuring, You're Programming
@@ -102,9 +101,9 @@ internal and external dependencies
 Although Gradle attempts to look like it's just declaring configurations, each
 of these configurations is actually a function call. Basically, everything
 except for some of the language directives is either creating objects or calling
-functions. Found it quite helpful to realize that, because then I could look at
-many of the configuration declarations and realize they were actually calling a
-function, and that made it easier for me to understand.
+functions. I found it quite helpful to realize that, because then I could look
+at many of the configuration declarations and realize they were actually calling
+functions, and that made it easier for me to understand.
 
 ## 2. Groovy is Not Java
 
@@ -138,12 +137,14 @@ relies on the syntax for Groovy's lambdas (which they unfortunately call
 placed outside the argument list, by itself. Here, `sourceSets`, `main` and
 `java` are all function that take a single lambda parameter, so no parenthesized
 list is necessary, just the lambda. Thus, `sourceSets`, `main` and `java` are
-all function calls.
+all function calls, but the resulting syntax makes it look like ... something
+else.
 
-How helpful is DSL syntax, really? I have to translate it into function calls in
-my head when I read it. So for me it's more cognitive overhead and I'm not sure
-if it's ultimately not a hindrance; they could all be done with function calls
-(and some people prefer to express them that way and ignore the DSL syntax).
+How helpful is this DSL syntax, really? I have to translate it into function
+calls in my head when I read it. So for me it's more cognitive overhead and I'm
+not sure if it's ultimately not a hindrance; they could all be done with
+function calls (and some people prefer to express them that way and ignore the
+DSL syntax).
 
 ## 4. There are Many Ways to do the Same Thing
 
@@ -179,7 +180,7 @@ sourceSets.main.java.srcDirs('java11')
 ```
 
 You're free to choose from among the different approaches, and people do, so
-when you're reading other code you must understand all the variations. This all
+when you're reading other code you must understand all the variations. This
 compounds the complexity of learning Gradle. Being able to do things a bunch of
 different ways is not a feature.
 
@@ -215,9 +216,9 @@ There are other issues:
 I can finally start to understand my existing scripts, which is what kept me
 from, for example, considering switching to Kotlin for Gradle. But now that I
 have the big picture, and can not only start to imagine how to do it, but
-understand why I want to -- IntelliJ IDEA support for Groovy often cannot do
-completion because it can't always infer types. Completion alone would make it
-worth trying Kotlin.
+understand why I want to. In particular, IntelliJ IDEA support for Groovy often
+cannot do completion because it can't always infer types. Completion alone would
+make it worth trying Kotlin.
 
 If you've been struggling to create a mental model for Gradle, I hope this post
 has provided some insights.
