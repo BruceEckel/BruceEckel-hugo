@@ -133,9 +133,9 @@ is now newer than `vip.o`, so `vip.o` is out of date and it runs the command `cc
 -c vip.c -o vip.o` to bring `vip.o` up to date. Commands are indented (horribly,
 by tabs because `make` was created in the early days of Unix when they were
 still obsessed with saving bytes), and those commands are not part of `make` but
-simply commands that you call in the shell, from the command-line. `make`
-doesn't know anything except that executing the commands will bring the target
-up to date.
+simply commands that you call in the shell, from the command-line (in this case,
+the C compiler `cc`). `make` doesn't know anything except that executing the
+commands will bring the target up to date.
 
 The simplicity of `make` is elegant, and it is still in active use today. An
 important limitation to `make` emerged over time, as people began relying on it
@@ -152,13 +152,24 @@ utilize an existing language than to get lost creating a new one (that, after
 all, is how we ended up with Java. They were supposed to be making a dedicated
 device for televisions). The questions were:
 
-1. Which language? It seems like the best choice is one the user is already
+1. *Which language*? It seems like the best choice is one the user is already
    familiar with, to lower the cognitive barrier against learning your build
    system.
 
-2. How intrusive? How much will this language dominate the experience of using
+2. *How intrusive*? How much will this language dominate the experience of using
    your build system? How expert does the user need to be in the language to use
-   the build tool? I
+   the build tool?
+
+3. *How influencing*? My ideal would be to have a minimal number of additions to
+   the existing language so that it would look like the existing language but
+   with a few syntax additions to configure target rules for the build system.
+   As you'll see, the design of Gradle was significantly influenced by the
+   Groovy language it is implemented in.
+
+We are still in the early days of the "adding a build system atop an existing
+language" paradigm. Gradle is an experiment in this paradigm. Thus, we can
+expect that it doesn't get things "right." However, by understanding its issues
+you might have less frustration learning Gradle than I did.
 
 ## 1. You're not Configuring, You're Programming
 
@@ -265,38 +276,44 @@ different ways is not a feature.
 JavaExec pattern. Was I supposed to inherit from JavaExec. No.
 
 A lot of magic and things that require extra knowledge. For example, different
-ways to create a task, and then the `tasks` list is globally available.
+ways to create a task, and then the `tasks`
 
 ## 5. The Framework and Lifecycle
 
-Groovy silently imports a ton of things which you have to know about in order to
-use
+Groovy silently imports and creates a ton of things which you have to know about
+in order to use. For example, the `tasks` list is pre-created and globally
+available. There's also a `project` object and probably numerous others that I
+haven't discovered yet.
 
-## 6. The Documentation Assumes You Already Know a Lot
+`ext`, but it inherits. File-scope vs project scope. Variables that work in tasks but not in functions.
 
-The Gradle documentation is not a tutorial as much as a core dump. I now
-understand why, because to do anything you have to understand everything. But
-learning Gradle becomes overwhelming and people saying that it's simple
-certainly doesn't help
+(two ways to define functions?)
 
-There are other issues:
+## Other issues
+
+- The Gradle documentation assumes you already know a lot. It is not a tutorial
+  as much as a core dump. I now understand why, because to do anything you have
+  to understand everything. But this assumption makes it challenging for the
+  newcomer.
 
 - Slow startup times. Over the years they've worked to speed it up but if you
-  run Gradle a lot, you will notice it. `make`, in contrast, was extremely
-  fast and all the build tools I've created in Python are quite quick by
-  comparison. It can be annoying.
+  run Gradle a lot, you will notice it and it can become annoying. In contrast,
+  `make` is extremely fast. Even all the build tools I've created in Python are
+  quick by comparison.
 
-- So vast that you often don't know what's possible or what might already
-  exist to solve your problem.
+- It's not that easy to discover Gradle's abilities, and there are so many
+  things that you often don't know what's possible or what might already exist
+  to solve your problem. It can be easy to flounder for quite awhile before
+  discovering there's already a solution.
 
 ## Now That I Get It
 
-I can finally start to understand my existing scripts, which is what kept me
-from, for example, considering switching to Kotlin for Gradle. But now that I
-have the big picture, and can not only start to imagine how to do it, but
-understand why I want to. In particular, IntelliJ IDEA support for Groovy often
-cannot do completion because it can't always infer types. Completion alone would
-make it worth trying Kotlin.
+I can finally start to understand my existing scripts, which is one of the
+things that kept me from considering the switch to Kotlin for `build.gradle`
+scripts. But now that I have the big picture it's clear that I can do it and
+that I want to. In particular, IntelliJ IDEA support for Groovy can't always
+infer types, which is necessary for the IDE to look up the possible properties
+and methods for an object. This alone would make it worth trying Kotlin.
 
 If you've been struggling to create a mental model for Gradle, I hope this post
 has provided some insights.
