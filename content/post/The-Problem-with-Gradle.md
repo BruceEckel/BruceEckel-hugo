@@ -54,13 +54,13 @@ technology.
 
 More recently I saw a YouTube video about Gradle where they just did things but
 never really explained. You know the kind of people who have memorized the
-entire unix command-line suite and use it effortlessly without every looking
+entire Unix command-line suite and use it effortlessly without every looking
 anything up? That seemed to be what I was watching, and it wasn't reassuring.
 
-Finally the Chinese publisher of *On Java 8* asked me to add a final chapter on
-Java 11. As I began digging into that, I realized I would need to extract the
-examples into a separate repository with its own Gradle build. I really didn't
-want to ask for help this time (mostly because the helpers nearest to hand have
+The Chinese publisher of *On Java 8* asked me to add a final chapter on Java 11.
+As I began digging into that, I realized I would need to extract the examples
+into a separate repository with its own Gradle build. I really didn't want to
+ask for help this time (mostly because the helpers nearest to hand have
 expressed significant distaste for working with Gradle). So I decided to commit
 and take the time to figure it out and understand it, at least far enough for me
 to handle the Java 11 chapter.
@@ -99,37 +99,116 @@ internal and external dependencies
 
 ## 1. You're not Configuring, You're Programming
 
+Although Gradle attempts to look like it's just declaring configurations, each
+of these configurations is actually a function call. Basically, everything
+except for some of the language directives is either creating objects or calling
+functions. Found it quite helpful to realize that, because then I could look at
+many of the configuration declarations and realize they were actually calling a
+function, and that made it easier for me to understand.
+
 ## 2. Groovy is Not Java
 
+Groovy syntax is reminiscent of Java, but it's a different language and you need
+to learn a new set of rules and tricks. The fact that Groovy has access to
+existing Java libraries is primarily a benefit to the Gradle developers.
 
+You'll need to grasp a significant portion of the Groovy language in order to
+create useful Gradle build files. I found it nearly impossible to understand
+what was happening before I took a deep enough dive into Groovy.
 
-A new language which has a lot of similarities with Java but also a lot of new
-things to understand.
+## 3. Gradle Uses a *Domain-Specific Language*
 
-## 3. Groovy Uses a *Domain-Specific Language*
+A *Domain-Specific Language* (DSL) is a
+
+For example, to tell Gradle where to find the source files, you can say:
+
+```groovy
+sourceSets {
+    main {
+        java {
+            srcDirs 'java11'
+        }
+    }
+}
+```
+
+This is intended to create a *declarative* way to describe your builds, and it
+relies on the syntax for Groovy's lambdas (which they unfortunately call
+*closures*). If the last argument in a function call is a lambda, it can be
+placed outside the argument list, by itself. Here, `sourceSets`, `main` and
+`java` are all function that take a single lambda parameter, so no parenthesized
+list is necessary, just the lambda. Thus, `sourceSets`, `main` and `java` are
+all function calls.
 
 How helpful is DSL syntax, really? I have to translate it into function calls in
 my head when I read it. So for me it's more cognitive overhead and I'm not sure
-if it's ultimately not a hindrance.
+if it's ultimately not a hindrance; they could all be done with function calls
+(and some people prefer to express them that way and ignore the DSL syntax).
 
 ## 4. There are Many Ways to do the Same Thing
 
 Groovy allows you to express things in numerous different ways and the Gradle
-documentation immediately seems to revel in all the different ways that you can
-express the same thing. This compounds the complexity of learning cradle. Being
-able to do things a bunch of different ways is not a feature.
+documentation seems to revel in this variety. When you're just trying to get
+through it, adding the variations right away just makes it harder. Worse, people
+tend to casually use the different approaches, so you must recognize and unravel
+the different syntaxes.
+
+For example, the previous `sourceSets` could also be configured using
+function-call syntax by adding parentheses:
+
+```groovy
+sourceSets {
+    main {
+        java {
+            srcDirs('java11')
+        }
+    }
+}
+```
+
+Or you could choose to skip the DSL syntax and write it more compactly:
+
+```groovy
+sourceSets.main.java.srcDirs = ['java11']
+```
+
+Which is equivalent to:
+
+```groovy
+sourceSets.main.java.srcDirs('java11')
+```
+
+You're free to choose from among the different approaches, and people do, so
+when you're reading other code you must understand all the variations. This all
+compounds the complexity of learning Gradle. Being able to do things a bunch of
+different ways is not a feature.
+
+JavaExec pattern. Was I supposed to inherit from JavaExec. No.
+
+A lot of magic and things that require extra knowledge. For example, different
+ways to create a task, and then the `tasks` list is globally available.
 
 ## 5. The Framework and Lifecycle
 
 Groovy silently imports a ton of things which you have to know about in order to
 use
 
-## 6. The Documentation Assumes You
+## 6. The Documentation Assumes You Already Know a Lot
 
 The Gradle documentation is not a tutorial as much as a core dump. I now
 understand why, because to do anything you have to understand everything. But
-learning cradle becomes overwhelming and people saying that it's simple
+learning Gradle becomes overwhelming and people saying that it's simple
 certainly doesn't help
+
+There are other issues:
+
+- Slow startup times. Over the years they've worked to speed it up but if you
+  run Gradle a lot, you will notice it. `make`, in contrast, was extremely
+  fast and all the build tools I've created in Python are quite quick by
+  comparison. It can be annoying.
+
+- So vast that you often don't know what's possible or what might already
+  exist to solve your problem.
 
 ## Now That I Get It
 
@@ -139,3 +218,6 @@ have the big picture, and can not only start to imagine how to do it, but
 understand why I want to -- IntelliJ IDEA support for Groovy often cannot do
 completion because it can't always infer types. Completion alone would make it
 worth trying Kotlin.
+
+If you've been struggling to create a mental model for Gradle, I hope this post
+has provided some insights.
