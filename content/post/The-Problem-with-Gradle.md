@@ -425,7 +425,7 @@ This has only scratched the surface of what's there but hidden. For example,
 there's also a `project` object and probably numerous others I haven't
 discovered yet.
 
-## 5. The Framework and Lifecycle
+## 5. The Lifecycle
 
 It's easy to make mistakes if you don't understand the lifecycle. For example,
 suppose you accidentally put code inside the `task` closure like this:
@@ -445,7 +445,7 @@ Running it sort of seems to be OK:
 task a
 ```
 
-It prints out `task a` like I told it to. There's that extraneous `> Configure
+It displays `task a` like I told it to. There's that extraneous `> Configure
 project :` but I do know that there's a project configuration phase so it's
 probably that.
 
