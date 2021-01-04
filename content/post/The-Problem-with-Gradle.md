@@ -268,30 +268,224 @@ sourceSets.main.java.srcDirs('java11')
 ```
 
 You're free to choose from among the different approaches, and people do, so
-when you're reading various code examples you must understand all the
-variations. This compounds the complexity of learning Gradle. Being able to do
-things a bunch of different ways is not a feature.
+when you're reading code examples you must understand all the variations. This
+compounds the complexity of learning Gradle. Being able to do things a bunch of
+different ways is not a benefit.
 
-{{INCOMPLETE SECTION}}
+## 5. Magic
 
-JavaExec pattern. Was I supposed to inherit from JavaExec. No.
+Until you fully understand what's going on, there are many things that seem
+like magic, requiring special arcane knowledge.
 
-A lot of magic and things that require extra knowledge. For example, different
-ways to create a task, and then the `tasks`
+Consider creating a `task`. You typically do this with a static declaration in
+your `build.gradle`:
+
+```groovy
+task hello {
+    doLast {
+        println 'Hello world!'
+    }
+}
+```
+
+`doLast` lambdas are executed as the task is completing.
+
+Now when you say `gradle hello` on the command line, the `hello` task will run.
+
+It turns out you can also create tasks dynamically, inside functions. To do this
+you must know about the `tasks` object, which is *just there*, automatically and
+invisibly, inside every gradle build. If, in an empty `build.gradle` file, you
+put:
+
+```groovy
+tasks.forEach { println it }
+```
+
+It will print all the tasks in the `tasks` list. And without creating any tasks
+yourself, you will see:
+
+```text
+task ':buildEnvironment'
+task ':components'
+task ':dependencies'
+task ':dependencyInsight'
+task ':dependentComponents'
+task ':help'
+task ':init'
+task ':model'
+task ':outgoingVariants'
+task ':prepareKotlinBuildScriptModel'
+task ':projects'
+task ':properties'
+task ':tasks'
+task ':wrapper'
+```
+
+The `tasks` object is where we find the `create()` method for dynamic test
+creation. We can pass the name of the task we wish to create, along with the
+task *type*, as you see in the creation of `hello2`:
+
+```groovy
+task hello1 {
+    doLast {
+        println 'Hello 1!'
+    }
+}
+
+tasks.create("hello2") {
+    dependsOn hello1
+    doLast {
+        println 'Hello 2!'
+    }
+}
+
+task("hello3") {
+    dependsOn hello2
+    doLast {
+        println 'Hello 3!'
+    }
+}
+
+task all {
+    doLast {
+        tasks.matching {
+            it.name.startsWith("hello")
+        }.forEach {
+            println it.name
+        }
+    }
+}
+```
+
+In the creation of `hello3`, we see yet another way to create a `task`, by
+simply calling the `task()` function. Note that each of the `hello` tasks
+depends on the previous one, so if you run `gradle hello3` you'll see `hello2`
+and `hello1` executed as well.
+
+`all` searches through the `tasks` list (which, as we saw before, includes many
+other tasks), finds the ones whose names start with `hello`, and displays them.
+
+Normally if you want to set a project-level value for different code to use, you
+use `ext`, another object that is *just there* and you must know about to use.
+It not only holds project-level values, it can collect values from other files
+and decide how to overwrite them if there are collisions.
+
+Sometimes you want a value defined and used at file scope. To define a value using
+Groovy type inference, you use `def`:
+
+```groovy
+def config = "Configuration"
+
+task x {
+    println config
+}
+
+String useConfig() {
+    return config  // Fails: can't see 'config'
+}
+```
+
+Functions are defined using `def` if they don't return anything, otherwise you
+give the return type. Here, `useConfig()` returns a `String`.
+
+While `config` is visible within `task x`, it is not visible inside the function
+`useConfig()`. I'm not sure why this is, but to work around it you create a class
+containing `static` properties, which will work in both tasks and functions:
+
+```groovy
+class Vals {
+    static def config = "Configuration"
+}
+
+task x1 {
+    doLast {
+        println "x1: ${Vals.config}"
+    }
+}
+
+String useConfig() {
+    return Vals.config  // Succeeds
+}
+
+task x2 {
+    doLast {
+        println "x2: ${useConfig()}"
+    }
+}
+
+task all {
+    dependsOn tasks.matching { it.name.startsWith("x") }
+}
+```
+
+Notice that `all` depends on all tasks that have names starting with `x`, so
+running `all` will execute both `x1` and `x2`.
 
 ## 5. The Framework and Lifecycle
 
 Groovy silently imports and creates many things. This is not a problem in
-itself, but you must somehow know these things are available. For example, the
-`tasks` list is pre-created and globally available. There's also a `project`
-object and probably numerous others that I haven't discovered yet.
+itself, but you must somehow know these things are available. For example, you
+saw that the `tasks` list is pre-created and globally available. There's also a
+`project` object and probably numerous others that I haven't discovered yet.
 
-`ext`, but it inherits. File-scope vs project scope. Variables that work in
-tasks but not in functions.
+It's easy to make mistakes if you don't understand the lifecycle. To scratch the
+surface, suppose you accidentally put code inside the `task` closure like this:
 
-(two ways to define functions?)
+```groovy
+task a {
+    println "task a"
+}
+```
 
-## Other issues
+Running it sort of seems to be OK:
+
+```text
+>gradle a
+
+> Configure project :
+task a
+```
+
+It prints out `task a` like I told it to. There's that extraneous `> Configure
+project :` but I do know that there's a project configuration phase so it's
+probably that.
+
+What it's trying to tell you is that the `println` is being called during that
+configuration phase, and not when the `a` task is being executed. Unfortunately this
+can actually work some of the time.
+
+To tell it to run the code *when the task executes* you can use either `doFirst` or
+`doLast`, like this:
+
+```groovy
+task a {
+    doFirst {
+        println "task a doFirst"
+    }
+    println "task a initialization"
+    doLast {
+        println "task a doLast"
+    }
+}
+```
+
+Now the output shows initialization as well as the task executing:
+
+```text
+>gradle a
+
+> Configure project :
+task a initialization
+
+> Task :a
+task a doFirst
+task a doLast
+```
+
+There are numerous things like this that you need to know or else you will have
+surprises.
+
+## Other Issues
 
 - The Gradle documentation assumes you already know a lot. It is not a tutorial
   as much as a core dump. I now understand why, because to do anything you have
@@ -299,14 +493,14 @@ tasks but not in functions.
   newcomer.
 
 - Slow startup times. Over the years they've worked to speed it up but if you
-  run Gradle a lot, you will notice it and it can become annoying. In contrast,
+  run Gradle a lot, you will notice it and it becomes annoying. In contrast,
   `make` is extremely fast. Even all the build tools I've created in Python are
   quick by comparison.
 
 - It's not that easy to discover Gradle's abilities, and there are so many
-  things that you often don't know what's possible or what might already exist
-  to solve your problem. It can be easy to flounder for quite awhile before
-  discovering there's already a solution.
+  abilities that you often don't know what's possible or what might already
+  exist to solve your problem. It can be easy to flounder for quite awhile
+  before discovering there's already a solution (or there isn't).
 
 ## Now That I Get It
 
