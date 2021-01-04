@@ -178,7 +178,7 @@ functions. I found it quite helpful to realize that, because now I look at the
 configuration declarations and see they are actually calling functions, and this
 makes it easier for me to understand.
 
-*Aside:* Understanding Kotlin allowed me to understand Gradle.
+*Aside:* Understanding Kotlin allowed me to understand Groovy.
 
 ## 2. Groovy is Not Java
 
