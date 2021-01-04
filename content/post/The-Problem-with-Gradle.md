@@ -225,9 +225,10 @@ function calls, but the resulting syntax makes it look like ... something else.
 How helpful is this DSL syntax, really? I have to translate it into function
 calls in my head when I read it. So for me it's additional cognitive overhead
 which is ultimately a hindrance. The DSL operations can all be done with
-function calls, and programmers already understand function calls. Some people
-prefer to express their build files with function calls and ignore the DSL
-syntax.
+function calls, and programmers already understand function calls.
+
+Some people prefer to express their build files with function calls and ignore
+the DSL syntax.
 
 And as I previously observed, you must know far more than the DSL syntax in
 order to do anything but the most basic of builds, so the DSL completely fails
