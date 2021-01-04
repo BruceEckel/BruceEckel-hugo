@@ -327,8 +327,7 @@ task ':wrapper'
 ```
 
 The `tasks` object is where we find the `create()` method for dynamic test
-creation. We can pass the name of the task we wish to create, along with the
-task *type*, as you see in the creation of `hello2`:
+creation. We pass the name of the task we wish to create as you see in `hello2`:
 
 ```groovy
 task hello1 {
@@ -362,10 +361,10 @@ task all {
 }
 ```
 
-In the creation of `hello3`, we see yet another way to create a `task`, by
-simply calling the `task()` function. Note that each of the `hello` tasks
-explicitly depends on the previous one, so if you run `gradle hello3` you'll see
-`hello2` and `hello1` executed as well.
+`hello3` shows yet another way to create a `task`, by simply calling the
+`task()` function. Note that each of the `hello` tasks explicitly depends on the
+previous one, so if you run `gradle hello3` you'll see `hello2` and `hello1`
+executed as well.
 
 `all` searches through the `tasks` list (which, as we saw before, includes many
 other tasks), finds the tasks whose names start with `hello`, and displays them.
@@ -426,9 +425,7 @@ task all {
 Notice that `all` depends on all tasks with names beginning with `x`, so running
 `all` will execute both `x1` and `x2`.
 
-This has only scratched the surface of what's there but hidden. For example,
-there's also a `project` object and probably numerous others I haven't
-discovered yet.
+This has only scratched the surface of what's there but undiscovered.
 
 ## 5. The Lifecycle
 
