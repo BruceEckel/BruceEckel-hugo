@@ -328,7 +328,7 @@ task ':tasks'
 task ':wrapper'
 ```
 
-The `tasks` object is where we find the `create()` method for dynamic test
+The `tasks` object is where we find the `create()` method for dynamic task
 creation. We pass the name of the task we wish to create as you see in `hello2`:
 
 ```groovy
