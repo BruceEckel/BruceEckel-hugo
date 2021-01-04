@@ -514,3 +514,8 @@ programmers using Gradle for builds.
 
 If you've been struggling to formulate a mental model for Gradle, I hope this
 post has provided some insights.
+
+[Comment on Reddit]()
+
+- **I am the Author of [Atomic Kotlin](https://www.atomickotlin.com/)
+(with Svetlana Isakova), [On Java 8](https://www.onjava8.com/), and other books.**

@@ -1,4 +1,9 @@
-# Creating Read-Only Maps
+---
+published: false
+title: Creating Read-Only Maps in Kotlin
+url: /2021/01/15/Creating-Read-Only-Maps-in-Kotlin
+author: "Bruce Eckel"
+---
 
 Consider the problem of initializing a read-only `Map`. To demonstrate, we
 create a `Map` with keys that are `Pair`s, to include all possible combinations
