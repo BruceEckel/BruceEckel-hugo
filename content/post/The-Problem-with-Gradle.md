@@ -178,8 +178,6 @@ functions. I found it quite helpful to realize that, because now I look at the
 configuration declarations and see they are actually calling functions, and this
 makes it easier for me to understand.
 
-*Aside:* Understanding Kotlin allowed me to understand Groovy.
-
 ## 2. Groovy is Not Java
 
 You'll need to grasp a significant portion of the Groovy language in order to
@@ -193,6 +191,8 @@ more I realize I never gave it fair consideration.
 Groovy syntax is reminiscent of Java, but it's a different language and you need
 to learn a new set of rules and tricks. The fact that Groovy has access to
 existing Java libraries is primarily a benefit to the Gradle developers.
+
+*Aside:* Understanding Kotlin allowed me to understand Groovy.
 
 ## 3. Gradle Uses a *Domain-Specific Language*
 
