@@ -1,6 +1,6 @@
 ---
 date: '2021-01-02'
-published: false
+published: true
 title: The Problem with Gradle
 url: /2021/01/02/The-Problem-with-Gradle
 author: "Bruce Eckel"
@@ -506,7 +506,7 @@ experience surprises.
 I can finally start to understand my existing scripts, which is one of the
 things that kept me from considering the switch to Kotlin for Gradle scripts.
 But now that I have the big picture it's clear that I can do it and that I want
-to. In particular, IntelliJ IDEA support for Groovy can't always infer types,
+to. In particular, IntelliJ IDEA support for Groovy often can't infer types,
 which is necessary for the IDE to look up available properties and methods for
 an object. This alone makes it worth moving to Kotlin (which, like Groovy, is
 another language). I think it will certainly make it appealing to Kotlin
