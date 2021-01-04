@@ -396,7 +396,7 @@ give the return type. Here, `useConfig()` returns a `String`.
 
 While `config` is visible within `task x`, it is not visible inside the function
 `useConfig()`. I'm not sure why this is, but to work around it you create a class
-containing `static` properties, which will work in both tasks and functions:
+containing `static` properties, which work in both tasks and functions:
 
 ```groovy
 class Vals {
@@ -497,8 +497,8 @@ experience surprises.
 
 - Slow startup times. Over the years they've worked to speed it up but if you
   run Gradle a lot, the startup time becomes annoying. In contrast, `make` is
-  extremely fast. Even all the build tools I've created in Python are quick by
-  comparison.
+  extremely fast. Even all the build tools I've created in Python can often
+  finish in the time it takes Gradle to start.
 
 - It's not that easy to discover Gradle's abilities, and there are so many
   abilities that you often don't know what's possible or what might already
