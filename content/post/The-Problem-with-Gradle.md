@@ -281,8 +281,8 @@ Being able to do something in many different ways is not a benefit.
 
 ## 5. Magic
 
-Until you fully understand what's going on, there are many things that seem
-like magic, requiring special arcane knowledge.
+Until you fully understand what's going on, there seem to be many magical things
+that require special arcane knowledge.
 
 Consider creating a `task`. You typically do this with a static declaration in
 your `build.gradle`:
@@ -376,8 +376,8 @@ code, you use `ext`, another object that is *just there*. It not only holds
 project-level values, it can collect values from other files and decide how to
 overwrite them if there are collisions.
 
-Sometimes you want a value defined and used at file scope. To define a value using
-Groovy type inference, you use `def`:
+Sometimes you want a value defined and used at file scope. To define a value
+with Groovy type inference, use `def`:
 
 ```groovy
 def config = "Configuration"
