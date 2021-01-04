@@ -230,12 +230,11 @@ function calls, and programmers already understand function calls.
 Some people prefer to express their build files with function calls and ignore
 the DSL syntax.
 
-And as I previously observed, you must know far more than the DSL syntax in
-order to do anything but the most basic of builds, so the DSL completely fails
-its raison d'etre. Unfortunately the DSL is not only part of the mix but
-generally the way that Gradle is introduced to newcomers. It's basically just a
-noisier, and often more confusing, way to make function calls. Which brings me
-to:
+As I previously observed, you must know far more than the DSL syntax in order to
+do anything but the most basic of builds, so the DSL completely fails its raison
+d'etre. Unfortunately the DSL is not only part of the mix but generally the way
+that Gradle is introduced to newcomers. It's basically just a noisier, and often
+more confusing, way to make function calls. Which brings me to:
 
 ## 4. There are Many Ways to do the Same Thing
 
