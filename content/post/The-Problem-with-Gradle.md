@@ -20,12 +20,12 @@ the collective insanity of XML being the future of everything, `ant` is
 nonetheless a dedicated build tool so it is, like `make`, reasonably
 approachable.
 
-I brought this background with me when I began looking at Gradle, and I had
-certain expectations, primarily that the tool would have a straightforward
-configuration and setup process, and that things would look passably familiar.
-This idea was supported by what I'd read about Gradle, promising that most
-configurations would be simple and that you'd normally never need to dip below
-the surface of that configuration.
+This was my background when I began looking at Gradle, and I had certain
+expectations, primarily that the tool would have a straightforward configuration
+and setup process, and that things would look passably familiar. This idea was
+supported by what I'd read about Gradle, promising that most configurations
+would be simple and that you'd normally never need to dip below the surface of
+that configuration.
 
 Instead, Gradle was very mysterious for me. It seemed to have innumerable cliffs
 and I kept discovering these and falling off. Most importantly, I did not have
@@ -65,23 +65,24 @@ understand it, at least far enough for me to handle the Java 11 chapter.
 And ideally without throwing things (by which I mean not exceptions but physical
 objects, out of frustration).
 
-I started doing large quantities of internet searches and became more engaged
-with the Gradle docs. The process required multiple dedicated days, and a lot of
-self-reasurance that it was OK to just take my time and keep poking at it.
+Through internet searches I became more engaged with the Gradle docs. The
+process required multiple dedicated days (on top of the attempts I had made in
+the past), along with a lot of self-reasurance that it was OK to just take my
+time and keep poking at it.
 
-With patience and perserverance, Gradle slowly began to give up its mysteries.
-At the same time, I started understanding why it had been so baffling to me and
-why treating Gradle as an exercise in configuration just doesn't work. You can't
-go at it with a quick-and-dirty attitude, and that's what had stymied me. This
-is the problem I had with Gradle:
+With patience and perserverance, Gradle slowly began giving up its mysteries. At
+the same time, I started understanding why it had been so baffling to me and why
+treating Gradle as an exercise in configuration just doesn't work. You can't go
+at it with a quick-and-dirty attitude, and that's what had stymied me. This is
+the problem I had with Gradle:
 
 > ***To do anything you have to know everything***
 
-Yes, it's hypothetically possible to create a simple `build.gradle` for a basic
-build. But usually by the time you get to the point of *needing* a Gradle build,
-your problem is complicated enough that you must do more. And it turns out that
-"doing more" translates to "knowing everything." Once you get past the simple
-things you fall off a cliff.
+Yes, it's hypothetically possible to create a simple `build.gradle` file for a
+basic build. But usually by the time you get to the point of *needing* a Gradle
+build, your problem is complicated enough that you must do more. And it turns
+out that "doing more" translates to "knowing everything." Once you get past the
+simple things you fall off a cliff.
 
 Think of the grappling shoes in the very first episode of *Rick and Morty*. Rick
 explains that the shoes allow you to walk on vertical surfaces, so Morty puts
@@ -151,23 +152,22 @@ utilize an existing language than to get lost creating a new one (that, after
 all, is how we ended up with Java. They were supposed to be making a dedicated
 device for televisions). The questions are:
 
-1. *Which language*? It seems like the best choice is one the user is already
-   familiar with, to lower the cognitive barrier against learning your build
-   system.
+1. *Which language*? The best choice seems like one the user is already familiar
+   with, to lower the cognitive barrier against learning your build system.
 
-2. *How intrusive*? How much will this language dominate the experience of using
-   your build system? How expert does the user need to be in the language to use
-   the build tool?
+2. *How intrusive*? How much does this language dominate the experience of using
+   your build system? How much language expertise is required to use the build
+   tool?
 
 3. *How influencing*? My ideal would be a build system that looks like the
    existing language with a few minimal syntax additions to configure target
    rules. As you'll see, the design of Gradle was significantly influenced by
-   the Groovy language it is implemented in.
+   its use of the Groovy language.
 
 We are still in the early days of the "adding a build system atop an existing
-language" paradigm. Gradle is an experiment in this paradigm. Thus, we can
-expect that it doesn't get things "right." However, by understanding its issues
-you might have less frustration learning Gradle than I did.
+language" paradigm. Gradle is an experiment in this paradigm, so we expect some
+sub-optimal choices. However, by understanding its issues you might have less
+frustration learning Gradle than I did.
 
 ## 1. You're not Configuring, You're Programming
 
@@ -177,6 +177,8 @@ except for some of the language directives is either creating objects or calling
 functions. I found it quite helpful to realize that, because now I look at the
 configuration declarations and see they are actually calling functions, and this
 makes it easier for me to understand.
+
+*Aside:* Understanding Kotlin allowed me to understand Gradle.
 
 ## 2. Groovy is Not Java
 
