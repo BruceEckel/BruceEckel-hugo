@@ -182,6 +182,10 @@ makes it easier for me to understand.
 
 ## 2. Groovy is Not Java
 
+You'll need to grasp a significant portion of the Groovy language in order to
+create useful Gradle build files. I found it nearly impossible to understand
+what was happening before I took a deep enough dive into Groovy.
+
 Groovy is a significant improvement over Java, and several features in Groovy
 influenced the language design for Kotlin. The more I learn about Groovy the
 more I realize I never gave it fair consideration.
@@ -189,10 +193,6 @@ more I realize I never gave it fair consideration.
 Groovy syntax is reminiscent of Java, but it's a different language and you need
 to learn a new set of rules and tricks. The fact that Groovy has access to
 existing Java libraries is primarily a benefit to the Gradle developers.
-
-You'll need to grasp a significant portion of the Groovy language in order to
-create useful Gradle build files. I found it nearly impossible to understand
-what was happening before I took a deep enough dive into Groovy.
 
 ## 3. Gradle Uses a *Domain-Specific Language*
 
