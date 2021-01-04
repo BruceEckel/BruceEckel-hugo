@@ -200,7 +200,7 @@ existing language) is to narrow the focus to the problem at hand (e.g.
 configuring a software build) so that, ideally, the user only needs to
 understand the DSL in order to do the job.
 
-For example, to tell Gradle where to find the source files, you can say:
+For example, to tell Gradle where to find your Java source files, you can say:
 
 ```groovy
 sourceSets {
@@ -238,7 +238,7 @@ to:
 
 Groovy allows you to express things in numerous different ways and the Gradle
 documentation seems to revel in this variety. When you're just trying to get
-through it, adding the variations right away just makes it harder. Worse, people
+through it, adding the variations right away only makes it harder. Worse, people
 tend to casually use the different approaches, so you must recognize and unravel
 the competing syntaxes.
 
@@ -363,7 +363,7 @@ explicitly depends on the previous one, so if you run `gradle hello3` you'll see
 `hello2` and `hello1` executed as well.
 
 `all` searches through the `tasks` list (which, as we saw before, includes many
-other tasks), finds the ones whose names start with `hello`, and displays them.
+other tasks), finds the tasks whose names start with `hello`, and displays them.
 
 Normally if you want to set a project-level value for use by multiple pieces of
 code, you use `ext`, another object that is *just there*. It not only holds
@@ -421,15 +421,14 @@ task all {
 Notice that `all` depends on all tasks with names beginning with `x`, so running
 `all` will execute both `x1` and `x2`.
 
+This has only scratched the surface of what's there but hidden. For example,
+there's also a `project` object and probably numerous others I haven't
+discovered yet.
+
 ## 5. The Framework and Lifecycle
 
-Groovy silently imports and creates many things. This is not a problem in
-itself, but you must somehow know these things are available. For example, you
-saw that the `tasks` list is pre-created and globally available. There's also a
-`project` object and probably numerous others I haven't discovered yet.
-
-It's easy to make mistakes if you don't understand the lifecycle. To scratch the
-surface, suppose you accidentally put code inside the `task` closure like this:
+It's easy to make mistakes if you don't understand the lifecycle. For example,
+suppose you accidentally put code inside the `task` closure like this:
 
 ```groovy
 task a {
