@@ -271,8 +271,11 @@ sourceSets.main.java.srcDirs('java11')
 
 You're free to choose from among the different approaches, and people do, so
 when you're reading code examples you must understand all the variations. This
-compounds the complexity of learning Gradle. Being able to do things a bunch of
-different ways is not a benefit.
+compounds the complexity of learning Gradle.
+
+To quote the [Zen of Python](https://www.python.org/dev/peps/pep-0020/): "There
+should be one--and preferably only one--obvious way to do it." Being able to do
+things a bunch of different ways is not a benefit.
 
 ## 5. Magic
 
