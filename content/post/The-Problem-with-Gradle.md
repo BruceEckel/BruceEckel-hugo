@@ -512,5 +512,5 @@ an object. This alone makes it worth moving to Kotlin (which, like Groovy, is
 another language). I think it will certainly make it appealing to Kotlin
 programmers using Gradle for builds.
 
-If you've been struggling to create a mental model for Gradle, I hope this post
-has provided some insights.
+If you've been struggling to formulate a mental model for Gradle, I hope this
+post has provided some insights.
