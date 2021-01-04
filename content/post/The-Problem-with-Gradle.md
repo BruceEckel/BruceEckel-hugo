@@ -428,7 +428,7 @@ discovered yet.
 ## 5. The Lifecycle
 
 It's easy to make mistakes if you don't understand the lifecycle. For example,
-suppose you accidentally put code inside the `task` closure like this:
+suppose you accidentally put code inside a `task` lambda like this:
 
 ```groovy
 task a {
@@ -515,7 +515,7 @@ programmers using Gradle for builds.
 If you've been struggling to formulate a mental model for Gradle, I hope this
 post has provided some insights.
 
-[Comment on Reddit]()
+[Comment on Reddit](https://www.reddit.com/r/Kotlin/comments/kqcqqr/the_problem_with_gradle/)
 
 - **I am the Author of [Atomic Kotlin](https://www.atomickotlin.com/)
 (with Svetlana Isakova), [On Java 8](https://www.onjava8.com/), and other books.**
