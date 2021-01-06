@@ -430,7 +430,7 @@ Notice that `all` depends on all tasks with names beginning with `x`, so running
 
 This has only scratched the surface of what's there but undiscovered.
 
-## 5. The Lifecycle
+## 6. The Lifecycle
 
 It's easy to make mistakes if you don't understand the lifecycle. For example,
 suppose you accidentally put code inside a `task` lambda like this:
