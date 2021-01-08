@@ -9,6 +9,8 @@ author: "Bruce Eckel"
 > Or: *How to Remain Sane when Approaching Gradle* (with apologies to Hans
 > Dockter).
 
+(James Ward and I go into more detail about this article in the [Happy Path Programming Podcast](https://anchor.fm/happypathprogramming/episodes/17-The-Problem-with-Gradle-Java-11-SemVer-Isnt-eom1bq)).
+
 I started using `make` in the 80's. When I wrote *Thinking in C++*, I created a
 tool I called `makebuilder` which analyzed the examples extracted from the book
 and generated an appropriate makefile. `make` is a dedicated tool that only
@@ -521,6 +523,8 @@ If you've been struggling to formulate a mental model for Gradle, I hope this
 post has provided some insights.
 
 [Comment on Reddit](https://www.reddit.com/r/Kotlin/comments/kqcqqr/the_problem_with_gradle/)
+
+If you want more, James Ward and I go into further depth about this article in the [Happy Path Programming Podcast](https://anchor.fm/happypathprogramming/episodes/17-The-Problem-with-Gradle-Java-11-SemVer-Isnt-eom1bq).
 
 - **I am the Author of [Atomic Kotlin](https://www.atomickotlin.com/)
 (with Svetlana Isakova), [On Java 8](https://www.onjava8.com/), and other books.**
