@@ -230,7 +230,5 @@ because they are primitives.
 Most of the standard library classes override `equals()` to compare the contents
 of objects instead of their references.
 
-- [Comment on Reddit](https://www.reddit.com/r/learnjava/comments/lchdkk/java_object_equivalence/)
-
 - **I am the Author of [Atomic Kotlin](https://www.atomickotlin.com/)
 (with Svetlana Isakova), [On Java 8](https://www.onjava8.com/), and other books.**
