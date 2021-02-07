@@ -7,8 +7,8 @@ author: "Bruce Eckel"
 ---
 
 > *This is an update to the subsection "Testing Object Equivalence" in the
-> "Operators" chapter of [On Java 8](http://www.OnJava8.com). This will appear in
-> the book in its next update.*
+> "Operators" chapter of [On Java 8](http://www.OnJava8.com). This will appear
+> in the book in its next update.*
 
 The relational operators `==` and `!=` work with all objects, but their results
 can be confusing:
@@ -67,17 +67,18 @@ Primitive int:
 */
 ```
 
-The `show()` method compares the behavior of `==` to the method `equals()` that
-exists for all objects. The `printf()` format argument uses the specifier `%d`
-for `int` output, `%b` for Boolean output, and `%n` to produce a newline.
+`show()` compares the behavior of `==` against the method `equals()` that exists
+for all objects. The `printf()` format argument uses the specifier `%d` for
+`int` output, `%b` for Boolean output, and `%n` to produce a newline.
 
-If you need a "not equal" comparison, use `n1 != n2` and  `!n1.equals(n2)`.
+For "not equals" comparisons, use `n1 != n2` and  `!n1.equals(n2)`.
 
-In `test()`, you see integer-valued objects created in four different ways:
+In `test()`, integer-valued objects are created in four different ways:
 
-- **[1]**: Automatic conversion to `Integer`.
-- **[2]**: Using standard `new` object-creation syntax. This *was* the preferred
-  way to create "wrapped" `Integer` objects.
+- **[1]**: Automatic conversion to `Integer`. These are translated into calls to
+  `Integer.valueOf()`.
+- **[2]**: Using standard `new` object-creation syntax. Originally this was the
+  preferred way to create "wrapped/boxed" `Integer` objects.
 - **[3]**: Starting with Java 9, `valueOf()` is preferred over **[2]**. If you
   try to use form **[2]** with Java 9, you'll get a warning and a suggestion to
   use **[3]** instead. It is difficult to determine whether **[3]** is preferred
@@ -88,14 +89,13 @@ The `@SuppressWarnings("deprecation")` is not necessary for Java 8, but is
 included in case you compile the code with Java 9 or newer.
 
 For a `value` of 127, the comparisons produce the results you expect, *except*
-form **[2]** which produces `false` for `==` and `true` for `equals()`. Although
-the *contents* of the objects are the same, the references point to different
-objects in memory. The operators `==` and `!=` compare object references, and
-have different behavior *depending on how the `Integer` objects are
-created*---presumably, **[1]** and **[3]** yield `Integer`s that point to the
-same storage in memory. `Integer` values from -128 through 127 produce this
-behavior for `==` and `!=`, but outside that range they will not, as seen with
-the call `test(128)`.
+form **[2]** which produces `false` for `==`. Although the *contents* of the
+objects are the same, the references point to different objects in memory. The
+operators `==` and `!=` compare object references, and have different behavior
+*depending on how the `Integer` objects are created*---presumably, **[1]** and
+**[3]** yield `Integer`s that point to the same storage in memory. `Integer`
+values from -128 through 127 produce this behavior for `==` and `!=`, but
+outside that range they do not, as seen with `test(128)`.
 
 If you're using `Integer` you must only use `equals()`. If you accidentally use
 `==` and `!=` for `Integer` and don't test it for values outside -128 through
@@ -104,9 +104,11 @@ If you're using `Integer` you must only use `equals()`. If you accidentally use
 cause problems if you start by using `int`s and then later change to `Integer`s,
 or vice-versa.
 
-In Java 9 and on, the use of `new Integer()` is deprecated to eliminate this
-issue. Think about that. Java has included this very odd behavior for *two
-decades* before acknowledging it was a mistake.
+In Java 9 and on, the use of `new Integer()` is deprecated because it is so much
+less efficient than `Integer.valueOf()`. Thus, you should avoid `new Integer()`,
+`new Double()`, etc. in Java 8 as well. Deprecating something for efficiency
+reasons is not something I've seen before (it might have happened, but this is
+the first time I've been aware of it).
 
 When working with floating-point numbers, you encounter different equivalence
 problems, not because of Java but because of the nature of floating-point
@@ -137,6 +139,7 @@ public class DoubleEquivalence {
   }
   public static void main(String[] args) {
     test(0, Double.MIN_VALUE);
+    System.out.println("------------------------");
     test(Double.MAX_VALUE,
       Double.MAX_VALUE - Double.MIN_VALUE * 1_000_000);
   }
@@ -149,6 +152,7 @@ new Double():
 0.000000e+00==4.900000e-324 false false
 Double.valueOf():
 0.000000e+00==4.900000e-324 false false
+------------------------
 1.797693e+308==1.797693e+308 true
 Automatic:
 1.797693e+308==1.797693e+308 false true
@@ -165,10 +169,10 @@ be unequal. This works for the call to `test(0, Double.MIN_VALUE)`, where
 `Double.MIN_VALUE` is the smallest representable value. (`%e` in the `printf()`
 call presents the results in exponential notation).
 
-However, it does not hold true for the second `test()` call, where the argument
-`x2` is the value of `x1` minus one million times `Double.MIN_VALUE`. It seems
-like `x2` should be significantly different than `x1`, but the two numbers still
-compare as equal. You encounter this kind of problem in virtually every
+However, this does not hold true for the second `test()` call, where the
+argument `x2` is the value of `x1` minus one million times `Double.MIN_VALUE`.
+It seems like `x2` should be significantly different than `x1`, but the two
+numbers still compare as equal. You encounter this issue in virtually every
 programming language because when a variable holds a very large number,
 subtracting a relatively small number won't make a significant difference. This
 is called a *rounding error* and occurs because the machine cannot hold enough
