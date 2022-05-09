@@ -48,7 +48,7 @@ There is runtime overhead, but that overhead almost universally pays off in the
 form of greatly-reduced programmer effort. Giving up a garbage collector feels
 like a significant step backward.
 
-This focus on low-level efficiency pervades Rust. Any Rust code you look at
+The focus on low-level efficiency pervades Rust. Any Rust code you look at
 leaves a metallic taste in your mouth of being right next to the hardware. That
 awareness of hardware is ever-present, and for that reason I've started calling
 Rust a "very-high-level assembly language."
@@ -113,7 +113,7 @@ You then add application-specific code and deploy the result. Using a common
 format for interfacing greatly simplifies the process of making RPCs.
 
 The Object Management Group that created CORBA was (at least at the time)
-bogged down with bureacracy and was controlled predominantly by the larger
+bogged down with bureaucracy and was controlled predominantly by the larger
 organizations that could pay the costs of being on that committee. The focus
 was on the specification and you had to implement it by hand, which wasn't
 easy. My first experience of creating a CORBA system didn't happen until it was
