@@ -1,6 +1,6 @@
 ---
 date: '2022-05-08'
-published: false
+published: true
 title: Misunderstanding Python Class Attributes
 url: /2022/05/08/misunderstanding-python-class-attributes
 author: "Bruce Eckel"
@@ -26,9 +26,9 @@ d.measurement3 = 300
 ```
 
 Why give names and initialization values to **class** attributes, then when you
-create an object, immediately create **object** attributes with the *same names*
-as the class attributes? It occurred to me that there might be a
-misunderstanding about the way attributes work.
+create an object, immediately create and initialize **object** attributes with
+the *same names* as the class attributes? It occurred to me that there might be
+a misunderstanding about the way attributes work.
 
 I found one of the coaches of the project (who was not the original author) and
 asked. It was explained to me that this was the way you provide default values
@@ -63,9 +63,11 @@ necessary.
 My frustration (evidenced by the fact I never thought of bringing up the Python
 docs for class attributes) at not being able to explain led to this article.
 
+(The code for this article is on [GitHub](https://github.com/BruceEckel/PythonClassAttributes)).
+
 ## Where Did This Idea Come From?
 
-I eventually realized that someone who had used either C++ or Java would assume
+I eventually realized that someone who had used either C++ or Java might assume
 that the form of writing a class using class attributes would work the way it
 does in C++ or Java: Storage for those variables would be allocated and
 initialized, *before* the constructor is called. Indeed, the first time I saw
@@ -155,7 +157,8 @@ In `toString()`, notice that `x` is accessed in the same way it is in
 `static` field. When you do this, Java automatically goes to the `static` `x`
 even though you are syntactically treating it like an object `x`.
 
-In `statics()`, `x` is accessed through the class by saying `B.x`. If `x` were *not* a `static` you couldn't do this.
+In `statics()`, `x` is accessed *through the class* by saying `B.x`. If `x` were
+*not* a `static` you couldn't do this.
 
 At the end of `class B`, notice that we cannot "shadow" an identifier name like
 we can in Python: we cannot have both an ordinary and a `static` variable of the
@@ -183,7 +186,8 @@ class B {
     public:
     static int x;
     // Cannot shadow identifier name:
-    // int x = 1; // 'int B::x' conflicts with a previous declaration
+    // int x = 1;
+    // 'int B::x' conflicts with a previous declaration
 };
 
 // Static variables must be initialized outside the class:
@@ -193,8 +197,6 @@ int B::x = 100;
 class C {
     public:
     static const int x = 100;
-    // Cannot shadow identifier name:
-    // int x = 1; // 'int C::x' conflicts with a previous declaration
 };
 
 int main() {
@@ -225,3 +227,73 @@ int main() {
     // c.x = -1;
 }
 ```
+
+Just like Java, storage has been allocated for `x` and it has been initialized by the time the `A()` constructor is called.
+
+In `class B`, the `static int x;` definition only indicates that `x` exists in
+`B`. To allocate storage and initialize it, the external definition
+`int B::x = 100;` is required. If, however, the `static` value is `const`, it
+can be folded into the definition as seen in `class C`. The compiler is able to
+fold `const` values into where they are used, so no storage is required.
+
+In `class B`, you see that, like Java, C++ also disallows name shadowing.
+`main()` shows that the `static x` can be accessed either through the class or
+using an instance of the class.
+
+Notice that both Java and C++ have explicit `static` keywords, whereas Python
+does not. This adds to the confusion, so when a Java or C++ programmer (who has not learned about class attributes) sees something of the form:
+
+```python
+Class X:
+    a = 1
+    b = 2
+    c = 3
+```
+
+It is completely unsurprising that they might assume they will get the same
+results they do from C++ or Java code that looks similar. After doing a few
+simple experiments as in `1_like_default_values.py`, they could easily conclude
+that Python does indeed work that way.
+
+## How Things Break
+
+The worst thing about this is that code written with the assumption that class
+attributes are just default initialization values seems to work most of the
+time, especially for simple situations like the one I encountered. This code passes its tests, so how can I call it "wrong?"
+
+The problem occurs when you're least expecting it. Here is just one
+configuration that produces a surprise:
+
+```python
+# 4_it_all_goes_wrong.py
+
+class A:
+    x: int = 100
+    y: int = 200
+
+class B:
+    a: A = A()
+
+def oops(): A.x = 999999
+
+if __name__ == '__main__':
+    a = A()
+    print(f"{a.x = }, {a.y = }")
+    # a.x = 100, a.y = 200
+    a.x = -1
+    a.y = -2
+    print(f"{a.x = }, {a.y = }")
+    # a.x = -1, a.y = -2
+    b = B()
+    b.a.y = 22
+    print(f"{b.a.x = }, {b.a.y = }")
+    # b.a.x = 100, b.a.y = 22
+    oops()  # Has no reference to object 'b'
+    print(f"{b.a.x = }, {b.a.y = }")
+    # b.a.x = 999999, b.a.y = 22
+    print(f"{a.x = }, {a.y = }")
+    # a.x = -1, a.y = -2
+```
+
+`class B` contains a class attribute that's an instance of `class A` which
+itself contains two class attributes.
