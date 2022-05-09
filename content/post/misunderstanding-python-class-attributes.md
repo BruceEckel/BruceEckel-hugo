@@ -1,6 +1,6 @@
 ---
 date: '2022-05-08'
-published: true
+published: false
 title: Misunderstanding Python Class Attributes
 url: /2022/05/08/misunderstanding-python-class-attributes
 author: "Bruce Eckel"
@@ -56,12 +56,13 @@ if __name__ == '__main__':
 Sure enough, if I create an `A` object called `a` and ask for `a.x`, it looks
 like `x` has the "default value" of `100`. I can set `a.x` to `-1` and create a
 second `A` object `a2` which once again is given the "default value" of
-100---"obviously" separate storage has been created for `a1` and `a2`. This is
+100---"obviously" separate storage has been created for `a1` and `a2`. "This is
 clearly how the feature works, and no further curiosity or exploration is
-necessary.
+necessary."
 
-My frustration (evidenced by the fact I never thought of bringing up the Python
-docs for class attributes) at not being able to explain led to this article.
+My frustration at not being able to explain (evidenced by the fact I never
+thought of bringing up the Python docs for class attributes) led to this
+article.
 
 (The code for this article is on [GitHub](https://github.com/BruceEckel/PythonClassAttributes)).
 
@@ -185,6 +186,9 @@ class A {
 class B {
     public:
     static int x;
+    B() { // x has been initialized:
+        std::cout << "constructor: " << x << std::endl;
+    }
     // Cannot shadow identifier name:
     // int x = 1;
     // 'int B::x' conflicts with a previous declaration
@@ -209,6 +213,7 @@ int main() {
     // -1
 
     B b;
+    // constructor: 100
     std::cout << b.x << std::endl;
     // 100
     // Accessing static via instance:
@@ -250,10 +255,10 @@ Class X:
     c = 3
 ```
 
-It is completely unsurprising that they might assume they will get the same
-results they do from C++ or Java code that looks similar. After doing a few
-simple experiments as in `1_like_default_values.py`, they could easily conclude
-that Python does indeed work that way.
+It is quite reasonable to expect the same results as from similar-looking C++ or
+Java code. After doing a few simple experiments as in
+`1_like_default_values.py`, they could easily conclude that Python does indeed
+work that way.
 
 ## How Things Break
 
