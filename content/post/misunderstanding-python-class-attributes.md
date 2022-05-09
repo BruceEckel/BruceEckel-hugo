@@ -143,9 +143,85 @@ Inside the constructor `A()`, the storage for `x` has already been allocated and
 initialized. Changing the value of `a.x` doesn't influence further new `A`
 objects, which are initialized to `100`.
 
-In `class B`, `x` is no longer a field, but is instead a `static` variable,
-which means there is only a single piece of storage for `x` for the class (no
-matter how many instances of that class you create), and `x` is associated with
-the class `B` rather than with any particular `B` object. This is the same way
-that class attributes work in Python---they are basically `static` variables
-without using the `static` keyword.
+In `class B`, `x` has been changed to a `static` variable, which means there is
+only a single piece of storage for `x` for the class (no matter how many
+instances of that class you create), and `x` is associated with the class `B`
+rather than with any particular `B` object. This is the same way that class
+attributes work in Python---they are basically `static` variables without using
+the `static` keyword.
+
+In `toString()`, notice that `x` is accessed in the same way it is in
+`Class A`'s `toString()`: as if it were an ordinary object field rather than a
+`static` field. When you do this, Java automatically goes to the `static` `x`
+even though you are syntactically treating it like an object `x`.
+
+In `statics()`, `x` is accessed through the class by saying `B.x`. If `x` were *not* a `static` you couldn't do this.
+
+At the end of `class B`, notice that we cannot "shadow" an identifier name like
+we can in Python: we cannot have both an ordinary and a `static` variable of the
+same name. `main()` demonstrates that the `static x` in `B` is indeed associated
+with the class, and there's only one piece of storage shared by all objects of
+`class B`.
+
+C++ has virtually identical behavior, although `static` initialization syntax is different for variables:
+
+```cpp
+// 3_default_values.cpp
+// C++ automatically initializes from defaults
+// Tested on http://cpp.sh
+#include <iostream>
+
+class A {
+    public:
+    int x = 100;
+    A() { // x is already initialized:
+        std::cout << "constructor: " << x << std::endl;
+    }
+};
+
+class B {
+    public:
+    static int x;
+    // Cannot shadow identifier name:
+    // int x = 1; // 'int B::x' conflicts with a previous declaration
+};
+
+// Static variables must be initialized outside the class:
+int B::x = 100;
+
+// Static consts are initialized inline:
+class C {
+    public:
+    static const int x = 100;
+    // Cannot shadow identifier name:
+    // int x = 1; // 'int C::x' conflicts with a previous declaration
+};
+
+int main() {
+    A a;
+    // constructor: 100
+    std::cout << a.x << std::endl;
+    // 100
+    a.x = -1;
+    std::cout << a.x << std::endl;
+    // -1
+
+    B b;
+    std::cout << b.x << std::endl;
+    // 100
+    // Accessing static via instance:
+    b.x = -1;
+    std::cout << b.x << std::endl;
+    // -1
+    // Accessing static via class:
+    B::x = -99;
+    std::cout << b.x << std::endl;
+    // -99
+
+    C c;
+    std::cout << c.x << std::endl;
+    // 100
+    // Cannot assign to const:
+    // c.x = -1;
+}
+```
