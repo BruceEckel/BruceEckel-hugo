@@ -53,6 +53,9 @@ if __name__ == '__main__':
     # a2.x = 100
 ```
 
+(`f"{a.x = }"` is an f-string feature that eliminates the redundancy of
+displaying a variable).
+
 Sure enough, if I create an `A` object called `a` and ask for `a.x`, it looks
 like `x` has the "default value" of `100`. I can set `a.x` to `-1` and create a
 second `A` object `a2` which once again is given the "default value" of
@@ -258,13 +261,14 @@ Class X:
 It is quite reasonable to expect the same results as from similar-looking C++ or
 Java code. After doing a few simple experiments as in
 `1_like_default_values.py`, they could easily conclude that Python does indeed
-work that way.
+work that way. And, because a class attribute is a single variable that is
+"global to the class," it can be mistaken for a default value.
 
 ## How Things Break
 
 The worst thing about this is that code written with the assumption that class
 attributes are just default initialization values seems to work most of the
-time, especially for simple situations like the one I encountered. This code passes its tests, so how can I call it "wrong?"
+time, especially for simple situations like the one I encountered. The code passes its tests, so how can I call it "wrong?"
 
 The problem occurs when you're least expecting it. Here is just one
 configuration that produces a surprise:
@@ -289,6 +293,9 @@ if __name__ == '__main__':
     a.y = -2
     print(f"{a.x = }, {a.y = }")
     # a.x = -1, a.y = -2
+    print(f"{A.x = }, {A.y = }")
+    # A.x = 100, A.y = 200
+
     b = B()
     b.a.y = 22
     print(f"{b.a.x = }, {b.a.y = }")
@@ -301,4 +308,144 @@ if __name__ == '__main__':
 ```
 
 `class B` contains a class attribute that's an instance of `class A` which
-itself contains two class attributes.
+itself contains two class attributes. `oops()` changes the class attribute `x`
+of class `A`.
+
+In the main code we again show how the class attributes of `A` appear to produce
+"default value" behavior: `a.x` and `a.y` seem to be initialized to the "default
+values" and when we change them the original "default values" are unaffected.
+
+## Class Attributes
+
+The source of the confusion is twofold:
+
+1. Python's dynamic nature. Instance variables are not automatically created,
+   not even in the constructor. They are created the first time they are assigned to, which can happen in many places.
+
+2. Unlike C++ and Java, Python allows instance variables to shadow class
+   variables (have the same name). This feature gets significant use in
+   libraries that simplify configuration by using class variables to
+   automatically generate constructors and other methods.
+
+The two confusions compound, because if you ask for an uncreated instance
+variable with the same name as a class attribute, Python quietly returns the
+class attribute. If at some later point the instance variable is assigned to,
+the object will from then on produce the instance variable instead of the class
+attribute. The same behavior that makes a class attribute look like a default
+value causes subtle bugs that will probably be very hard to track down.
+
+To see this in action, we'll need a function to display the insides of classes
+and objects:
+
+```python
+# look_inside.py
+
+def attributes(d: object) -> str:
+    return ", ".join(
+        [f"{k}: {v}" for k, v in vars(d).items()
+         if not k.startswith("__")]) or "Empty"
+
+def show(klass: type, obj: object, obj_name: str) -> None:
+    print(f"[Class {klass.__name__}] {attributes(klass)}")
+    print(f"[Object {obj_name}] {attributes(obj)}\n")
+```
+
+
+Now we can use `show()` to see the details when using class attributes:
+
+```python
+# 5_class_attributes.py
+from look_inside import show
+
+class A:
+    x: int = 100
+
+class B:
+    x: int = 100
+    def __init__(self, x_init: int):
+        # Shadows the class attribute name:
+        self.x = x_init
+
+if __name__ == '__main__':
+    a = A()
+    show(A, a, "a")
+    # [Class A] x: 100
+    # [Object a] Empty
+    a.x = 1
+    show(A, a, "a")
+    # [Class A] x: 100
+    # [Object a] x: 1
+
+    b = B(-99)
+    show(B, b, "b")
+    # [Class B] x: 100
+    # [Object b] x: -99
+```
+
+
+Let's look at the first example again through the lens of this new knowledge:
+
+```python
+# 1_like_default_values.py
+
+class A:
+    x: int = 100
+
+if __name__ == '__main__':
+    a = A()
+    print(f"{a.x = }")
+    # a.x = 100
+    a.x = -1
+    print(f"{a.x = }")
+    # a.x = -1
+    a2 = A()
+    print(f"{a2.x = }")
+    # a2.x = 100
+```
+
+In the first `print()`, the instance variable `x` has not yet been created, so
+Python helpfully produces the class attribute of the same name. But the
+assignment `a.x = -1` creates an instance variable, and so the second `print()`
+sees that instance variable. When we create a new `A` for `a2`, we're back to a
+new object without an instance variable so it once again produces the class
+attribute, making it look like a default value. And if you never do anything
+more complex than this, you won't know that there are lurking problems that
+someone else might trip over.
+
+## The Class Attribute Trick
+
+It's not clear to me whether name shadowing is an intentional part of Python's
+design, or an oversight. Either way, it has become an integral part of the way
+some libraries provide easy class configuration. The first time I saw it was
+in Django:
+
+```python
+class Blog(models.Model):
+    name = models.CharField(max_length=100)
+    tagline = models.TextField()
+
+    def __str__(self):
+        return self.name
+```
+
+This seemed magical and confusing. There's no visible constructor but somehow
+`__str__` can access `self.name`. Presumably the base-class constructor creates
+the instance variables by using the class attributes as a template.
+
+Python's `dataclasses` use a decorator to generate code for the constructor and
+other methods using class attributes as a template. Simply adding `dataclasses` to `4_it_all_goes_wrong.py` fixes the problem:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class A:
+    x: int = 100
+    y: int = 200
+
+@dataclass
+class B:
+    a: A = A()
+```
+
+The use of class attributes as code-generation templates will likely increase.
