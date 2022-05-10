@@ -238,11 +238,11 @@ int main() {
 
 Just like Java, storage has been allocated for `x` and it has been initialized by the time the `A()` constructor is called.
 
-In `class B`, the `static int x;` definition only indicates that `x` exists in
-`B`. To allocate storage and initialize it, the external definition
-`int B::x = 100;` is required. If, however, the `static` value is `const`, it
-can be folded into the definition as seen in `class C`. The compiler is able to
-fold `const` values into where they are used, so no storage is required.
+In `class B`, the `static int x` definition only indicates that `x` exists in
+`B`. To allocate storage and initialize it, the external definition `int B::x =
+100` is required. If, however, the `static` value is `const`, it can be included
+in the definition as seen in `class C`. The compiler is able to fold `const`
+values into where they are used, so no storage is required.
 
 In `class B`, you see that, like Java, C++ also disallows name shadowing.
 `main()` shows that the `static x` can be accessed either through the class or
@@ -315,6 +315,9 @@ In the main code we again show how the class attributes of `A` appear to produce
 "default value" behavior: `a.x` and `a.y` seem to be initialized to the "default
 values" and when we change them the original "default values" are unaffected.
 
+TODO describe b
+
+
 ## Class Attributes
 
 The source of the confusion is twofold:
@@ -350,8 +353,11 @@ def show(klass: type, obj: object, obj_name: str) -> None:
     print(f"[Object {obj_name}] {attributes(obj)}\n")
 ```
 
+`attributes()` can be applied to both a class and an object. It uses the builtin
+`vars()` function to produce the object's dictionary (skipping dunder functions)
+and produces names and values. This is used in `show()` to display both a class and an object of that class.
 
-Now we can use `show()` to see the details when using class attributes:
+Using `show()`, we see the details when using class attributes:
 
 ```python
 # 5_class_attributes.py
@@ -382,23 +388,37 @@ if __name__ == '__main__':
     # [Object b] x: -99
 ```
 
+Creating an `A` requires no constructor arguments (because there is no
+constructor). There are no instance variables for `a` until after `a.x = 1`.
+`B`'s constructor requires an argument and uses it to create an instance
+variable.
 
-Let's look at the first example again through the lens of this new knowledge:
+Let's look at the first example using `show()`:
 
 ```python
-# 1_like_default_values.py
+# 6_like_default_values_shown.py
+from look_inside import show
 
 class A:
     x: int = 100
 
 if __name__ == '__main__':
     a = A()
+    show(A, a, "a")
+    # [Class A] x: 100
+    # [Object a] Empty
     print(f"{a.x = }")
     # a.x = 100
     a.x = -1
+    show(A, a, "a")
+    # [Class A] x: 100
+    # [Object a] x: -1
     print(f"{a.x = }")
     # a.x = -1
     a2 = A()
+    show(A, a2, "a2")
+    # [Class A] x: 100
+    # [Object a] Empty
     print(f"{a2.x = }")
     # a2.x = 100
 ```
@@ -452,12 +472,12 @@ The use of class attributes as code-generation templates will likely increase.
 
 ## Recommendations
 
-I hope that at this point you will cease attempting to make class attributes
-look like default values and just write proper constructors with default
-arguments, as you see in `class A`:
+I hope this article has inspired you to avoid making class attributes look like
+default values and instead to write proper constructors with default arguments,
+as you see in `class A`:
 
 ```python
-# 6_choices.py
+# 7_choices.py
 from look_inside import show
 from dataclasses import dataclass
 
@@ -522,4 +542,5 @@ a `__repr__()`.
 
 The `dataclass` decorator generates a constructor with default arguments that
 match the class attributes. After that you can modify the class attributes and
-it has no effect on the constructed objects.
+it has no effect on the constructed objects. It seems like `dataclasses` are
+what the original author of the code I encountered was hoping for.
