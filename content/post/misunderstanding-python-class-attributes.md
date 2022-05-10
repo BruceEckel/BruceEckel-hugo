@@ -274,82 +274,92 @@ class A:
     x: int = 100
     y: int = 200
 
-class B:
-    a: A = A()
+def oops():
+    A.x = 999999
+    A.y = 313
 
-def oops():  A.x = 999999
-def reset(): A.x = 100
+def reset():
+    A.x = 100
+    A.y = 200
 
 if __name__ == '__main__':
-    a = A()
-    print(f"{a.x = }, {a.y = }")
-    # a.x = 100, a.y = 200
-    a.x = -1
-    a.y = -2
-    print(f"{a.x = }, {a.y = }")
-    # a.x = -1, a.y = -2
-    print(f"{A.x = }, {A.y = }")
-    # A.x = 100, A.y = 200
-    a2 = A()
-    print(f"{a2.x = }, {a2.y = }")
-    # a2.x = 100, a2.y = 200
-    oops()
-    print(f"{a.x = }, {a.y = }")
-    # a.x = -1, a.y = -2
-    print(f"{a2.x = }, {a2.y = }")
-    # a2.x = 999999, a2.y = 200
-    a3 = A()
-    print(f"{a3.x = }, {a3.y = }")
-    # a3.x = 999999, a3.y = 200
-    reset()
-    print(f"{a.x = }, {a.y = }")
-    # a.x = -1, a.y = -2
-    print(f"{a2.x = }, {a2.y = }")
-    # a2.x = 100, a2.y = 200
-    a3 = A()
-    print(f"{a3.x = }, {a3.y = }")
-    # a3.x = 100, a3.y = 200
+    a1: A = None
+    a2: A = None
+    a3: A = None
+    def display():
+        if a1:
+            print(f"{a1.x = }, {a1.y = }")
+        if a2:
+            print(f"{a2.x = }, {a2.y = }")
+        if a3:
+            print(f"{a3.x = }, {a3.y = }")
 
-    b = B()
-    b.a.y = 22
-    print(f"{b.a.x = }, {b.a.y = }")
-    # b.a.x = 100, b.a.y = 22
+    a1 = A()
+    display()
+    # a1.x = 100, a1.y = 200
+    a1.x = -1
+    a1.y = -2
+    display()
+    # a1.x = -1, a1.y = -2
+    a2 = A()
+    display()
+    # a1.x = -1, a1.y = -2
+    # a2.x = 100, a2.y = 200
+    a2.y = 17
+    display()
+    # a1.x = -1, a1.y = -2
+    # a2.x = 100, a2.y = 17
     oops()
-    print(f"{b.a.x = }, {b.a.y = }")
-    # b.a.x = 999999, b.a.y = 22
+    a3 = A()
+    display()
+    # a1.x = -1, a1.y = -2
+    # a2.x = 999999, a2.y = 17
+    # a3.x = 999999, a3.y = 313
+    reset()
+    display()
+    # a1.x = -1, a1.y = -2
+    # a2.x = 100, a2.y = 17
+    # a3.x = 100, a3.y = 200
 ```
 
-`class A` contains two class attributes, and `class B` contains a class
-attribute that is an instance of `A`.
+`class A` contains two class attributes. `oops()` changes both these class
+attributes, and `reset()` sets both class attributes back to their original
+values.
 
-`oops()` changes the class attribute `x` of class `A`, and `reset()` sets that
-attribute back to its original value.
+The main code starts by creating three `A` references initialized to `None`, and
+a `display()` function to show the `x` and `y` values for each non-`None`
+object.
 
-In the main code we again show how the class attributes of `A` appear to produce
-"default value" behavior: `a.x` and `a.y` seem to be initialized to the "default
-values" and when we change them the original "default values" are unaffected.
+Everything looks like it exhibits "default value" behavior until we call
+`oops()`, at which point everything gets strange. The original `a1` produces the
+same results as before, but `a2` is partially affected (`x` changes but not `y`)
+and the new `a3` has different "default values." Calling `reset()` modifies `a2`
+(partially) and `a3` (completely), but not `a1`. Not only does `oops()` and
+`reset()` change the objects they have no direct connection with, but the
+changes themselves are inconsistent across the different objects.
 
-TODO describe b
-
+Imagine these kinds of errors appearing in your code base, and trying to track
+them down based on the inconsistent behavior of these so-called "default
+values."
 
 ## Class Attributes
 
 The source of the confusion is twofold:
 
 1. Python's dynamic nature. Instance variables are not automatically created,
-   not even in the constructor. They are created the first time they are assigned to, which can happen in many places.
+   not even in the constructor. They are created the first time they are *assigned to*, which can happen in many places.
 
-2. Unlike C++ and Java, Python allows instance variables to shadow class
-   variables (have the same name). This feature gets significant use in
-   libraries that simplify configuration by using class variables to
-   automatically generate constructors and other methods.
+2. Unlike C++ and Java, Python allows instance variables to shadow (have the
+   same name) class attributes. This feature gets significant use in libraries
+   that simplify configuration by using class attributes to automatically
+   generate constructors and other methods.
 
 The two confusions compound, because if you ask for an uncreated instance
 variable with the same name as a class attribute, Python quietly returns the
 class attribute. If at some later point the instance variable is assigned to,
 the object will from then on produce the instance variable instead of the class
 attribute. The same behavior that makes a class attribute look like a default
-value causes subtle bugs that will probably be very hard to track down.
+value can cause subtle bugs.
 
 To see this in action, we'll need a function to display the insides of classes
 and objects:
@@ -369,10 +379,10 @@ def show(obj: object, obj_name: str) -> None:
 ```
 
 `attributes()` can be applied to both a class and an object. It uses the builtin
-`vars()` function to produce the object's dictionary (skipping dunder functions)
-and produces names and values. This is used in `show()` to display both a class and an object of that class.
-
-Using `show()`, we see the details when using class attributes:
+`vars()` function to produce the object's dictionary, skips dunder functions,
+and produces names and values. This is used in `show()` to display both the
+class and an object of that class. Now we can see the details when using class
+attributes:
 
 ```python
 # 5_class_attributes.py
@@ -404,11 +414,11 @@ if __name__ == '__main__':
 ```
 
 Creating an `A` requires no constructor arguments (because there is no
-constructor). There are no instance variables for `a` until after `a.x = 1`.
-`B`'s constructor requires an argument and uses it to create an instance
-variable.
+constructor). There are no instance variables for `a` until after the assignment
+`a.x = 1`. `B`'s constructor requires an argument and uses it to assign to an
+instance variable (thus creating it).
 
-Let's look at the first example using `show()`:
+Let's look at the original example using `show()`:
 
 ```python
 # 6_like_default_values_shown.py
@@ -443,9 +453,10 @@ Python helpfully produces the class attribute of the same name. But the
 assignment `a.x = -1` creates an instance variable, and so the second `print()`
 sees that instance variable. When we create a new `A` for `a2`, we're back to a
 new object without an instance variable so it once again produces the class
-attribute, making it look like a default value. And if you never do anything
-more complex than this, you won't know that there are lurking problems that
-someone else might trip over.
+attribute, making it look like a default value.
+
+If you never do anything more complex than this, you won't know there are
+lurking problems.
 
 ## The Class Attribute Trick
 
@@ -477,17 +488,13 @@ from dataclasses import dataclass
 class A:
     x: int = 100
     y: int = 200
-
-@dataclass
-class B:
-    a: A = A()
 ```
 
 The use of class attributes as code-generation templates will likely increase.
 
 ## Recommendations
 
-I hope this article has inspired you to avoid making class attributes look like
+I hope this article inspires you to avoid making class attributes look like
 default values and instead to write proper constructors with default arguments,
 as you see in `class A`:
 
@@ -550,7 +557,7 @@ if __name__ == '__main__':
     # [Object aa3] x: 100, y: 200, z: 300
 ```
 
-There's a second option. If your class is just a holder for data, you can use a
+There's a second option. If your class is primarily a data holder, you can use a
 `dataclass` as seen in `class AA`. Notice the result of `print(aa)` produces a
 useful description of the object because the `dataclass` automatically generates
 a `__repr__()`.
@@ -560,4 +567,8 @@ match the class attributes. After that you can modify the class attributes and
 it has no effect on the constructed objects. It seems like `dataclasses` are
 what the original author of the code I encountered was hoping for.
 
-Although Python's syntax can make it look like other languages, its dynamic nature strongly influences the language's semantics. Making any assumptions that
+Although Python's syntax can make it look like other languages, its dynamic
+nature strongly influences the language's semantics. Making any assumptions that
+
+You can learn more about `dataclasses` from my Pycon 2022 presentation *Making
+Dataclasses Work for You*, on YouTube.
