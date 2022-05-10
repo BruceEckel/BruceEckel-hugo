@@ -27,8 +27,8 @@ d.measurement3 = 300
 
 Why give names and initialization values to **class** attributes, then when you
 create an object, immediately create and initialize **object** attributes with
-the *same names* as the class attributes? It occurred to me that there might be
-a misunderstanding about the way attributes work.
+the *same names* as the class attributes? It occurred to me there might be a
+misunderstanding about the way attributes work.
 
 I found one of the coaches of the project (who was not the original author) and
 asked. It was explained to me that this was the way you provide default values
@@ -58,26 +58,21 @@ displaying a variable).
 
 Sure enough, if I create an `A` object called `a` and ask for `a.x`, it looks
 like `x` has the "default value" of `100`. I can set `a.x` to `-1` and create a
-second `A` object `a2` which once again is given the "default value" of
-100---"obviously" separate storage has been created for `a1` and `a2`. "This is
-clearly how the feature works, and no further curiosity or exploration is
-necessary."
-
-My frustration at not being able to explain (evidenced by the fact I never
-thought of bringing up the Python docs for class attributes) led to this
-article.
+second `A` object `a2` which once again is given the "default value" of 100---it
+appears like separate storage has been created for `a1` and `a2`. Based on this
+simple example, Python class attributes seem like they behave like default
+values.
 
 (The code for this article is on [GitHub](https://github.com/BruceEckel/PythonClassAttributes)).
 
 ## Where Did This Idea Come From?
 
-I eventually realized that someone who had used either C++ or Java might assume
-that the form of writing a class using class attributes would work the way it
-does in C++ or Java: Storage for those variables would be allocated and
-initialized, *before* the constructor is called. Indeed, the first time I saw
-class attributes used for automated constructor generation (a trick we shall
-visit later in this article), I wondered if I had previously missed something
-magical about class attributes.
+Someone coming from either C++ or Java might assume that the form of writing a
+class using class attributes works the way it does in C++ or Java: Storage for
+those variables would be allocated and initialized, *before* the constructor is
+called. Indeed, the first time I saw class attributes used for automated
+constructor generation (a trick we shall visit later in this article), I
+wondered if I had previously missed something magical about class attributes.
 
 Here's a Java example exploring the same ideas:
 
@@ -150,16 +145,15 @@ initialized. Changing the value of `a.x` doesn't influence further new `A`
 objects, which are initialized to `100`.
 
 In `class B`, `x` has been changed to a `static` variable, which means there is
-only a single piece of storage for `x` for the class (no matter how many
-instances of that class you create), and `x` is associated with the class `B`
-rather than with any particular `B` object. This is the same way that class
-attributes work in Python---they are basically `static` variables without using
-the `static` keyword.
+only a single piece of storage for `x` for the class---no matter how many
+instances of that class you create. This is the same way that class attributes
+work in Python; they are basically `static` variables without using the `static`
+keyword.
 
-In `toString()`, notice that `x` is accessed in the same way it is in
+In `toString()`, notice that `B`'s `x` is accessed the same way it is in
 `Class A`'s `toString()`: as if it were an ordinary object field rather than a
-`static` field. When you do this, Java automatically goes to the `static` `x`
-even though you are syntactically treating it like an object `x`.
+`static` field. When you do this, Java automatically uses the `static` `x`
+even though you are syntactically treating it like the object's `x`.
 
 In `statics()`, `x` is accessed *through the class* by saying `B.x`. If `x` were
 *not* a `static` you couldn't do this.
@@ -239,10 +233,10 @@ int main() {
 Just like Java, storage has been allocated for `x` and it has been initialized by the time the `A()` constructor is called.
 
 In `class B`, the `static int x` definition only indicates that `x` exists in
-`B`. To allocate storage and initialize it, the external definition `int B::x =
-100` is required. If, however, the `static` value is `const`, it can be included
-in the definition as seen in `class C`. The compiler is able to fold `const`
-values into where they are used, so no storage is required.
+`B`. To allocate storage and initialize it, the external definition
+`int B::x = 100` is required. If, however, the `static` value is `const`, it can
+be included in the definition as seen in `class C`. The compiler is able to
+inline `const` values where they are used, so no storage is required.
 
 In `class B`, you see that, like Java, C++ also disallows name shadowing.
 `main()` shows that the `static x` can be accessed either through the class or
@@ -260,9 +254,9 @@ Class X:
 
 It is quite reasonable to expect the same results as from similar-looking C++ or
 Java code. After doing a few simple experiments as in
-`1_like_default_values.py`, they could easily conclude that Python does indeed
-work that way. And, because a class attribute is a single variable that is
-"global to the class," it can be mistaken for a default value.
+`1_like_default_values.py`, a C++ or Java programmer might well conclude that
+Python does indeed work that way. And, because a class attribute is a single
+variable that is "global to the class," it can be mistaken for a default value.
 
 ## How Things Break
 
@@ -283,7 +277,8 @@ class A:
 class B:
     a: A = A()
 
-def oops(): A.x = 999999
+def oops():  A.x = 999999
+def reset(): A.x = 100
 
 if __name__ == '__main__':
     a = A()
@@ -295,21 +290,40 @@ if __name__ == '__main__':
     # a.x = -1, a.y = -2
     print(f"{A.x = }, {A.y = }")
     # A.x = 100, A.y = 200
+    a2 = A()
+    print(f"{a2.x = }, {a2.y = }")
+    # a2.x = 100, a2.y = 200
+    oops()
+    print(f"{a.x = }, {a.y = }")
+    # a.x = -1, a.y = -2
+    print(f"{a2.x = }, {a2.y = }")
+    # a2.x = 999999, a2.y = 200
+    a3 = A()
+    print(f"{a3.x = }, {a3.y = }")
+    # a3.x = 999999, a3.y = 200
+    reset()
+    print(f"{a.x = }, {a.y = }")
+    # a.x = -1, a.y = -2
+    print(f"{a2.x = }, {a2.y = }")
+    # a2.x = 100, a2.y = 200
+    a3 = A()
+    print(f"{a3.x = }, {a3.y = }")
+    # a3.x = 100, a3.y = 200
 
     b = B()
     b.a.y = 22
     print(f"{b.a.x = }, {b.a.y = }")
     # b.a.x = 100, b.a.y = 22
-    oops()  # Has no reference to object 'b'
+    oops()
     print(f"{b.a.x = }, {b.a.y = }")
     # b.a.x = 999999, b.a.y = 22
-    print(f"{a.x = }, {a.y = }")
-    # a.x = -1, a.y = -2
 ```
 
-`class B` contains a class attribute that's an instance of `class A` which
-itself contains two class attributes. `oops()` changes the class attribute `x`
-of class `A`.
+`class A` contains two class attributes, and `class B` contains a class
+attribute that is an instance of `A`.
+
+`oops()` changes the class attribute `x` of class `A`, and `reset()` sets that
+attribute back to its original value.
 
 In the main code we again show how the class attributes of `A` appear to produce
 "default value" behavior: `a.x` and `a.y` seem to be initialized to the "default
@@ -348,9 +362,10 @@ def attributes(d: object) -> str:
         [f"{k}: {v}" for k, v in vars(d).items()
          if not k.startswith("__")]) or "Empty"
 
-def show(klass: type, obj: object, obj_name: str) -> None:
+def show(obj: object, obj_name: str) -> None:
+    klass: type = obj.__class__
     print(f"[Class {klass.__name__}] {attributes(klass)}")
-    print(f"[Object {obj_name}] {attributes(obj)}\n")
+    print(f"[Object {obj_name}] {attributes(obj)}")
 ```
 
 `attributes()` can be applied to both a class and an object. It uses the builtin
@@ -374,16 +389,16 @@ class B:
 
 if __name__ == '__main__':
     a = A()
-    show(A, a, "a")
+    show(a, "a")
     # [Class A] x: 100
     # [Object a] Empty
     a.x = 1
-    show(A, a, "a")
+    show(a, "a")
     # [Class A] x: 100
     # [Object a] x: 1
 
     b = B(-99)
-    show(B, b, "b")
+    show(b, "b")
     # [Class B] x: 100
     # [Object b] x: -99
 ```
@@ -404,19 +419,19 @@ class A:
 
 if __name__ == '__main__':
     a = A()
-    show(A, a, "a")
+    show(a, "a")
     # [Class A] x: 100
     # [Object a] Empty
     print(f"{a.x = }")
     # a.x = 100
     a.x = -1
-    show(A, a, "a")
+    show(a, "a")
     # [Class A] x: 100
     # [Object a] x: -1
     print(f"{a.x = }")
     # a.x = -1
     a2 = A()
-    show(A, a2, "a2")
+    show(a2, "a2")
     # [Class A] x: 100
     # [Object a] Empty
     print(f"{a2.x = }")
@@ -497,30 +512,30 @@ class AA:
 
 if __name__ == '__main__':
     a = A()
-    show(A, a, "a")
+    show(a, "a")
     # [Class A] Empty
     # [Object a] x: 100, y: 200, z: 300
     a.x = -1
     a.y = -2
     a.z = -3
-    show(A, a, "a")
+    show(a, "a")
     # [Class A] Empty
     # [Object a] x: -1, y: -2, z: -3
 
     aa = AA()
     print(aa)
     # AA(x=100, y=200, z=300)
-    show(AA, aa, "aa")
+    show(aa, "aa")
     # [Class AA] x: 100, y: 200, z: 300
     # [Object aa] x: 100, y: 200, z: 300
     aa.x = -1
     aa.y = -2
     aa.z = -3
-    show(AA, aa, "aa")
+    show(aa, "aa")
     # [Class AA] x: 100, y: 200, z: 300
     # [Object aa] x: -1, y: -2, z: -3
     aa2 = AA(-4, -5, -6)
-    show(AA, aa2, "aa2")
+    show(aa2, "aa2")
     # [Class AA] x: 100, y: 200, z: 300
     # [Object aa2] x: -4, y: -5, z: -6
 
@@ -530,7 +545,7 @@ if __name__ == '__main__':
     AA.y = 74
     AA.z = 22
     aa3 = AA()
-    show(AA, aa3, "aa3")
+    show(aa3, "aa3")
     # [Class AA] x: 42, y: 74, z: 22
     # [Object aa3] x: 100, y: 200, z: 300
 ```
@@ -544,3 +559,5 @@ The `dataclass` decorator generates a constructor with default arguments that
 match the class attributes. After that you can modify the class attributes and
 it has no effect on the constructed objects. It seems like `dataclasses` are
 what the original author of the code I encountered was hoping for.
+
+Although Python's syntax can make it look like other languages, its dynamic nature strongly influences the language's semantics. Making any assumptions that
