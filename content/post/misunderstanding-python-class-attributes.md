@@ -1,8 +1,8 @@
 ---
-date: '2022-05-08'
-published: false
+date: '2022-05-11'
+published: true
 title: Misunderstanding Python Class Attributes
-url: /2022/05/08/misunderstanding-python-class-attributes
+url: /2022/05/11/misunderstanding-python-class-attributes
 author: "Bruce Eckel"
 ---
 
@@ -122,8 +122,8 @@ public class DefaultValues {
     a.x = -1;
     System.out.println("a: " + a);
     // a: x = -1
-    // In A constructor: x = 100
     System.out.println("new A(): " + new A());
+    // In A constructor: x = 100
     // new A(): x = 100
 
     B b = new B();
@@ -151,8 +151,7 @@ objects, which are initialized to `100`.
 In `class B`, `x` is changed to a `static` variable, which means there is only a
 single piece of storage for `x` for the class---no matter how many instances of
 that class you create. This is the same way that class attributes work in
-Python; they are basically `static` variables without using the `static`
-keyword.
+Python; they are `static` variables without using the `static` keyword.
 
 In `toString()`, notice that `B`'s `x` is accessed the same way it is in
 `Class A`'s `toString()`: as if it were an ordinary object field rather than a
@@ -351,21 +350,21 @@ values."
 The source of confusion is twofold:
 
 1. Python's dynamic nature. Instance variables are not automatically created,
-   not even in the constructor. They are created the first time they are *assigned to*, which can happen in many places.
+   not even in the constructor. They are created the first time they are *assigned to*, which can happen just about anywhere.
 
 2. Unlike C++ and Java, Python allows instance variables to shadow (have the
-   same name) class attributes. This feature gets significant use in libraries
-   that simplify configuration by using class attributes to automatically
-   generate constructors and other methods.
+   same name as) class attributes. This feature gets significant use in
+   libraries that simplify configuration by using class attributes to
+   automatically generate constructors and other methods.
 
 The two confusions compound, because if you ask for an uncreated instance
 variable with the same name as a class attribute, Python quietly returns the
-class attribute. If at some later point the instance variable is assigned to,
-the object will from then on produce the instance variable instead of the class
-attribute. The same behavior that makes a class attribute look like a default
-value can cause subtle bugs.
+class attribute. If at some later point the instance variable is created (by
+assigning something to its identifier), the object will from then on produce the
+instance variable instead of the class attribute. The same behavior that makes a
+class attribute look like a default value can cause subtle bugs.
 
-To see this in action, we'll need a function to display the insides of classes
+To see this in action, we need a function to display the inside of classes
 and objects:
 
 ```python
@@ -464,10 +463,10 @@ lurking problems.
 
 ## The Class Attribute Trick
 
-It's not clear to me whether name shadowing is an intentional part of Python's
-design, or an oversight. Either way, it has become an integral part of the way
-some libraries provide easy class configuration. The first time I saw it was
-in Django:
+It's not clear to me whether name shadowing is intentional in Python's design,
+or an oversight. Either way, it has become an integral part of the way some
+libraries provide easy class configuration. The first time I saw it was in
+Django:
 
 ```python
 class Blog(models.Model):
@@ -561,10 +560,9 @@ if __name__ == '__main__':
     # [Object aa3] x: 100, y: 200, z: 300
 ```
 
-There's a second option. If your class is primarily a data holder, you can use a
-`dataclass` as seen in `class AA`. Notice the result of `print(aa)` produces a
-useful description of the object because the `dataclass` automatically generates
-a `__repr__()`.
+You can also use a `dataclass` as seen in `class AA`. Notice the result of
+`print(aa)` produces a useful description of the object because the `dataclass`
+automatically generates a `__repr__()`.
 
 The `dataclass` decorator generates a constructor with default arguments that
 match the class attributes. After that you can modify the class attributes and
