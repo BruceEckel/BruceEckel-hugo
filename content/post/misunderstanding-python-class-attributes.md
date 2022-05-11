@@ -1,6 +1,6 @@
 ---
 date: '2022-05-08'
-published: true
+published: false
 title: Misunderstanding Python Class Attributes
 url: /2022/05/08/misunderstanding-python-class-attributes
 author: "Bruce Eckel"
