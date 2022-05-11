@@ -1,10 +1,14 @@
 ---
 date: '2022-05-08'
-published: false
+published: true
 title: Misunderstanding Python Class Attributes
 url: /2022/05/08/misunderstanding-python-class-attributes
 author: "Bruce Eckel"
 ---
+
+
+## ***[*Preview*: in final editing]***
+
 
 I was attempting to assist on an open-source project when was stopped short by
 this (names have been changed):
@@ -25,10 +29,10 @@ d.measurement2 = 200
 d.measurement3 = 300
 ```
 
-Why give names and initialization values to **class** attributes, then when you
-create an object, immediately create and initialize **object** attributes with
+Why give names and initialization values to `class` attributes, then when you
+create an object, immediately create and initialize instance variables with
 the *same names* as the class attributes? It occurred to me there might be a
-misunderstanding about the way attributes work.
+misunderstanding about class attributes.
 
 I found one of the coaches of the project (who was not the original author) and
 asked. It was explained to me that this was the way you provide default values
@@ -58,21 +62,21 @@ displaying a variable).
 
 Sure enough, if I create an `A` object called `a` and ask for `a.x`, it looks
 like `x` has the "default value" of `100`. I can set `a.x` to `-1` and create a
-second `A` object `a2` which once again is given the "default value" of 100---it
-appears like separate storage has been created for `a1` and `a2`. Based on this
-simple example, Python class attributes seem like they behave like default
-values.
+second `A` object `a2` which once again is given the "default value" of
+100---separate storage appears to have been created and initialized for the `x`
+in both `a` and `a2`. Based on this simple example, Python class attributes
+seem to produce default value behavior.
 
 (The code for this article is on [GitHub](https://github.com/BruceEckel/PythonClassAttributes)).
 
 ## Where Did This Idea Come From?
 
-Someone coming from either C++ or Java might assume that the form of writing a
-class using class attributes works the way it does in C++ or Java: Storage for
-those variables would be allocated and initialized, *before* the constructor is
-called. Indeed, the first time I saw class attributes used for automated
-constructor generation (a trick we shall visit later in this article), I
-wondered if I had previously missed something magical about class attributes.
+Because of the way class attributes are defined, someone coming from either C++
+or Java might assume they work the same as in C++ or Java: Storage for those
+variables is allocated and initialized *before* the constructor is called.
+Indeed, the first time I saw class attributes used for automated constructor
+generation (a trick we shall visit later in this article), I wondered if I had
+previously missed something magical about class attributes.
 
 Here's a Java example exploring the same ideas:
 
@@ -144,10 +148,10 @@ Inside the constructor `A()`, the storage for `x` has already been allocated and
 initialized. Changing the value of `a.x` doesn't influence further new `A`
 objects, which are initialized to `100`.
 
-In `class B`, `x` has been changed to a `static` variable, which means there is
-only a single piece of storage for `x` for the class---no matter how many
-instances of that class you create. This is the same way that class attributes
-work in Python; they are basically `static` variables without using the `static`
+In `class B`, `x` is changed to a `static` variable, which means there is only a
+single piece of storage for `x` for the class---no matter how many instances of
+that class you create. This is the same way that class attributes work in
+Python; they are basically `static` variables without using the `static`
 keyword.
 
 In `toString()`, notice that `B`'s `x` is accessed the same way it is in
@@ -344,7 +348,7 @@ values."
 
 ## Class Attributes
 
-The source of the confusion is twofold:
+The source of confusion is twofold:
 
 1. Python's dynamic nature. Instance variables are not automatically created,
    not even in the constructor. They are created the first time they are *assigned to*, which can happen in many places.
@@ -568,7 +572,8 @@ it has no effect on the constructed objects. It seems like `dataclasses` are
 what the original author of the code I encountered was hoping for.
 
 Although Python's syntax can make it look like other languages, its dynamic
-nature strongly influences the language's semantics. Making any assumptions that
+nature strongly influences the language's semantics. Assumptions that
+it works like C++ or Java will generally produce incorrect results.
 
 You can learn more about `dataclasses` from my Pycon 2022 presentation *Making
 Dataclasses Work for You*, on YouTube.
