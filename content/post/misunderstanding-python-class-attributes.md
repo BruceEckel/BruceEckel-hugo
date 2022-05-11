@@ -7,7 +7,7 @@ author: "Bruce Eckel"
 ---
 
 
-## ***[*Preview*: in final editing]***
+## [*Preview*: in final editing]
 
 
 I was attempting to assist on an open-source project when was stopped short by
