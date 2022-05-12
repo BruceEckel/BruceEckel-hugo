@@ -10,7 +10,7 @@ author: "Bruce Eckel"
 ## [*Preview*: in final editing]
 
 
-I was attempting to assist on an open-source project when was stopped short by
+I was attempting to assist on an open-source project when I was stopped short by
 this (names have been changed):
 
 ```python
@@ -31,7 +31,7 @@ d.measurement3 = 300
 
 Why give names and initialization values to `class` attributes, then when you
 create an object, immediately create and initialize instance variables with
-the *same names* as the class attributes? It occurred to me there might be a
+the *same names* as the class attributes? I began to suspect there might be a
 misunderstanding about class attributes.
 
 I found one of the coaches of the project (who was not the original author) and
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 ```
 
 (`f"{a.x = }"` is an f-string feature that eliminates the redundancy of
-displaying a variable).
+displaying a variable.)
 
 Sure enough, if I create an `A` object called `a` and ask for `a.x`, it looks
 like `x` has the "default value" of `100`. I can set `a.x` to `-1` and create a
@@ -493,7 +493,7 @@ class A:
     y: int = 200
 ```
 
-The use of class attributes as code-generation templates will likely increase.
+I suspect that the use of class attributes as code-generation templates will continue.
 
 ## Recommendations
 
