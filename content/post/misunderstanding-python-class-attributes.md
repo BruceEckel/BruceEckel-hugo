@@ -30,9 +30,9 @@ d.measurement3 = 300
 ```
 
 Why give names and initialization values to `class` attributes, then when you
-create an object, immediately create and initialize instance variables with
-the *same names* as the class attributes? I began to suspect there might be a
-misunderstanding about class attributes.
+create an object, immediately create and initialize instance variables with the
+*same names* as the class attributes? I began to suspect a misunderstanding
+about class attributes.
 
 I found one of the coaches of the project (who was not the original author) and
 asked. It was explained to me that this was the way you provide default values
