@@ -30,7 +30,7 @@ d.measurement3 = 300
 ```
 
 Why give names and initialization values to `class` attributes, then when you
-create an object, immediately create and initialize instance variables with the
+make an object, immediately create and initialize instance variables with the
 *same names* as the class attributes? I began to suspect a misunderstanding
 about class attributes.
 
@@ -73,7 +73,7 @@ seem to produce default value behavior.
 
 Because of the way class attributes are defined, someone coming from either C++
 or Java might assume they work the same as in C++ or Java: Storage for those
-variables is allocated and initialized *before* the constructor is called.
+variables is allocated and initialized *before* the constructor[^1] is called.
 Indeed, the first time I saw class attributes used for automated constructor
 generation (a trick we shall visit later in this article), I wondered if I had
 previously missed something magical about class attributes.
@@ -149,9 +149,8 @@ initialized. Changing the value of `a.x` doesn't influence further new `A`
 objects, which are initialized to `100`.
 
 In `class B`, `x` is changed to a `static` variable, which means there is only a
-single piece of storage for `x` for the class---no matter how many instances of
-that class you create. This is the same way that class attributes work in
-Python; they are `static` variables without using the `static` keyword.
+single piece of `x` storage for the class---no matter how many instances of
+that class you create. This is how Python class attributes work; they are `static` variables without using the `static` keyword.
 
 In `toString()`, notice that `B`'s `x` is accessed the same way it is in
 `Class A`'s `toString()`: as if it were an ordinary object field rather than a
@@ -233,17 +232,19 @@ int main() {
 }
 ```
 
-Just like Java, storage has been allocated for `x` and it has been initialized by the time the `A()` constructor is called.
+Just like Java, storage is allocated and initialized for `x` by the time the
+`A()` constructor is called.
 
-In `class B`, the `static int x` definition only indicates that `x` exists in
-`B`. To allocate storage and initialize it, the external definition
-`int B::x = 100` is required. If, however, the `static` value is `const`, it can
-be included in the definition as seen in `class C`. The compiler is able to
-inline `const` values where they are used, so no storage is required.
+In `class B`, the `static int x` definition only indicates that `x` exists for
+`B`. To allocate and initialize static variable storage, the external definition
+`int B::x = 100` is required. If, however, the `static` is `const`, the
+initialization value is included in the definition as seen in `class C`. The
+compiler is able to inline `const` values where they are used, so no storage is
+required.
 
 In `class B`, you see that, like Java, C++ also disallows name shadowing.
-`main()` shows that the `static x` can be accessed either through the class or
-using an instance of the class.
+`main()` shows that `static x` can be accessed either through the class or using
+an instance of the class.
 
 Notice that both Java and C++ have explicit `static` keywords, whereas Python
 does not. This adds to the confusion, so when a Java or C++ programmer (who has not learned about class attributes) sees something of the form:
@@ -339,27 +340,29 @@ define a class attribute, you add a binding to the class dictionary.
 
 When Python looks up an attribute, it (generally) starts at the instance and if
 it doesn't find the attribute there, falls back to looking it up in the
-associated class/type dictionary.
+associated class/type dictionary (the same way that C++ and Java do it).
 
-`class A` contains two class attributes. `change_x()` and `change_y()` modifies
-these class attributes, and `reset()` sets both class attributes back to their
-original values.
+`class A` contains two class attributes. `change_x()` and `change_y()` are
+"class methods," which mean they operate on the class object, and not a
+particular instance of that class. The first parameter of a `classmethod` is
+thus not `self` (the instance reference) but instead `cls` (the class
+reference). `change_x()` and `change_y()` modify the class attributes, and
+`reset()` sets both class attributes back to their original values.
 
 The main code starts by creating three `A` references initialized to `None`, and
-a `display()` function to show the `x` and `y` values for each non-`None`
+a `display()` function that shows the `x` and `y` values for each non-`None`
 object.
 
 Everything looks like it exhibits "default value" behavior until we call
-`change_x()` and `change_y()`, at which point everything gets strange. The
-original `a1` produces the same results as before, but `a2` is partially
-affected (`x` changes but not `y`) and the new `a3` has different "default
-values." Calling `reset()` modifies `a2` (partially) and `a3` (completely), but
-not `a1`. In particular, `reset()` changes objects it has no direct connection
-with. And the changes themselves are inconsistent across the different objects.
+`change_x()` and `change_y()`, when everything gets strange. The original `a1`
+produces the same results as before, but `a2` is partially affected (`x` changes
+but not `y`) and the new `a3` has different "default values." Calling `reset()`
+modifies `a2` (partially) and `a3` (completely), but not `a1`.
 
-Imagine these kinds of errors appearing in your code base, and trying to track
-them down based on the inconsistent behavior of these so-called "default
-values."
+`reset()` changes objects it has no direct connection with. The changes
+themselves are inconsistent across the different objects. Imagine these kinds of
+errors appearing in your code base, and trying to track them down based on the
+varying behavior of these so-called "default values."
 
 ## Class Attributes
 
@@ -375,12 +378,13 @@ The source of confusion is twofold:
 
 The two confusions compound, because if you ask for an uncreated instance
 variable with the same name as a class attribute, Python quietly returns the
-class attribute. If at some later point the instance variable is created (by
-assigning something to its identifier), the object will from then on produce the
-instance variable instead of the class attribute. The same behavior that makes a
-class attribute look like a default value can cause subtle bugs.
+class attribute. If at some later point the instance variable of the same name
+is created (by assigning something to its identifier), the object will from then
+on produce the instance variable instead of the class attribute. The same
+behavior that makes a class attribute look like a default value can cause subtle
+bugs.
 
-To see this in action, we need a function to display the inside of classes
+To see this in action, we need a function that displays the inside of classes
 and objects:
 
 ```python
@@ -397,11 +401,11 @@ def show(obj: object, obj_name: str) -> None:
     print(f"[Object {obj_name}] {attributes(obj)}")
 ```
 
-`attributes()` can be applied to both a class and an object. It uses the builtin
-`vars()` function to produce the object's dictionary, skips dunder functions,
-and produces names and values. This is used in `show()` to display both the
-class and an object of that class. Now we can see the details when using class
-attributes:
+`attributes()` can be applied to either a class or an object. It uses the
+builtin `vars()` function to produce the dictionary, skips dunder functions, and
+produces names and values or `"Empty"` if there are none. `attributes()` is used
+in `show()` to display both the class and an object of that class. Now we can
+see the details when using class attributes:
 
 ```python
 # 5_class_attributes.py
@@ -479,10 +483,9 @@ lurking problems.
 
 ## The Class Attribute Trick
 
-It's not clear to me whether name shadowing is intentional in Python's design,
-or an oversight. Either way, it has become an integral part of the way some
-libraries provide easy class configuration. The first time I saw it was in
-Django:
+Name shadowing is an intentional part of Python's design, and has become an
+integral part of the way some libraries provide easy class configuration. The
+first time I saw it was in Django:
 
 ```python
 class Blog(models.Model):
@@ -513,9 +516,9 @@ I suspect that the use of class attributes as code-generation templates will con
 
 ## Recommendations
 
-I hope this article inspires you to avoid making class attributes look like
-default values and instead to write proper constructors with default arguments,
-as you see in `class A`:
+The solution is to *not* make class attributes look like default values.
+Instead, write proper constructors with default arguments, as you see in
+`class A`:
 
 ```python
 # 7_choices.py
@@ -590,6 +593,16 @@ nature strongly influences the language's semantics. Assumptions that
 it works like C++ or Java will generally produce incorrect results.
 
 You can learn more about `dataclasses` from my Pycon 2022 presentation *Making
-Dataclasses Work for You*, on YouTube.
+Dataclasses Work for You*, on YouTube (not yet available at this writing).
 
 Thanks to Barry Warsaw for reviewing and giving feedback.
+
+[^1]: Languages like C++ and Java use *constructor* to mean "activities
+performed after storage allocation and basic initialization." C++ also has a
+`new()` for controlling memory allocation. C++ calls this "operator new" rather
+than "constructor." In contrast, Python's constructor is usually defined as the
+`__new__()` function, and `__init__()` is called the initializer. C++'s operator
+`new()` and Python's `__new__()` are almost never overridden, and are rarely
+even mentioned (The common usage for Python's `__new__()` seems to be to create
+Factory functions). To keep things simple I just say "constructor" when
+referring to `__init__()`.

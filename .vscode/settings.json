@@ -3,6 +3,8 @@
     "classmethod",
     "dataclass",
     "dataclasses",
-    "dunder"
+    "dunder",
+    "Pycon",
+    "repr"
   ]
 }
