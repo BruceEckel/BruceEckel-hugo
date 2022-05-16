@@ -597,12 +597,4 @@ Dataclasses Work for You*, on YouTube (not yet available at this writing).
 
 Thanks to Barry Warsaw for reviewing and giving feedback.
 
-[^1]: Languages like C++ and Java use *constructor* to mean "activities
-performed after storage allocation and basic initialization." C++ also has a
-`new()` for controlling memory allocation. C++ calls this "operator new" rather
-than "constructor." In contrast, Python's constructor is usually defined as the
-`__new__()` function, and `__init__()` is called the initializer. C++'s operator
-`new()` and Python's `__new__()` are almost never overridden, and are rarely
-even mentioned (The common usage for Python's `__new__()` seems to be to create
-Factory functions). To keep things simple I just say "constructor" when
-referring to `__init__()`.
+[^1]: Languages like C++ and Java use *constructor* to mean "activities performed after storage allocation and basic initialization." C++ also has a `new()` for controlling memory allocation. C++ calls this "operator new" rather than "constructor." In contrast, Python's constructor is usually defined as the `__new__()` function, and `__init__()` is called the initializer. C++'s operator `new()` and Python's `__new__()` are almost never overridden, and are rarely even mentioned (The common usage for Python's `__new__()` seems to be to create Factory functions). To keep things simple I just say "constructor" when referring to `__init__()`.
