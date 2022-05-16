@@ -264,8 +264,9 @@ variable that is "global to the class," it can be mistaken for a default value.
 ## How Things Break
 
 The worst thing about this is that code written with the assumption that class
-attributes are just default initialization values seems to work most of the
-time, especially for simple situations like the one I encountered. The code passes its tests, so how can I call it "wrong?"
+attributes are just default initialization values seems to work most of the time
+for simple situations like the one I encountered. The code passes its tests, so
+how can I call it "wrong?"
 
 The problem occurs when you're least expecting it. Here is just one
 configuration that produces a surprise:
@@ -276,10 +277,12 @@ configuration that produces a surprise:
 class A:
     x: int = 100
     y: int = 200
-
-def oops():
-    A.x = 999999
-    A.y = 313
+    @classmethod
+    def change_x(cls):
+        cls.x = 999
+    @classmethod
+    def change_y(cls):
+        cls.y = 313
 
 def reset():
     A.x = 100
@@ -289,7 +292,8 @@ if __name__ == '__main__':
     a1: A = None
     a2: A = None
     a3: A = None
-    def display():
+    def display(counter: int):
+        print(f"display({counter})")
         if a1:
             print(f"{a1.x = }, {a1.y = }")
         if a2:
@@ -298,48 +302,60 @@ if __name__ == '__main__':
             print(f"{a3.x = }, {a3.y = }")
 
     a1 = A()
-    display()
+    display(1)
     # a1.x = 100, a1.y = 200
     a1.x = -1
     a1.y = -2
-    display()
+    display(2)
+    # a1.x = -1, a1.y = -2
+    a1.change_x()
+    display(3)
     # a1.x = -1, a1.y = -2
     a2 = A()
-    display()
+    display(4)
     # a1.x = -1, a1.y = -2
-    # a2.x = 100, a2.y = 200
+    # a2.x = 999, a2.y = 200
     a2.y = 17
-    display()
+    display(5)
     # a1.x = -1, a1.y = -2
-    # a2.x = 100, a2.y = 17
-    oops()
+    # a2.x = 999, a2.y = 17
+    A.change_y()
     a3 = A()
-    display()
+    display(6)
     # a1.x = -1, a1.y = -2
-    # a2.x = 999999, a2.y = 17
-    # a3.x = 999999, a3.y = 313
+    # a2.x = 999, a2.y = 17
+    # a3.x = 999, a3.y = 313
     reset()
-    display()
+    display(7)
     # a1.x = -1, a1.y = -2
     # a2.x = 100, a2.y = 17
     # a3.x = 100, a3.y = 200
 ```
 
-`class A` contains two class attributes. `oops()` changes both these class
-attributes, and `reset()` sets both class attributes back to their original
-values.
+Every object instance has its own dictionary. When you assign to an instance
+variable, you add a binding to the instance dictionary. But a class definition
+also creates a (class) object, which also has its own dictionary. When you
+define a class attribute, you add a binding to the class dictionary.
+
+When Python looks up an attribute, it (generally) starts at the instance and if
+it doesn't find the attribute there, falls back to looking it up in the
+associated class/type dictionary.
+
+`class A` contains two class attributes. `change_x()` and `change_y()` modifies
+these class attributes, and `reset()` sets both class attributes back to their
+original values.
 
 The main code starts by creating three `A` references initialized to `None`, and
 a `display()` function to show the `x` and `y` values for each non-`None`
 object.
 
 Everything looks like it exhibits "default value" behavior until we call
-`oops()`, at which point everything gets strange. The original `a1` produces the
-same results as before, but `a2` is partially affected (`x` changes but not `y`)
-and the new `a3` has different "default values." Calling `reset()` modifies `a2`
-(partially) and `a3` (completely), but not `a1`. Not only does `oops()` and
-`reset()` change the objects they have no direct connection with, but the
-changes themselves are inconsistent across the different objects.
+`change_x()` and `change_y()`, at which point everything gets strange. The
+original `a1` produces the same results as before, but `a2` is partially
+affected (`x` changes but not `y`) and the new `a3` has different "default
+values." Calling `reset()` modifies `a2` (partially) and `a3` (completely), but
+not `a1`. In particular, `reset()` changes objects it has no direct connection
+with. And the changes themselves are inconsistent across the different objects.
 
 Imagine these kinds of errors appearing in your code base, and trying to track
 them down based on the inconsistent behavior of these so-called "default
@@ -575,3 +591,5 @@ it works like C++ or Java will generally produce incorrect results.
 
 You can learn more about `dataclasses` from my Pycon 2022 presentation *Making
 Dataclasses Work for You*, on YouTube.
+
+Thanks to Barry Warsaw for reviewing and giving feedback.
