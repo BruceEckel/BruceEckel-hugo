@@ -17,7 +17,7 @@ class DataPoint:
     measurement3 = None
 ```
 
-Which was later used like this:
+`DataPoint` was later used like this:
 
 ```python
 d = DataPoint()
