@@ -7,9 +7,6 @@ author: "Bruce Eckel"
 ---
 
 
-## [*Preview*: in final editing]
-
-
 I was attempting to assist on an open-source project when I was stopped short by
 this (names have been changed):
 
@@ -152,7 +149,7 @@ In `class B`, `x` is changed to a `static` variable, which means there is only a
 single piece of `x` storage for the class---no matter how many instances of
 that class you create. This is how Python class attributes work; they are `static` variables without using the `static` keyword.
 
-In `toString()`, notice that `B`'s `x` is accessed the same way it is in
+In `B`'s `toString()`, notice that `B`'s `x` is accessed the same way it is in
 `Class A`'s `toString()`: as if it were an ordinary object field rather than a
 `static` field. When you do this, Java automatically uses the `static` `x`
 even though you are syntactically treating it like the object's `x`.
@@ -335,12 +332,12 @@ if __name__ == '__main__':
 
 Every object instance has its own dictionary. When you assign to an instance
 variable, you add a binding to the instance dictionary. But a class definition
-also creates a (class) object, which also has its own dictionary. When you
+creates a (class) object, which also has its own dictionary. When you
 define a class attribute, you add a binding to the class dictionary.
 
 When Python looks up an attribute, it (generally) starts at the instance and if
 it doesn't find the attribute there, falls back to looking it up in the
-associated class/type dictionary (the same way that C++ and Java do it).
+associated class/type dictionary (the same way that C++ and Java do).
 
 `class A` contains two class attributes. `change_x()` and `change_y()` are
 "class methods," which mean they operate on the class object, and not a
@@ -354,7 +351,7 @@ a `display()` function that shows the `x` and `y` values for each non-`None`
 object.
 
 Everything looks like it exhibits "default value" behavior until we call
-`change_x()` and `change_y()`, when everything gets strange. The original `a1`
+`change_x()` and `change_y()`, then things get strange. The original `a1`
 produces the same results as before, but `a2` is partially affected (`x` changes
 but not `y`) and the new `a3` has different "default values." Calling `reset()`
 modifies `a2` (partially) and `a3` (completely), but not `a1`.
@@ -466,7 +463,7 @@ if __name__ == '__main__':
     a2 = A()
     show(a2, "a2")
     # [Class A] x: 100
-    # [Object a] Empty
+    # [Object a2] Empty
     print(f"{a2.x = }")
     # a2.x = 100
 ```
@@ -516,7 +513,7 @@ I suspect that the use of class attributes as code-generation templates will con
 
 ## Recommendations
 
-The solution is to *not* make class attributes look like default values.
+The solution is to *not* make class attributes seem like default values.
 Instead, write proper constructors with default arguments, as you see in
 `class A`:
 
@@ -597,4 +594,4 @@ Dataclasses Work for You*, on YouTube (not yet available at this writing).
 
 Thanks to Barry Warsaw for reviewing and giving feedback.
 
-[^1]: Languages like C++ and Java use *constructor* to mean "activities performed after storage allocation and basic initialization." C++ also has a `new()` for controlling memory allocation. C++ calls this "operator new" rather than "constructor." In contrast, Python's constructor is usually defined as the `__new__()` function, and `__init__()` is called the initializer. C++'s operator `new()` and Python's `__new__()` are almost never overridden, and are rarely even mentioned (The common usage for Python's `__new__()` seems to be to create Factory functions). To keep things simple I just say "constructor" when referring to `__init__()`.
+[^1]: Languages like C++ and Java use *constructor* to mean "activities performed after storage allocation and basic initialization." C++ also has a `new()` for controlling memory allocation, calling it "operator new" rather than "constructor." In contrast, Python's constructor is usually defined as the `__new__()` function, and `__init__()` is called the initializer. C++'s operator `new()` and Python's `__new__()` are almost never overridden, and are rarely even mentioned (The common usage for Python's `__new__()` seems to be to create *Factory* functions). To keep things simple I just say "constructor" when referring to `__init__()`.
