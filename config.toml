@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://BruceEckel.com"
 disablePathToLower = false
 languageCode = "en-us"
 title = "Computing Thoughts"
