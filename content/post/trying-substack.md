@@ -1,10 +1,12 @@
 ---
 date: '2023-07-06'
-published: false
+published: true
 title: Python Extensions with Rust and Go
 url: /2023/07/06/trying-substack
 author: "Bruce Eckel"
 ---
+
+TLDR: [BruceEckel.substack.com](https://bruceeckel.substack.com/)
 
 I've noticed that I haven't been writing here that much lately, and I
 began to suspect it is because of the necessary ceremony of creating
