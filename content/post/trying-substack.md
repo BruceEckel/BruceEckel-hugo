@@ -1,7 +1,7 @@
 ---
 date: '2023-07-06'
 published: true
-title: Python Extensions with Rust and Go
+title: Trying Substack
 url: /2023/07/06/trying-substack
 author: "Bruce Eckel"
 ---
