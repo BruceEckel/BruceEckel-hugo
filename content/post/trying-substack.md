@@ -23,6 +23,8 @@ abstract painter. Of course, these approaches simply allowed the next problems
 to move forward. But at least I do periodically put paint on things and sometimes I
 enjoy the results.
 
+For me, the little things do make a difference.
+
 The problem with the ceremony necessary to publish a blog is that I have an idea
 of what I want to write about and before I even get started I have to shift gears
 into the *how* of configuration and presentation. My current hypothesis is that
