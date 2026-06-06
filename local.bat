@@ -1,4 +1,4 @@
-@echo off& python -x %0".bat" %* &goto :eof
+@echo off& python -x "%~f0" %* &goto :eof
 from subprocess import call
 call("hugo")
 import webbrowser

@@ -41,7 +41,7 @@
   <link href="{{ "/favicon.png" | absURL }}" rel="icon">
 
   <!-- RSS -->
-  {{ with .RSSLink }}<link href="{{ . }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />{{ end }}
+  {{ with .OutputFormats.Get "rss" }}<link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />{{ end }}
 
   <meta name="description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.defaultDescription }}{{ end }}">
   <meta name="keywords" content="{{ range $index, $element := .Keywords }}{{ if gt $index 0 }},{{ end }}{{ . }}{{ else }}{{ .Site.Params.defaultKeywords }}{{ end }}">
@@ -49,7 +49,7 @@
   <meta name="author" content="{{ .Site.Params.author }}">
 
   <!-- Generator version for usage tacking -->
-  {{ .Hugo.Generator }}
+  {{ hugo.Generator }}
 
   <!-- Google Analytics -->
   {{ template "_internal/google_analytics_async.html" . }}
